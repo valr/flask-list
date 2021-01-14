@@ -1,0 +1,18 @@
+<tr>
+    <th class="align-middle font-weight-normal">
+        {{ ic[0].name }}
+    </th>
+    <td class="align-middle text-center">
+        {% if ic[2] is not none %}
+            <a class="btn btn-success item-checked text-white"
+                id="{{ 'item' ~ ic[0].item_id }}">
+                {{ render_icon('check-square') }}
+            </a>
+        {% else %}
+            <a class="btn bg-transparent item-unchecked text-dark"
+                id="{{ 'item' ~ ic[0].item_id }}">
+                {{ render_icon('square') }}
+            </a>
+        {% endif %}
+    </td>
+</tr>

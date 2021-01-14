@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block content %}
+    <div class="card">
+        <h5 class="card-header">
+            Sign In
+        </h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    {{ render_form(form, button_map={'submit': 'primary'}) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            {% if registration == 'True' %}
+            <div class="mb-2">
+                    New User?
+                    <a href="{{ url_for('authentication.register') }}">
+                        Click to Register
+                    </a>
+            </div>
+            {% endif %}
+            <div>
+                Forgot Your Password?
+                <a href="{{ url_for('authentication.reset_password') }}">
+                    Click to Reset It
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

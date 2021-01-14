@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+{% block content %}
+    <div class="card">
+        <h5 class="card-header bg-danger text-white">
+            Delete Item
+        </h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    {{ render_form(form, button_map={
+                        'submit': 'danger', 'cancel': 'light'}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script nonce="{{ csp_nonce() }}">
+        {% include 'cancel.js' %}
+    </script>
+{% endblock %}

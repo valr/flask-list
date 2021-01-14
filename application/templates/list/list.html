@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/utils.html' import render_icon %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-sm">
+            <thead class="table-primary text-white">
+                <tr>
+                    <th class="col-9 align-middle">
+                        List
+                    </th>
+                    <th class="col-1 align-middle text-center">
+                        Category
+                    </th>
+                    <th class="col-1 align-middle text-center">
+                        Item
+                    </th>
+                    <th class="col-1 align-middle text-center text-nowrap">
+                        Actions
+                        <a class="btn btn-primary btn-sm text-white"
+                            href="{{ url_for('list.create') }}">
+                            {{ render_icon('plus-square') }}
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for list in lists %}
+                    {% include 'list/list_item.html' %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script nonce="{{ csp_nonce() }}">
+        {% include 'scroll.js' %}
+    </script>
+{% endblock %}

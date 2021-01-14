@@ -1,0 +1,29 @@
+<tr>
+    <th class="align-middle font-weight-normal">
+        {{ list.name }}
+    </th>
+    <td class="align-middle text-center">
+        <a class="btn rounded text-secondary"
+            href="{{ url_for('list.category', list_id=list.list_id) }}">
+            {{ render_icon('ui-checks', size='1.5em') }}
+        </a>
+    </td>
+    <td class="align-middle text-center">
+        <a class="btn rounded text-secondary"
+            href="{{ url_for('list.item', list_id=list.list_id) }}">
+            {{ render_icon('ui-checks-grid', size='1.5em') }}
+        </a>
+    </td>
+    <td class="align-middle text-center">
+        <div class="btn-group" role="group">
+            <a class="btn btn-warning rounded text-white mr-2"
+                href="{{ url_for('list.update', list_id=list.list_id) }}">
+                {{ render_icon('pencil') }}
+            </a>
+            <a class="btn btn-danger rounded text-white"
+                href="{{ url_for('list.delete', list_id=list.list_id) }}">
+                {{ render_icon('trash') }}
+            </a>
+        </div>
+    </td>
+</tr>

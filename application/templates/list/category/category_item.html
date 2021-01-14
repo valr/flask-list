@@ -1,0 +1,18 @@
+<tr>
+    <th class="align-middle font-weight-normal">
+        {{ category[0].name }}
+    </th>
+    <td class="align-middle text-center">
+        {% if category[1] is not none %}
+            <a class="btn btn-success category-checked text-white"
+                id="{{ 'category' ~ category[0].category_id }}">
+                {{ render_icon('check-square') }}
+            </a>
+        {% else %}
+            <a class="btn bg-transparent category-unchecked text-dark"
+                id="{{ 'category' ~ category[0].category_id }}">
+                {{ render_icon('square') }}
+            </a>
+        {% endif %}
+    </td>
+</tr>

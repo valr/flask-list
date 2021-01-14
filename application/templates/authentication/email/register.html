@@ -1,0 +1,13 @@
+<p>
+    To confirm your registration:
+    <a href="{{ url_for('authentication.register_confirmation', token=token, _external=True) }}">
+        click here
+    </a>.
+</p>
+<p>
+    Alternatively, you can paste the following link in your browser's address bar:<br>
+    {{ url_for('authentication.register_confirmation', token=token, _external=True) }}
+</p>
+<p>
+    If you have not requested registration simply ignore this message.
+</p>

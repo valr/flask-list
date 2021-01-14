@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% block styles %}
+    {{ bootstrap.load_css() }}
+    {% endblock %}
+
+    <title>
+        500, Internal Server Error
+    </title>
+</head>
+<body>
+    <div class="row h-1OO justify-content-center my-5">
+        <div class="text-center">
+            <h1 class="font-weight-bold">Oops!</h1>
+            <h2 class="font-weight-bold">An unexpected error has occurred.</h2>
+            <div>Sorry for the inconvenience.</div>
+        </div>
+    </div>
+
+    {% block scripts %}
+    {{ bootstrap.load_js() }}
+    {% endblock %}
+
+    <noscript>
+        This website requires JavaScript.
+    </noscript>
+</body>
+</html>

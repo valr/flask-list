@@ -1,0 +1,44 @@
+
+body {
+    /* https://getbootstrap.com/docs/4.0/components/navbar/#placement */
+    padding-top: 40px;
+}
+
+a {
+    color: #325D88;
+    text-decoration: none;
+    background-color: transparent
+}
+
+a:hover {
+    color: #325D88;
+    text-decoration: underline
+}
+
+.bg-primary {
+    background-color: #325D88 !important
+}
+
+.table-primary th,
+.table-primary thead th {
+    background-color: #325D88 !important;
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    visibility: hidden;
+}
+
+.collapse.show {
+    -webkit-transition: none;
+    transition: none;
+    visibility: visible;
+}
+
+/*
+.form-group.required .form-control-label:after {
+    content: "*";
+    color: red;
+}
+*/
