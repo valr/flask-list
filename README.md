@@ -1,6 +1,6 @@
-# LCI
+# flask-list
 
-lci is a simple Flask application to manage: List, Category, Item
+flask-list is a simple Flask application to manage list of items in categories
 
 # License
 
