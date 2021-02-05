@@ -57,7 +57,7 @@ class User(database.Model, UserMixin):
                   'exp': time() + expires_in}
         key = current_app.config['SECRET_KEY']
 
-        return jwt.encode(claims, key, algorithm='HS256').decode('utf-8')
+        return jwt.encode(claims, key, algorithm='HS256')
 
     @staticmethod
     def verify_token(token, subject):
