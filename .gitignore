@@ -1,4 +1,5 @@
-database
+.venv/
+__pycache__/
+
 *.sublime-workspace
 sftp-config.json
-.venv
