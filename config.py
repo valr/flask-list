@@ -23,5 +23,6 @@ class Config(object):
     MAIL_TO = \
         [var for var in (os.environ.get('MAIL_TO') or '').split(' ') if var]
 
-    BOOTSTRAP_BOOTSWATCH_THEME = os.environ.get('BOOTSTRAP_THEME')
+    BOOTSTRAP_BOOTSWATCH_THEME = \
+        os.environ.get('BOOTSTRAP_THEME') or 'sandstone'
     BOOTSTRAP_SERVE_LOCAL = True
