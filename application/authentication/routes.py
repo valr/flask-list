@@ -109,7 +109,7 @@ def login():
 
     return render_template(
         'authentication/login.html', title='Sign In', form=form,
-        registration=current_app.config['REGISTRATION'])
+        registration_allowed=current_app.config['REGISTRATION_ALLOWED'])
 
 
 @blueprint.route('/profile', methods=['GET', 'POST'])
