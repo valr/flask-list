@@ -4,5 +4,22 @@
 		{
 			"path": "."
 		}
-	]
+	],
+    "settings": {
+        "LSP": {
+            "mspyls":
+            {
+                "settings":
+                {
+                    "python":
+                    {
+                        "autoComplete":
+                        {
+                            "extraPaths": [ ".venv/lib/python3.9/site-packages" ]
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
