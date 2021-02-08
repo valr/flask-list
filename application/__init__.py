@@ -1,4 +1,3 @@
-from config import Config
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
@@ -16,24 +15,20 @@ csrf = CSRFProtect()
 login = LoginManager()
 paranoid = Paranoid()
 talisman = Talisman()
-talisman_csp = {
-    'font-src': ['\'self\'', '*.gstatic.com'],
-    'style-src': ['\'self\'', '*.gstatic.com', 'fonts.googleapis.com'],
-    'script-src': '\'self\'',
-    'default-src': '\'self\''
-}
 
 bootstrap = Bootstrap()
 mail = Mail()
 
 
-def create_application(config_class=Config):
-    application = Flask(__name__)
+def create_application(instance_path):
+    if instance_path:
+        application = Flask(__name__,
+                            instance_relative_config=True,
+                            instance_path=instance_path)
+    else:
+        application = Flask(__name__, instance_relative_config=True)
 
-    application.jinja_env.trim_blocks = True
-    application.jinja_env.lstrip_blocks = True
-
-    application.config.from_object(config_class)
+    application.config.from_pyfile('flask-list.conf')
 
     # set session cookie attribute not covered yet by flask-talisman (PR opened)
     # https://flask.palletsprojects.com/en/1.1.x/security/#set-cookie-options
@@ -44,6 +39,9 @@ def create_application(config_class=Config):
     application.config['REMEMBER_COOKIE_SECURE'] = True
     application.config['REMEMBER_COOKIE_HTTPONLY'] = True
     application.config['REMEMBER_COOKIE_SAMESITE'] = 'Lax'
+
+    application.jinja_env.trim_blocks = True
+    application.jinja_env.lstrip_blocks = True
 
     database.init_app(application)
     migrate.init_app(application, database)
@@ -56,8 +54,15 @@ def create_application(config_class=Config):
     talisman.init_app(
         application,
         strict_transport_security=False,  # setup in webserver
-        content_security_policy=talisman_csp,
-        content_security_policy_nonce_in=['script-src', 'style-src'])
+        content_security_policy={
+            'font-src': ['\'self\'', '*.gstatic.com'],
+            'style-src': ['\'self\'', '*.gstatic.com', 'fonts.googleapis.com'],
+            'script-src': '\'self\'',
+            'default-src': '\'self\''
+        },
+        content_security_policy_nonce_in=[
+            'script-src',
+            'style-src'])
 
     bootstrap.init_app(application)
     mail.init_app(application)

@@ -1,8 +1,11 @@
-from application import create_application, database
-from application.models import Category, Item, List, User
+import os
+
 from flask import redirect, render_template, url_for
 
-application = create_application()
+from application import create_application, database
+from application.models import Category, Item, List, User
+
+application = create_application(os.environ.get('INSTANCE_PATH'))
 
 
 @application.route('/')
