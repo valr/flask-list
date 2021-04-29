@@ -1,10 +1,11 @@
 {
-	"folders":
-	[
-		{
-			"path": "."
-		}
-	],
+    "folders":
+    [
+        {
+            "path": ".",
+            "folder_exclude_patterns": [".venv", "__pycache__"]
+        }
+    ],
     "settings": {
         "LSP": {
             "mspyls":
