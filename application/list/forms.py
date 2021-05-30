@@ -1,7 +1,8 @@
-from application.models import List
 from flask_wtf import FlaskForm
 from wtforms import HiddenField, StringField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
+
+from application.models import List
 
 
 class CreateForm(FlaskForm):

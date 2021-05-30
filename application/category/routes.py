@@ -1,11 +1,12 @@
-from application import database
-from application.category import blueprint
-from application.category.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
+
+from application import database
+from application.category import blueprint
+from application.category.forms import CreateForm, DeleteForm, UpdateForm
+from application.models import Category
 
 
 @blueprint.route('/create', methods=['GET', 'POST'])
@@ -20,8 +21,8 @@ def create():
             flash('The category has been created.')
         except IntegrityError:
             database.session.rollback()
-            flash('The category has not been created ' +
-                  'due to concurrent modification.', 'error')
+            flash('The category has not been created '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('category.list'))
 
@@ -41,8 +42,8 @@ def update(category_id):
     form = UpdateForm(category.name)
     if form.validate_on_submit():
         if form.version_id.data != str(category.version_id):
-            flash('The category has not been updated ' +
-                  'due to concurrent modification.', 'error')
+            flash('The category has not been updated '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('category.list'))
 
         try:
@@ -51,8 +52,8 @@ def update(category_id):
             flash('The category has been updated.')
         except (IntegrityError, StaleDataError):
             database.session.rollback()
-            flash('The category has not been updated ' +
-                  'due to concurrent modification.', 'error')
+            flash('The category has not been updated '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('category.list'))
     elif request.method == 'GET':
@@ -75,8 +76,8 @@ def delete(category_id):
     form = DeleteForm()
     if form.validate_on_submit():
         if form.version_id.data != str(category.version_id):
-            flash('The category has not been deleted ' +
-                  'due to concurrent modification.', 'error')
+            flash('The category has not been deleted '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('category.list'))
 
         try:
@@ -87,12 +88,12 @@ def delete(category_id):
             # in case of deletion, sqlalchemy will try setting the foreign key
             # of related items to null, resulting into an integrity error
             database.session.rollback()
-            flash('The category has not been deleted ' +
-                  'because it still contains item(s).', 'error')
+            flash('The category has not been deleted '
+                  + 'because it still contains item(s).', 'error')
         except StaleDataError:
             database.session.rollback()
-            flash('The category has not been deleted ' +
-                  'due to concurrent modification.', 'error')
+            flash('The category has not been deleted '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('category.list'))
     elif request.method == 'GET':

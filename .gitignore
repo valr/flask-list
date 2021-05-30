@@ -2,4 +2,3 @@
 __pycache__/
 
 *.sublime-workspace
-sftp-config.json

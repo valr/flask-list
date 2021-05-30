@@ -1,24 +1,19 @@
 {
-    "folders":
-    [
+    "folders": [
         {
             "path": ".",
-            "folder_exclude_patterns": [".venv", "__pycache__"]
+            "folder_exclude_patterns": [
+                ".venv",
+                "__pycache__"
+            ]
         }
     ],
     "settings": {
+        "lsp_format_on_save": true,
         "LSP": {
-            "mspyls":
-            {
-                "settings":
-                {
-                    "python":
-                    {
-                        "autoComplete":
-                        {
-                            "extraPaths": [ ".venv/lib/python3.9/site-packages" ]
-                        }
-                    }
+            "pylsp": {
+                "settings": {
+                    "pylsp.plugins.jedi.environment": "./.venv"
                 }
             }
         }

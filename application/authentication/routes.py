@@ -1,5 +1,12 @@
 from datetime import datetime, timedelta
 
+from flask import (current_app, flash, redirect, render_template, request,
+                   url_for)
+from flask_login import current_user, login_required, login_user, logout_user
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
+from werkzeug.routing import BuildError
+
 from application import database, login
 from application.authentication import blueprint
 from application.authentication.emails import (send_register_email,
@@ -9,12 +16,6 @@ from application.authentication.forms import (LoginForm, ProfileForm,
                                               ResetPasswordConfirmationForm,
                                               ResetPasswordForm)
 from application.models import User
-from flask import (current_app, flash, redirect, render_template, request,
-                   url_for)
-from flask_login import current_user, login_required, login_user, logout_user
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import StaleDataError
-from werkzeug.routing import BuildError
 
 
 @login.unauthorized_handler
@@ -44,8 +45,8 @@ def register():
             database.session.commit()
         except IntegrityError:
             database.session.rollback()
-            flash('The user has not been registered ' +
-                  'due to concurrent modification.', 'error')
+            flash('The user has not been registered '
+                  + 'due to concurrent modification.', 'error')
         else:
             send_register_email(user)
             flash('An email has been sent to confirm your registration.')
@@ -78,7 +79,7 @@ def register_confirmation(token):
 @blueprint.cli.command('cleaning')
 def register_cleaning():
     expired_on = datetime.utcnow() - timedelta(hours=1)
-    User.query.filter(User.active == False,
+    User.query.filter(User.active == False,  # noqa: E712
                       User.updated_on < expired_on).delete()
     database.session.commit()
     print('The inactive users have been cleaned.')
@@ -118,8 +119,8 @@ def profile():
     form = ProfileForm()
     if form.validate_on_submit():
         if form.version_id.data != str(current_user.version_id):
-            flash('The profile has not been saved ' +
-                  'due to concurrent modification.', 'error')
+            flash('The profile has not been saved '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('index'))
 
         try:
@@ -141,8 +142,8 @@ def profile():
             # flash('The profile has been saved.')
         except StaleDataError:
             database.session.rollback()
-            flash('The profile has not been saved ' +
-                  'due to concurrent modification.', 'error')
+            flash('The profile has not been saved '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('index'))
     elif request.method == 'GET':

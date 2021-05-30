@@ -1,11 +1,12 @@
-from application import database
-from application.item import blueprint
-from application.item.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category, Item
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
+
+from application import database
+from application.item import blueprint
+from application.item.forms import CreateForm, DeleteForm, UpdateForm
+from application.models import Category, Item
 
 
 @blueprint.route('/create/<int:category_id>', methods=['GET', 'POST'])
@@ -24,8 +25,8 @@ def create(category_id):
             flash('The item has been created.')
         except IntegrityError:
             database.session.rollback()
-            flash('The item has not been created ' +
-                  'due to concurrent modification.', 'error')
+            flash('The item has not been created '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('item.list'))
     elif request.method == 'GET':
@@ -51,8 +52,8 @@ def update(item_id):
 
     if form.validate_on_submit():
         if form.version_id.data != str(item.version_id):
-            flash('The item has not been updated ' +
-                  'due to concurrent modification.', 'error')
+            flash('The item has not been updated '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('item.list'))
 
         try:
@@ -62,8 +63,8 @@ def update(item_id):
             flash('The item has been updated.')
         except (IntegrityError, StaleDataError):
             database.session.rollback()
-            flash('The item has not been updated ' +
-                  'due to concurrent modification.', 'error')
+            flash('The item has not been updated '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('item.list'))
     elif request.method == 'GET':
@@ -91,8 +92,8 @@ def delete(item_id):
 
     if form.validate_on_submit():
         if form.version_id.data != str(item.version_id):
-            flash('The item has not been deleted ' +
-                  'due to concurrent modification.', 'error')
+            flash('The item has not been deleted '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('item.list'))
 
         try:
@@ -101,8 +102,8 @@ def delete(item_id):
             flash('The item has been deleted.')
         except StaleDataError:
             database.session.rollback()
-            flash('The item has not been deleted ' +
-                  'due to concurrent modification.', 'error')
+            flash('The item has not been deleted '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('item.list'))
     elif request.method == 'GET':

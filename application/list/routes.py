@@ -1,12 +1,13 @@
-from application import database
-from application.list import blueprint
-from application.list.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category, Item, List, list_category, list_item
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
+
+from application import database
+from application.list import blueprint
+from application.list.forms import CreateForm, DeleteForm, UpdateForm
+from application.models import Category, Item, List, list_category, list_item
 
 
 @blueprint.route('/create', methods=['GET', 'POST'])
@@ -21,8 +22,8 @@ def create():
             flash('The list has been created.')
         except IntegrityError:
             database.session.rollback()
-            flash('The list has not been created ' +
-                  'due to concurrent modification.', 'error')
+            flash('The list has not been created '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('list.list'))
 
@@ -42,8 +43,8 @@ def update(list_id):
     form = UpdateForm(lst.name)
     if form.validate_on_submit():
         if form.version_id.data != str(lst.version_id):
-            flash('The list has not been updated ' +
-                  'due to concurrent modification.', 'error')
+            flash('The list has not been updated '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('list.list'))
 
         try:
@@ -52,8 +53,8 @@ def update(list_id):
             flash('The list has been updated.')
         except (IntegrityError, StaleDataError):
             database.session.rollback()
-            flash('The list has not been updated ' +
-                  'due to concurrent modification.', 'error')
+            flash('The list has not been updated '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('list.list'))
     elif request.method == 'GET':
@@ -76,8 +77,8 @@ def delete(list_id):
     form = DeleteForm()
     if form.validate_on_submit():
         if form.version_id.data != str(lst.version_id):
-            flash('The list has not been deleted ' +
-                  'due to concurrent modification.', 'error')
+            flash('The list has not been deleted '
+                  + 'due to concurrent modification.', 'error')
             return redirect(url_for('list.list'))
 
         try:
@@ -86,8 +87,8 @@ def delete(list_id):
             flash('The list has been deleted.')
         except StaleDataError:
             database.session.rollback()
-            flash('The list has not been deleted ' +
-                  'due to concurrent modification.', 'error')
+            flash('The list has not been deleted '
+                  + 'due to concurrent modification.', 'error')
 
         return redirect(url_for('list.list'))
     elif request.method == 'GET':
@@ -211,8 +212,8 @@ def warn_unchecked_categories(list_id):
 
     # warn about unchecked categories for checked items
     for category in unchecked_categories:
-        flash('Some items are not visible. ' +
-              f'The category \'{category.name}\' should be selected.',
+        flash('Some items are not visible. '
+              + f'The category \'{category.name}\' should be selected.',
               'warning')
 
 
