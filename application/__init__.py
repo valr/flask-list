@@ -22,23 +22,23 @@ mail = Mail()
 
 def create_application(instance_path):
     if instance_path:
-        application = Flask(__name__,
-                            instance_relative_config=True,
-                            instance_path=instance_path)
+        application = Flask(
+            __name__, instance_relative_config=True, instance_path=instance_path
+        )
     else:
         application = Flask(__name__, instance_relative_config=True)
 
-    application.config.from_pyfile('flask-list.conf')
+    application.config.from_pyfile("flask-list.conf")
 
     # set session cookie attribute not covered yet by flask-talisman (PR opened)
     # https://flask.palletsprojects.com/en/1.1.x/security/#set-cookie-options
     # https://github.com/GoogleCloudPlatform/flask-talisman/pull/51
-    application.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+    application.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
     # set remember cookie attributes
-    application.config['REMEMBER_COOKIE_SECURE'] = True
-    application.config['REMEMBER_COOKIE_HTTPONLY'] = True
-    application.config['REMEMBER_COOKIE_SAMESITE'] = 'Lax'
+    application.config["REMEMBER_COOKIE_SECURE"] = True
+    application.config["REMEMBER_COOKIE_HTTPONLY"] = True
+    application.config["REMEMBER_COOKIE_SAMESITE"] = "Lax"
 
     application.jinja_env.trim_blocks = True
     application.jinja_env.lstrip_blocks = True
@@ -50,36 +50,40 @@ def create_application(instance_path):
     login.init_app(application)
     login.session_protection = None  # using paranoid
     paranoid.init_app(application)
-    paranoid.redirect_view = 'authentication.login'
+    paranoid.redirect_view = "authentication.login"
     talisman.init_app(
         application,
         strict_transport_security=False,  # setup in webserver
         content_security_policy={
-            'font-src': ['\'self\'', '*.gstatic.com'],
-            'style-src': ['\'self\'', '*.gstatic.com', 'fonts.googleapis.com'],
-            'script-src': '\'self\'',
-            'default-src': '\'self\''
+            "font-src": ["'self'", "*.gstatic.com"],
+            "style-src": ["'self'", "*.gstatic.com", "fonts.googleapis.com"],
+            "script-src": "'self'",
+            "default-src": "'self'",
         },
-        content_security_policy_nonce_in=[
-            'script-src',
-            'style-src'])
+        content_security_policy_nonce_in=["script-src", "style-src"],
+    )
 
     bootstrap.init_app(application)
     mail.init_app(application)
 
     from application.authentication import \
         blueprint as authentication_blueprint
+
     application.register_blueprint(
-        authentication_blueprint, url_prefix='/authentication')
+        authentication_blueprint, url_prefix="/authentication"
+    )
 
     from application.category import blueprint as category_blueprint
-    application.register_blueprint(category_blueprint, url_prefix='/category')
+
+    application.register_blueprint(category_blueprint, url_prefix="/category")
 
     from application.item import blueprint as item_blueprint
-    application.register_blueprint(item_blueprint, url_prefix='/item')
+
+    application.register_blueprint(item_blueprint, url_prefix="/item")
 
     from application.list import blueprint as list_blueprint
-    application.register_blueprint(list_blueprint, url_prefix='/list')
+
+    application.register_blueprint(list_blueprint, url_prefix="/list")
 
     return application
 
