@@ -11,7 +11,7 @@
     "settings": {
         "lsp_format_on_save": true,
         "LSP": {
-            "pylsp": {
+            "LSP-pylsp": {
                 "settings": {
                     "pylsp.plugins.jedi.environment": "./.venv"
                 }
