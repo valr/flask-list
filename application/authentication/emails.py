@@ -32,7 +32,7 @@ def send_register_email(user):
             "authentication/email/register.txt", user=user, token=token
         ),
         html_body=render_template(
-            "authentication/email/register.html", user=user, token=token
+            "authentication/email/register.html.jinja", user=user, token=token
         ),
     )
 
@@ -48,6 +48,6 @@ def send_reset_password_email(user):
             "authentication/email/reset_password.txt", user=user, token=token
         ),
         html_body=render_template(
-            "authentication/email/reset_password.html", user=user, token=token
+            "authentication/email/reset_password.html.jinja", user=user, token=token
         ),
     )

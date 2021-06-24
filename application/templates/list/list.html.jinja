@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html.jinja' %}
 {% from 'bootstrap/utils.html' import render_icon %}
 
 {% block content %}
@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 {% for list in lists %}
-                    {% include 'list/list_item.html' %}
+                    {% include 'list/list_item.html.jinja' %}
                 {% endfor %}
             </tbody>
         </table>

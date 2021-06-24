@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html.jinja' %}
 {% from 'bootstrap/utils.html' import render_icon %}
 
 {% block content %}
@@ -28,7 +28,7 @@
                 <tbody class="collapse show" id="collapse{{ ci[0].category_id }}">
         {% endif %}
         {% if ci[1] is not none %} 
-            {% include 'item/list_item.html' %}
+            {% include 'item/list_item.html.jinja' %}
         {%endif %}
         {% if loop.nextitem is not defined or
             ( loop.nextitem is defined and loop.nextitem[0].category_id != ci[0].category_id ) %}

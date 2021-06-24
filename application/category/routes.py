@@ -30,7 +30,7 @@ def create():
         return redirect(url_for("category.list"))
 
     return render_template(
-        "category/create.html",
+        "category/create.html.jinja",
         title="Create Category",
         form=form,
         cancel=url_for("category.list"),
@@ -73,7 +73,7 @@ def update(category_id):
         form.name.data = category.name
 
     return render_template(
-        "category/update.html",
+        "category/update.html.jinja",
         title="Update Category",
         form=form,
         cancel=url_for("category.list"),
@@ -125,7 +125,7 @@ def delete(category_id):
         form.name.data = category.name
 
     return render_template(
-        "category/delete.html",
+        "category/delete.html.jinja",
         title="Delete Category",
         form=form,
         cancel=url_for("category.list"),
@@ -138,5 +138,5 @@ def list():
     categories = Category.query.order_by(Category.name.asc())
 
     return render_template(
-        "category/list.html", title="Category", categories=categories
+        "category/list.html.jinja", title="Category", categories=categories
     )

@@ -30,7 +30,10 @@ def create():
         return redirect(url_for("list.list"))
 
     return render_template(
-        "list/create.html", title="Create List", form=form, cancel=url_for("list.list")
+        "list/create.html.jinja",
+        title="Create List",
+        form=form,
+        cancel=url_for("list.list"),
     )
 
 
@@ -68,7 +71,10 @@ def update(list_id):
         form.name.data = lst.name
 
     return render_template(
-        "list/update.html", title="Update List", form=form, cancel=url_for("list.list")
+        "list/update.html.jinja",
+        title="Update List",
+        form=form,
+        cancel=url_for("list.list"),
     )
 
 
@@ -106,7 +112,10 @@ def delete(list_id):
         form.name.data = lst.name
 
     return render_template(
-        "list/delete.html", title="Delete List", form=form, cancel=url_for("list.list")
+        "list/delete.html.jinja",
+        title="Delete List",
+        form=form,
+        cancel=url_for("list.list"),
     )
 
 
@@ -115,7 +124,7 @@ def delete(list_id):
 def list():
     lists = List.query.order_by(List.name.asc())
 
-    return render_template("list/list.html", title="List", lists=lists)
+    return render_template("list/list.html.jinja", title="List", lists=lists)
 
 
 # manage categories in list
@@ -142,7 +151,7 @@ def category(list_id):
     )
 
     return render_template(
-        "list/category/category.html",
+        "list/category/category.html.jinja",
         title="Categories in List",
         list=lst,
         categories=categories,
@@ -276,7 +285,7 @@ def item(list_id):
     )
 
     return render_template(
-        "list/item/item.html",
+        "list/item/item.html.jinja",
         title="Items in List",
         list=lst,
         items_categories=items_categories,

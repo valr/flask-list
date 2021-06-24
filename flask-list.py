@@ -21,13 +21,13 @@ def favicon():
 
 @application.errorhandler(404)
 def not_found(error):
-    return render_template("error/404.html"), 404
+    return render_template("error/404.html.jinja"), 404
 
 
 @application.errorhandler(500)
 def internal_server_error(error):
     database.session.rollback()
-    return render_template("error/500.html"), 500
+    return render_template("error/500.html.jinja"), 500
 
 
 # flask shell

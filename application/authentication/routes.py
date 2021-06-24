@@ -56,7 +56,7 @@ def register():
         return redirect(url_for("authentication.login"))
 
     return render_template(
-        "authentication/register.html",
+        "authentication/register.html.jinja",
         title="Register",
         form=form,
         cancel=url_for("index"),
@@ -115,7 +115,7 @@ def login():
             return redirect(url_for("index"))
 
     return render_template(
-        "authentication/login.html",
+        "authentication/login.html.jinja",
         title="Sign In",
         form=form,
         registration_allowed=current_app.config["REGISTRATION_ALLOWED"],
@@ -168,7 +168,7 @@ def profile():
         # form.yyy.data = current_user.xxx
 
     return render_template(
-        "authentication/profile.html",
+        "authentication/profile.html.jinja",
         title="Profile",
         form=form,
         cancel=url_for("index"),
@@ -198,7 +198,7 @@ def reset_password():
         return redirect(url_for("authentication.login"))
 
     return render_template(
-        "authentication/reset_password.html",
+        "authentication/reset_password.html.jinja",
         title="Reset Password",
         form=form,
         cancel=url_for("index"),
@@ -231,7 +231,7 @@ def reset_password_confirmation(token):
         return redirect(url_for("authentication.login"))
 
     return render_template(
-        "authentication/reset_password_confirmation.html",
+        "authentication/reset_password_confirmation.html.jinja",
         title="Reset Password",
         form=form,
         cancel=url_for("index"),
