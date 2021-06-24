@@ -5,18 +5,18 @@ body {
 }
 
 a {
+    background-color: transparent;
     color: #325D88;
     text-decoration: none;
-    background-color: transparent
 }
 
 a:hover {
     color: #325D88;
-    text-decoration: underline
+    text-decoration: underline;
 }
 
 .bg-primary {
-    background-color: #325D88 !important
+    background-color: #325D88 !important;
 }
 
 .table-primary th,
