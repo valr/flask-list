@@ -16,6 +16,34 @@
                     "pylsp.plugins.jedi.environment": "./.venv"
                 }
             }
+        },
+        "open_url_panel": {
+            "url_list": [
+                [
+                    "Flask",
+                    "https://flask.palletsprojects.com"
+                ],
+                [
+                    "Jinja",
+                    "https://jinja.palletsprojects.com"
+                ],
+                [
+                    "Werkzeug",
+                    "https://werkzeug.palletsprojects.com"
+                ],
+                [
+                    "Bootstrap Flask",
+                    "https://bootstrap-flask.readthedocs.io"
+                ],
+                [
+                    "Bootstrap 4",
+                    "https://getbootstrap.com/docs/4.6"
+                ],
+                [
+                    "SQLAlchemy",
+                    "https://docs.sqlalchemy.org"
+                ]
+            ]
         }
     }
 }
