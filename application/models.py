@@ -1,3 +1,4 @@
+import enum
 from datetime import datetime
 from time import time
 
@@ -21,10 +22,11 @@ from application import database
 
 
 class User(database.Model, UserMixin):
-    user_id = database.Column(database.Integer, primary_key=True)
-    version_id = database.Column(database.Integer, nullable=False)
+    user_id = database.Column(
+        database.Integer, index=True, nullable=False, unique=True, primary_key=True
+    )
     email = database.Column(
-        database.String(256), nullable=False, unique=True, index=True
+        database.String(256), index=True, nullable=False, unique=True
     )
     password_hash = database.Column(database.String(128), nullable=False)
     active = database.Column(database.Boolean(), nullable=False)
@@ -34,13 +36,13 @@ class User(database.Model, UserMixin):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
     )
+    version_id = database.Column(database.Integer, nullable=False)
 
     __mapper_args__ = {"version_id_col": version_id}
-
     __table_args__ = {"sqlite_autoincrement": True}
 
     def __repr__(self):
-        return f"<User {self.email}>"
+        return f"<User id: {self.user_id} email: {self.email}>"
 
     def get_id(self):
         return str(self.user_id)
@@ -79,105 +81,128 @@ list_category = database.Table(
         "list_id",
         database.Integer,
         database.ForeignKey("list.list_id"),
-        nullable=False,
         index=True,
+        nullable=False,
+        primary_key=True,
     ),
     database.Column(
         "category_id",
         database.Integer,
         database.ForeignKey("category.category_id"),
-        nullable=False,
         index=True,
-    ),
-    database.PrimaryKeyConstraint("list_id", "category_id"),
-)
-
-
-list_item = database.Table(
-    "list_item",
-    database.metadata,
-    database.Column(
-        "list_id",
-        database.Integer,
-        database.ForeignKey("list.list_id"),
         nullable=False,
-        index=True,
+        primary_key=True,
     ),
-    database.Column(
-        "item_id",
-        database.Integer,
-        database.ForeignKey("item.item_id"),
-        nullable=False,
-        index=True,
-    ),
-    database.PrimaryKeyConstraint("list_id", "item_id"),
 )
 
 
 class Category(database.Model):
-    category_id = database.Column(database.Integer, primary_key=True)
-    version_id = database.Column(database.Integer, nullable=False)
-    name = database.Column(
-        database.String(256), nullable=False, unique=True, index=True
+    category_id = database.Column(
+        database.Integer, index=True, nullable=False, unique=True, primary_key=True
     )
+    name = database.Column(
+        database.String(256), index=True, nullable=False, unique=True
+    )
+    version_id = database.Column(database.Integer, nullable=False)
 
     # one to many: category <-> item
-    items = database.relationship("Item", backref="category")
+    items = database.relationship("Item", back_populates="category")
 
     # many to many: list <-> category
     lists = database.relationship("List", secondary=list_category)
 
     __mapper_args__ = {"version_id_col": version_id}
-
     __table_args__ = {"sqlite_autoincrement": True}
 
     def __repr__(self):
-        return f"<Category {self.name}>"
+        return f"<Category id: {self.category_id} name: {self.name}>"
 
 
 class Item(database.Model):
-    item_id = database.Column(database.Integer, primary_key=True)
+    item_id = database.Column(
+        database.Integer, index=True, nullable=False, unique=True, primary_key=True
+    )
+    name = database.Column(
+        database.String(256), index=True, nullable=False  # not unique
+    )
     version_id = database.Column(database.Integer, nullable=False)
-    name = database.Column(database.String(256), nullable=False, index=True)
 
     # one to many: category <-> item
+    category = database.relationship("Category", back_populates="items")
     category_id = database.Column(
         database.Integer,
         database.ForeignKey("category.category_id"),
-        nullable=False,
         index=True,
+        nullable=False,
     )
 
     # many to many: list <-> item
-    lists = database.relationship("List", secondary=list_item)
+    lists = database.relationship("ListItem", back_populates="item")
 
     __mapper_args__ = {"version_id_col": version_id}
-
     __table_args__ = (
         database.UniqueConstraint("name", "category_id"),
         {"sqlite_autoincrement": True},
     )
 
     def __repr__(self):
-        return f"<Item {self.name}>"
+        return f"<Item id: {self.item_id} name: {self.name}>"
 
 
 class List(database.Model):
-    list_id = database.Column(database.Integer, primary_key=True)
-    version_id = database.Column(database.Integer, nullable=False)
-    name = database.Column(
-        database.String(256), nullable=False, unique=True, index=True
+    list_id = database.Column(
+        database.Integer, index=True, nullable=False, unique=True, primary_key=True
     )
+    name = database.Column(
+        database.String(256), index=True, nullable=False, unique=True
+    )
+    version_id = database.Column(database.Integer, nullable=False)
 
     # many to many: list <-> category
     categories = database.relationship("Category", secondary=list_category)
 
     # many to many: list <-> item
-    items = database.relationship("Item", secondary=list_item)
+    items = database.relationship("ListItem", back_populates="list_")
 
     __mapper_args__ = {"version_id_col": version_id}
-
     __table_args__ = {"sqlite_autoincrement": True}
 
     def __repr__(self):
-        return f"<List {self.name}>"
+        return f"<List id: {self.list_id} name: {self.name}>"
+
+
+class ListItemType(enum.Enum):
+    checked = 1
+    counter = 2
+    text = 3
+
+
+class ListItem(database.Model):
+    list_id = database.Column(
+        database.Integer,
+        database.ForeignKey("list.list_id"),
+        index=True,
+        nullable=False,
+        primary_key=True,
+    )
+    item_id = database.Column(
+        database.Integer,
+        database.ForeignKey("item.item_id"),
+        index=True,
+        nullable=False,
+        primary_key=True,
+    )
+    type_ = database.Column("type", database.Enum(ListItemType), nullable=False)
+    checked = database.Column("checked", database.Boolean)
+    counter = database.Column("counter", database.Integer)
+    text = database.Column("text", database.String(256))
+    version_id = database.Column(database.Integer, nullable=False)
+
+    list_ = database.relationship("List", back_populates="items")
+    item = database.relationship("Item", back_populates="lists")
+
+    __mapper_args__ = {"version_id_col": version_id}
+    __table_args__ = {"sqlite_autoincrement": True}
+
+    def __repr__(self):
+        return f"<ListItem list: {self.list_id} item: {self.item_id}>"
