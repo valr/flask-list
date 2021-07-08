@@ -16,8 +16,8 @@ def create():
     form = CreateForm()
     if form.validate_on_submit():
         try:
-            lst = List(name=form.name.data)
-            database.session.add(lst)
+            list_ = List(name=form.name.data)
+            database.session.add(list_)
             database.session.commit()
             flash("The list has been created.")
         except IntegrityError:
@@ -40,14 +40,14 @@ def create():
 @blueprint.route("/update/<int:list_id>", methods=["GET", "POST"])
 @login_required
 def update(list_id):
-    lst = List.query.get(list_id)
-    if lst is None:
+    list_ = List.query.get(list_id)
+    if list_ is None:
         flash("The list has not been found.", "error")
         return redirect(url_for("list.list"))
 
-    form = UpdateForm(lst.name)
+    form = UpdateForm(list_.name)
     if form.validate_on_submit():
-        if form.version_id.data != str(lst.version_id):
+        if form.version_id.data != str(list_.version_id):
             flash(
                 "The list has not been updated " + "due to concurrent modification.",
                 "error",
@@ -55,7 +55,7 @@ def update(list_id):
             return redirect(url_for("list.list"))
 
         try:
-            lst.name = form.name.data
+            list_.name = form.name.data
             database.session.commit()
             flash("The list has been updated.")
         except (IntegrityError, StaleDataError):
@@ -67,8 +67,8 @@ def update(list_id):
 
         return redirect(url_for("list.list"))
     elif request.method == "GET":
-        form.version_id.data = lst.version_id
-        form.name.data = lst.name
+        form.version_id.data = list_.version_id
+        form.name.data = list_.name
 
     return render_template(
         "list/update.html.jinja",
@@ -81,14 +81,14 @@ def update(list_id):
 @blueprint.route("/delete/<int:list_id>", methods=["GET", "POST"])
 @login_required
 def delete(list_id):
-    lst = List.query.get(list_id)
-    if lst is None:
+    list_ = List.query.get(list_id)
+    if list_ is None:
         flash("The list has not been found.", "error")
         return redirect(url_for("list.list"))
 
     form = DeleteForm()
     if form.validate_on_submit():
-        if form.version_id.data != str(lst.version_id):
+        if form.version_id.data != str(list_.version_id):
             flash(
                 "The list has not been deleted " + "due to concurrent modification.",
                 "error",
@@ -96,7 +96,7 @@ def delete(list_id):
             return redirect(url_for("list.list"))
 
         try:
-            database.session.delete(lst)
+            database.session.delete(list_)
             database.session.commit()
             flash("The list has been deleted.")
         except StaleDataError:
@@ -108,8 +108,8 @@ def delete(list_id):
 
         return redirect(url_for("list.list"))
     elif request.method == "GET":
-        form.version_id.data = lst.version_id
-        form.name.data = lst.name
+        form.version_id.data = list_.version_id
+        form.name.data = list_.name
 
     return render_template(
         "list/delete.html.jinja",

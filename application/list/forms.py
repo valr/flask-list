@@ -16,8 +16,8 @@ class CreateForm(FlaskForm):
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
     def validate_name(self, name):
-        lst = List.query.filter_by(name=name.data).first()
-        if lst is not None:
+        list_ = List.query.filter_by(name=name.data).first()
+        if list_ is not None:
             raise ValidationError("The list already exists.")
 
 
@@ -38,8 +38,8 @@ class UpdateForm(FlaskForm):
 
     def validate_name(self, name):
         if name.data != self.original_name:
-            lst = List.query.filter_by(name=name.data).first()
-            if lst is not None:
+            list_ = List.query.filter_by(name=name.data).first()
+            if list_ is not None:
                 raise ValidationError("The list already exists.")
 
 
