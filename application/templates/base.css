@@ -14,7 +14,7 @@ a:hover {
   text-decoration: underline;
 }
 
-th[data-href] {
+td[data-href] {
   cursor: pointer;
 }
 
