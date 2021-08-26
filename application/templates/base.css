@@ -13,6 +13,9 @@ a {
 a:hover {
     color: #325D88;
     text-decoration: underline;
+
+th[data-href] {
+  cursor: pointer;
 }
 
 .bg-primary {

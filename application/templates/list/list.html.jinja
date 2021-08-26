@@ -36,6 +36,7 @@
 {% block scripts %}
     {{ super() }}
     <script nonce="{{ csp_nonce() }}">
+        {% include 'cell.js' %}
         {% include 'scroll.js' %}
     </script>
 {% endblock %}
