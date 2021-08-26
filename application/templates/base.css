@@ -1,42 +1,42 @@
-
 body {
-    /* https://getbootstrap.com/docs/4.0/components/navbar/#placement */
-    padding-top: 40px;
+  /* https://getbootstrap.com/docs/4.0/components/navbar/#placement */
+  padding-top: 40px;
 }
 
 a {
-    background-color: transparent;
-    color: #325D88;
-    text-decoration: none;
+  background-color: transparent;
+  color: #325d88;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #325D88;
-    text-decoration: underline;
+  color: #325d88;
+  text-decoration: underline;
+}
 
 th[data-href] {
   cursor: pointer;
 }
 
 .bg-primary {
-    background-color: #325D88 !important;
+  background-color: #325d88 !important;
 }
 
 .table-primary th,
 .table-primary thead th {
-    background-color: #325D88 !important;
+  background-color: #325d88 !important;
 }
 
 .collapsing {
-    -webkit-transition: none;
-    transition: none;
-    visibility: hidden;
+  -webkit-transition: none;
+  transition: none;
+  visibility: hidden;
 }
 
 .collapse.show {
-    -webkit-transition: none;
-    transition: none;
-    visibility: visible;
+  -webkit-transition: none;
+  transition: none;
+  visibility: visible;
 }
 
 /*
