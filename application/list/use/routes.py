@@ -7,9 +7,9 @@ from application.list import blueprint
 from application.models import Category, Item, List, ListItem, list_category
 
 
-@blueprint.route("/read/<int:list_id>")
+@blueprint.route("/use/<int:list_id>")
 @login_required
-def read(list_id):
+def use(list_id):
     list_ = List.query.get(list_id)
     if list_ is None:
         return redirect(url_for("list.list"))
@@ -35,7 +35,7 @@ def read(list_id):
     )
 
     return render_template(
-        "list/list/list.html.jinja",
+        "list/use/list.html.jinja",
         title=f"List - {list_.name}",
         list=list_,
         items_categories=items_categories,

@@ -34,7 +34,7 @@
                 </thead>
                 <tbody class="collapse show" id="collapse{{ ic[1].category_id }}">
         {% endif %}
-        {% include 'list/list/list_item.html.jinja' %}
+        {% include 'list/use/list_item.html.jinja' %}
         {% if loop.nextitem is not defined or
             ( loop.nextitem is defined and loop.nextitem[1].category_id != ic[1].category_id ) %}
                 </tbody>
