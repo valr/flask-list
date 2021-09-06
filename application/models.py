@@ -172,9 +172,13 @@ class List(database.Model):
 
 
 class ListItemType(enum.Enum):
+    none = 0
     checked = 1
     counter = 2
     text = 3
+
+    def next(self):
+        return ListItemType((self.value + 1) % 4)
 
 
 class ListItem(database.Model):

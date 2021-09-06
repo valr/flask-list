@@ -3,15 +3,29 @@
         {{ ic[0].name }}
     </td>
     <td class="align-middle text-center">
-        {% if ic[2] is not none %}
-            <a class="btn btn-success item-checked text-white"
-                id="{{ 'item' ~ ic[0].item_id }}">
+        {% if ic[2] is none %}
+            <a class="btn bg-transparent text-dark"
+                data-item-id="{{ ic[0].item_id }}"
+                data-version-id="none">
+                {{ render_icon('square') }}
+            </a>
+        {% elif ic[2].type_|string() == "ListItemType.checked" %}
+            <a class="btn btn-success text-white"
+                data-item-id="{{ ic[2].item_id }}"
+                data-version-id="{{ ic[2].version_id }}">
                 {{ render_icon('check-square') }}
             </a>
-        {% else %}
-            <a class="btn bg-transparent item-unchecked text-dark"
-                id="{{ 'item' ~ ic[0].item_id }}">
-                {{ render_icon('square') }}
+        {% elif ic[2].type_|string() == "ListItemType.counter" %}
+            <a class="btn btn-info text-white"
+                data-item-id="{{ ic[2].item_id }}"
+                data-version-id="{{ ic[2].version_id }}">
+                {{ render_icon('calculator') }}
+            </a>
+        {% elif ic[2].type_|string() == "ListItemType.text" %}
+            <a class="btn btn-secondary text-white"
+                data-item-id="{{ ic[2].item_id }}"
+                data-version-id="{{ ic[2].version_id }}">
+                {{ render_icon('card-text') }}
             </a>
         {% endif %}
     </td>

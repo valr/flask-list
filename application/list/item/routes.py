@@ -1,6 +1,8 @@
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy import and_
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
@@ -75,73 +77,47 @@ def item(list_id):
     )
 
 
-@blueprint.route("/item/check", methods=["POST"])
+@blueprint.route("/item/switch_type", methods=["POST"])
 @login_required
-def item_check():
+def item_switch_type():
     try:
         data = request.get_json(False, True, False)
         list_id = int(data.get("list_id"))
         item_id = int(data.get("item_id"))
+        version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
         return jsonify({"status": "missing or invalid data"}), 400
 
-    list_ = List.query.get(list_id)
-    item = Item.query.get(item_id)
-
-    if list_ is None or item is None:
-        return jsonify({"status": "invalid data"}), 400
-
-    # TODO: review this
-    list_item = ListItem(type_=ListItemType.checked, checked=True)
-    list_item.item = item
-    with database.session.no_autoflush:
-        list_.items.append(list_item)
-    database.session.commit()
-
-    return jsonify({"status": "ok"})
-
-
-@blueprint.route("/item/uncheck", methods=["POST"])
-@login_required
-def item_uncheck():
     try:
-        data = request.get_json(False, True, False)
-        list_id = int(data.get("list_id"))
-        item_id = int(data.get("item_id"))
-    except (AttributeError, TypeError, ValueError):
-        return jsonify({"status": "missing or invalid data"}), 400
+        list_item = ListItem.query.get((list_id, item_id))
+        if list_item is None:
+            if version_id != "none":
+                raise StaleDataError()
 
-    list_ = List.query.get(list_id)
-    item = Item.query.get(item_id)
+            list_item = ListItem(
+                list_id=list_id, item_id=item_id, type_=ListItemType.checked
+            )
+            database.session.add(list_item)
+        else:
+            if version_id != str(list_item.version_id):
+                raise StaleDataError()
 
-    if list_ is None or item is None:
-        return jsonify({"status": "invalid data"}), 400
+            list_item.type_ = list_item.type_.next()
+            if list_item.type_ == ListItemType.none:
+                database.session.delete(list_item)
 
-    # TODO: review this
-    list_item = ListItem.query.get((list_id, item_id))
-    database.session.delete(list_item)
-    database.session.commit()
-
-    return jsonify({"status": "ok"})
-
-
-@blueprint.route("/item/get")
-@login_required
-def item_get():
-    try:
-        list_id = int(request.args.get("list_id"))
-        item_id = int(request.args.get("item_id"))
-    except (TypeError, ValueError):
-        return jsonify({"status": "missing or invalid data"}), 400
-
-    # TODO: review this (does it still work?)
-    if (
-        Item.query.join(
-            ListItem, and_(ListItem.item_id == Item.item_id, Item.item_id == item_id)
+        database.session.commit()
+        return jsonify(
+            {
+                "status": "ok",
+                "type": str(list_item.type_.name),
+                "version": str(list_item.version_id),
+            }
         )
-        .join(List, and_(ListItem.list_id == List.list_id, List.list_id == list_id))
-        .first()
-    ):
-        return jsonify({"status": "checked"})
-    else:
-        return jsonify({"status": "unchecked"})
+    except (IntegrityError, StaleDataError):
+        database.session.rollback()
+        flash(
+            "The item has not been updated due to concurrent modification.",
+            "error",
+        )
+        return jsonify({"status": "cancel", "url": url_for("list.list")})
