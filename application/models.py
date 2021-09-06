@@ -206,7 +206,10 @@ class ListItem(database.Model):
     item = database.relationship("Item", back_populates="lists")
 
     __mapper_args__ = {"version_id_col": version_id}
-    __table_args__ = {"sqlite_autoincrement": True}
+    __table_args__ = (
+        database.PrimaryKeyConstraint("list_id", "item_id"),
+        {"sqlite_autoincrement": True},
+    )
 
     def __repr__(self):
         return f"<ListItem list: {self.list_id} item: {self.item_id}>"
