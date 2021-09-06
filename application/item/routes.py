@@ -35,7 +35,10 @@ def create(category_id):
         form.category_id.data = category_id
 
     return render_template(
-        "item/create.html.jinja", title="Create Item", form=form, cancel=url_for("item.list")
+        "item/create.html.jinja",
+        title="Create Item",
+        form=form,
+        cancel=url_for("item.list"),
     )
 
 
@@ -79,7 +82,10 @@ def update(item_id):
         form.category_id.data = item.category_id
 
     return render_template(
-        "item/update.html.jinja", title="Update Item", form=form, cancel=url_for("item.list")
+        "item/update.html.jinja",
+        title="Update Item",
+        form=form,
+        cancel=url_for("item.list"),
     )
 
 
@@ -122,7 +128,10 @@ def delete(item_id):
         form.category_id.data = item.category_id
 
     return render_template(
-        "item/delete.html.jinja", title="Delete Item", form=form, cancel=url_for("item.list")
+        "item/delete.html.jinja",
+        title="Delete Item",
+        form=form,
+        cancel=url_for("item.list"),
     )
 
 
