@@ -22,7 +22,7 @@ def create():
         except IntegrityError:
             database.session.rollback()
             flash(
-                "The list has not been created " + "due to concurrent modification.",
+                "The list has not been created due to concurrent modification.",
                 "error",
             )
 
@@ -48,7 +48,7 @@ def update(list_id):
     if form.validate_on_submit():
         if form.version_id.data != str(list_.version_id):
             flash(
-                "The list has not been updated " + "due to concurrent modification.",
+                "The list has not been updated due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("list.list"))
@@ -60,7 +60,7 @@ def update(list_id):
         except (IntegrityError, StaleDataError):
             database.session.rollback()
             flash(
-                "The list has not been updated " + "due to concurrent modification.",
+                "The list has not been updated due to concurrent modification.",
                 "error",
             )
 
@@ -89,7 +89,7 @@ def delete(list_id):
     if form.validate_on_submit():
         if form.version_id.data != str(list_.version_id):
             flash(
-                "The list has not been deleted " + "due to concurrent modification.",
+                "The list has not been deleted due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("list.list"))
@@ -101,7 +101,7 @@ def delete(list_id):
         except StaleDataError:
             database.session.rollback()
             flash(
-                "The list has not been deleted " + "due to concurrent modification.",
+                "The list has not been deleted due to concurrent modification.",
                 "error",
             )
 

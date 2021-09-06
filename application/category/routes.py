@@ -22,8 +22,7 @@ def create():
         except IntegrityError:
             database.session.rollback()
             flash(
-                "The category has not been created "
-                + "due to concurrent modification.",
+                "The category has not been created due to concurrent modification.",
                 "error",
             )
 
@@ -49,8 +48,7 @@ def update(category_id):
     if form.validate_on_submit():
         if form.version_id.data != str(category.version_id):
             flash(
-                "The category has not been updated "
-                + "due to concurrent modification.",
+                "The category has not been updated due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("category.list"))
@@ -62,8 +60,7 @@ def update(category_id):
         except (IntegrityError, StaleDataError):
             database.session.rollback()
             flash(
-                "The category has not been updated "
-                + "due to concurrent modification.",
+                "The category has not been updated due to concurrent modification.",
                 "error",
             )
 
@@ -92,8 +89,7 @@ def delete(category_id):
     if form.validate_on_submit():
         if form.version_id.data != str(category.version_id):
             flash(
-                "The category has not been deleted "
-                + "due to concurrent modification.",
+                "The category has not been deleted due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("category.list"))
@@ -107,15 +103,13 @@ def delete(category_id):
             # of related items to null, resulting into an integrity error
             database.session.rollback()
             flash(
-                "The category has not been deleted "
-                + "because it still contains item(s).",
+                "The category has not been deleted because it still contains item(s).",
                 "error",
             )
         except StaleDataError:
             database.session.rollback()
             flash(
-                "The category has not been deleted "
-                + "due to concurrent modification.",
+                "The category has not been deleted due to concurrent modification.",
                 "error",
             )
 

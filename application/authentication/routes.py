@@ -46,7 +46,7 @@ def register():
         except IntegrityError:
             database.session.rollback()
             flash(
-                "The user has not been registered " + "due to concurrent modification.",
+                "The user has not been registered due to concurrent modification.",
                 "error",
             )
         else:
@@ -129,7 +129,7 @@ def profile():
     if form.validate_on_submit():
         if form.version_id.data != str(current_user.version_id):
             flash(
-                "The profile has not been saved " + "due to concurrent modification.",
+                "The profile has not been saved due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("index"))
@@ -157,7 +157,7 @@ def profile():
         except StaleDataError:
             database.session.rollback()
             flash(
-                "The profile has not been saved " + "due to concurrent modification.",
+                "The profile has not been saved due to concurrent modification.",
                 "error",
             )
 

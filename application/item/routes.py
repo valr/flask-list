@@ -26,7 +26,7 @@ def create(category_id):
         except IntegrityError:
             database.session.rollback()
             flash(
-                "The item has not been created " + "due to concurrent modification.",
+                "The item has not been created due to concurrent modification.",
                 "error",
             )
 
@@ -55,7 +55,7 @@ def update(item_id):
     if form.validate_on_submit():
         if form.version_id.data != str(item.version_id):
             flash(
-                "The item has not been updated " + "due to concurrent modification.",
+                "The item has not been updated due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("item.list"))
@@ -68,7 +68,7 @@ def update(item_id):
         except (IntegrityError, StaleDataError):
             database.session.rollback()
             flash(
-                "The item has not been updated " + "due to concurrent modification.",
+                "The item has not been updated due to concurrent modification.",
                 "error",
             )
 
@@ -99,7 +99,7 @@ def delete(item_id):
     if form.validate_on_submit():
         if form.version_id.data != str(item.version_id):
             flash(
-                "The item has not been deleted " + "due to concurrent modification.",
+                "The item has not been deleted due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("item.list"))
@@ -111,7 +111,7 @@ def delete(item_id):
         except StaleDataError:
             database.session.rollback()
             flash(
-                "The item has not been deleted " + "due to concurrent modification.",
+                "The item has not been deleted due to concurrent modification.",
                 "error",
             )
 
