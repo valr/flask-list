@@ -7,6 +7,8 @@ from flask_paranoid import Paranoid
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 
 database = SQLAlchemy()
 migrate = Migrate()
@@ -18,6 +20,13 @@ talisman = Talisman()
 
 bootstrap = Bootstrap()
 mail = Mail()
+
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 
 def create_application(instance_path):
