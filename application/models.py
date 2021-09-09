@@ -14,8 +14,7 @@ from application import database
 # export PYTHONDONTWRITEBYTECODE=1
 # flask db init
 # flask db migrate -m 'init db'
-# flask db upgrade
-# # flask db downgrade
+# flask db upgrade (flask db downgrade)
 # chown -R flask-list:root database
 # chmod 700 database
 # chmod 600 database/application.db
