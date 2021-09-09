@@ -56,7 +56,7 @@ def update(item_id):
     ]
 
     if form.validate_on_submit():
-        if form.version_id.data != str(item.version_id):
+        if form.version_id.data != item.version_id:
             flash(
                 "The item has not been updated due to concurrent modification.",
                 "error",
@@ -103,7 +103,7 @@ def delete(item_id):
     ]
 
     if form.validate_on_submit():
-        if form.version_id.data != str(item.version_id):
+        if form.version_id.data != item.version_id:
             flash(
                 "The item has not been deleted due to concurrent modification.",
                 "error",

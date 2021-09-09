@@ -99,7 +99,7 @@ def item_switch_type():
             )
             database.session.add(list_item)
         else:
-            if version_id != str(list_item.version_id):
+            if version_id != list_item.version_id:
                 raise StaleDataError()
 
             list_item.type_ = list_item.type_.next()
@@ -111,7 +111,7 @@ def item_switch_type():
             {
                 "status": "ok",
                 "type": str(list_item.type_.name),
-                "version": str(list_item.version_id),
+                "version": list_item.version_id,
             }
         )
     except (IntegrityError, StaleDataError):

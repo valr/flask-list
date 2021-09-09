@@ -46,7 +46,7 @@ def update(list_id):
 
     form = UpdateForm(list_.name)
     if form.validate_on_submit():
-        if form.version_id.data != str(list_.version_id):
+        if form.version_id.data != list_.version_id:
             flash(
                 "The list has not been updated due to concurrent modification.",
                 "error",
@@ -87,7 +87,7 @@ def delete(list_id):
 
     form = DeleteForm()
     if form.validate_on_submit():
-        if form.version_id.data != str(list_.version_id):
+        if form.version_id.data != list_.version_id:
             flash(
                 "The list has not been deleted due to concurrent modification.",
                 "error",

@@ -46,7 +46,7 @@ def update(category_id):
 
     form = UpdateForm(category.name)
     if form.validate_on_submit():
-        if form.version_id.data != str(category.version_id):
+        if form.version_id.data != category.version_id:
             flash(
                 "The category has not been updated due to concurrent modification.",
                 "error",
@@ -87,7 +87,7 @@ def delete(category_id):
 
     form = DeleteForm()
     if form.validate_on_submit():
-        if form.version_id.data != str(category.version_id):
+        if form.version_id.data != category.version_id:
             flash(
                 "The category has not been deleted due to concurrent modification.",
                 "error",

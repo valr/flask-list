@@ -1,4 +1,5 @@
 import enum
+import uuid
 from datetime import datetime
 from time import time
 
@@ -36,9 +37,12 @@ class User(database.Model, UserMixin):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
     )
-    version_id = database.Column(database.Integer, nullable=False)
+    version_id = database.Column(database.String(32), nullable=False)
 
-    __mapper_args__ = {"version_id_col": version_id}
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
     __table_args__ = {"sqlite_autoincrement": True}
 
     def __repr__(self):
@@ -103,7 +107,7 @@ class Category(database.Model):
     name = database.Column(
         database.String(1000), index=True, nullable=False, unique=True
     )
-    version_id = database.Column(database.Integer, nullable=False)
+    version_id = database.Column(database.String(32), nullable=False)
 
     # one to many: category <-> item
     items = database.relationship("Item", back_populates="category")
@@ -111,7 +115,10 @@ class Category(database.Model):
     # many to many: list <-> category
     lists = database.relationship("List", secondary=list_category)
 
-    __mapper_args__ = {"version_id_col": version_id}
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
     __table_args__ = {"sqlite_autoincrement": True}
 
     def __repr__(self):
@@ -125,7 +132,7 @@ class Item(database.Model):
     name = database.Column(
         database.String(1000), index=True, nullable=False  # not unique
     )
-    version_id = database.Column(database.Integer, nullable=False)
+    version_id = database.Column(database.String(32), nullable=False)
 
     # one to many: category <-> item
     category = database.relationship("Category", back_populates="items")
@@ -139,7 +146,10 @@ class Item(database.Model):
     # many to many: list <-> item
     lists = database.relationship("ListItem", back_populates="item")
 
-    __mapper_args__ = {"version_id_col": version_id}
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
     __table_args__ = (
         database.UniqueConstraint("name", "category_id"),
         {"sqlite_autoincrement": True},
@@ -156,7 +166,7 @@ class List(database.Model):
     name = database.Column(
         database.String(1000), index=True, nullable=False, unique=True
     )
-    version_id = database.Column(database.Integer, nullable=False)
+    version_id = database.Column(database.String(32), nullable=False)
 
     # many to many: list <-> category
     categories = database.relationship("Category", secondary=list_category)
@@ -164,13 +174,21 @@ class List(database.Model):
     # many to many: list <-> item
     items = database.relationship("ListItem", back_populates="list_")
 
-    __mapper_args__ = {"version_id_col": version_id}
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
     __table_args__ = {"sqlite_autoincrement": True}
 
     def __repr__(self):
         return f"<List id: {self.list_id} name: {self.name}>"
 
 
+    version_id = database.Column(database.String(32), nullable=False)
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
 class ListItemType(enum.Enum):
     none = 0
     checked = 1
@@ -200,12 +218,15 @@ class ListItem(database.Model):
     checked = database.Column("checked", database.Boolean)
     counter = database.Column("counter", database.Integer)
     text = database.Column("text", database.String(256))
-    version_id = database.Column(database.Integer, nullable=False)
+    version_id = database.Column(database.String(32), nullable=False)
 
     list_ = database.relationship("List", back_populates="items")
     item = database.relationship("Item", back_populates="lists")
 
-    __mapper_args__ = {"version_id_col": version_id}
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
     __table_args__ = (
         database.PrimaryKeyConstraint("list_id", "item_id"),
         {"sqlite_autoincrement": True},
