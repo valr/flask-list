@@ -121,7 +121,9 @@ class Item(database.Model):
     )
 
     # many to many: list <-> item
-    lists = database.relationship("ListItem", back_populates="item")
+    lists = database.relationship(
+        "ListItem", back_populates="item", cascade="all, delete"
+    )
 
     __mapper_args__ = {
         "version_id_col": version_id,
