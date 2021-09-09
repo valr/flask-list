@@ -191,7 +191,7 @@ class List(database.Model):
     }
 class ListItemType(enum.Enum):
     none = 0
-    checked = 1
+    selection = 1
     counter = 2
     text = 3
 
@@ -215,7 +215,7 @@ class ListItem(database.Model):
         primary_key=True,
     )
     type_ = database.Column("type", database.Enum(ListItemType), nullable=False)
-    checked = database.Column("checked", database.Boolean)
+    selection = database.Column("selection", database.Boolean)
     counter = database.Column("counter", database.Integer)
     text = database.Column("text", database.String(256))
     version_id = database.Column(database.String(32), nullable=False)

@@ -9,7 +9,7 @@
                 data-version-id="none">
                 {{ render_icon('square') }}
             </a>
-        {% elif ic[2].type_|string() == "ListItemType.checked" %}
+        {% elif ic[2].type_|string() == "ListItemType.selection" %}
             <a class="btn btn-success text-white"
                 data-item-id="{{ ic[2].item_id }}"
                 data-version-id="{{ ic[2].version_id }}">

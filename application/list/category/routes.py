@@ -36,9 +36,9 @@ def category(list_id):
     )
 
 
-@blueprint.route("/category/check", methods=["POST"])
+@blueprint.route("/category/switch_selection", methods=["POST"])
 @login_required
-def category_check():
+def category_switch_selection():
     try:
         data = request.get_json(False, True, False)
         list_id = int(data.get("list_id"))

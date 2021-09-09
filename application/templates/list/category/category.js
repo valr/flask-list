@@ -14,7 +14,7 @@ $(document).on('click', '.category-checked', function() {
 
     $.ajax({
         type: 'POST',
-        url: '{{ url_for("list.category_uncheck") }}',
+        url: '{{ url_for("list.category_switch_selection") }}',
         data: JSON.stringify({
             list_id: '{{ list.list_id }}',
             category_id: $(element).attr('id').replace('category', '')

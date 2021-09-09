@@ -30,7 +30,7 @@ $(document).on('click', '.btn', function () {
                     $(element).addClass('bg-transparent text-dark');
                     $(element).attr('data-version-id', 'none')
                     $(element).html(`{{ render_icon("square") }}`);
-                } else if (data.type === 'checked') {
+                } else if (data.type === 'selection') {
                     $(element).removeClass('bg-transparent text-dark');
                     $(element).addClass('btn-success text-white');
                     $(element).attr('data-version-id', data.version)
