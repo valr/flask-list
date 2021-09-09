@@ -4,7 +4,7 @@ from sqlalchemy import and_
 
 from application import database
 from application.list import blueprint
-from application.models import Category, Item, List, ListItem, list_category
+from application.models import Category, Item, List, ListCategory, ListItem
 
 
 @blueprint.route("/use/<int:list_id>")
@@ -20,10 +20,10 @@ def use(list_id):
         database.session.query(Item, Category, ListItem)
         .join(Category)
         .join(
-            list_category,
+            ListCategory,
             and_(
-                list_category.c.category_id == Category.category_id,
-                list_category.c.list_id == list_id,
+                ListCategory.category_id == Category.category_id,
+                ListCategory.list_id == list_id,
             ),
         )
         .join(

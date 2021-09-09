@@ -15,12 +15,12 @@ def category(list_id):
         return redirect(url_for("list.list"))
 
     categories = (
-        database.session.query(Category, list_category)
+        database.session.query(Category, ListCategory)
         .outerjoin(
-            list_category,
+            ListCategory,
             and_(
-                list_category.c.category_id == Category.category_id,
-                list_category.c.list_id == list_id,
+                ListCategory.category_id == Category.category_id,
+                ListCategory.list_id == list_id,
             ),
         )
         .order_by(Category.name)

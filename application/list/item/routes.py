@@ -6,17 +6,17 @@ from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
-from application.models import (Category, Item, List, ListItem, ListItemType,
-                                list_category)
+from application.models import (Category, Item, List, ListCategory, ListItem,
+                                ListItemType)
 
 
 def warn_unchecked_categories(list_id):
     # checked categories in the list
     checked_categories = database.session.query(Category.category_id).join(
-        list_category,
+        ListCategory,
         and_(
-            list_category.c.category_id == Category.category_id,
-            list_category.c.list_id == list_id,
+            ListCategory.category_id == Category.category_id,
+            ListCategory.list_id == list_id,
         ),
     )
 
@@ -54,10 +54,10 @@ def item(list_id):
         database.session.query(Item, Category, ListItem)
         .join(Category)
         .join(
-            list_category,
+            ListCategory,
             and_(
-                list_category.c.category_id == Category.category_id,
-                list_category.c.list_id == list_id,
+                ListCategory.category_id == Category.category_id,
+                ListCategory.list_id == list_id,
             ),
         )
         .outerjoin(

@@ -78,28 +78,6 @@ class User(database.Model, UserMixin):
         return User.query.get(user_id)
 
 
-list_category = database.Table(
-    "list_category",
-    database.metadata,
-    database.Column(
-        "list_id",
-        database.Integer,
-        database.ForeignKey("list.list_id"),
-        index=True,
-        nullable=False,
-        primary_key=True,
-    ),
-    database.Column(
-        "category_id",
-        database.Integer,
-        database.ForeignKey("category.category_id"),
-        index=True,
-        nullable=False,
-        primary_key=True,
-    ),
-)
-
-
 class Category(database.Model):
     category_id = database.Column(
         database.Integer, index=True, nullable=False, unique=True, primary_key=True
@@ -113,7 +91,7 @@ class Category(database.Model):
     items = database.relationship("Item", back_populates="category")
 
     # many to many: list <-> category
-    lists = database.relationship("List", secondary=list_category)
+    lists = database.relationship("ListCategory", back_populates="category")
 
     __mapper_args__ = {
         "version_id_col": version_id,
@@ -169,7 +147,7 @@ class List(database.Model):
     version_id = database.Column(database.String(32), nullable=False)
 
     # many to many: list <-> category
-    categories = database.relationship("Category", secondary=list_category)
+    categories = database.relationship("ListCategory", back_populates="list_")
 
     # many to many: list <-> item
     items = database.relationship("ListItem", back_populates="list_")
@@ -184,11 +162,39 @@ class List(database.Model):
         return f"<List id: {self.list_id} name: {self.name}>"
 
 
+class ListCategory(database.Model):
+    list_id = database.Column(
+        database.Integer,
+        database.ForeignKey("list.list_id"),
+        index=True,
+        nullable=False,
+        primary_key=True,
+    )
+    category_id = database.Column(
+        database.Integer,
+        database.ForeignKey("category.category_id"),
+        index=True,
+        nullable=False,
+        primary_key=True,
+    )
     version_id = database.Column(database.String(32), nullable=False)
+
+    list_ = database.relationship("List", back_populates="categories")
+    category = database.relationship("Category", back_populates="lists")
+
     __mapper_args__ = {
         "version_id_col": version_id,
         "version_id_generator": lambda version: uuid.uuid4().hex,
     }
+    __table_args__ = (
+        database.PrimaryKeyConstraint("list_id", "category_id"),
+        {"sqlite_autoincrement": True},
+    )
+
+    def __repr__(self):
+        return f"<ListCategory list: {self.list_id} category: {self.category_id}>"
+
+
 class ListItemType(enum.Enum):
     none = 0
     selection = 1
