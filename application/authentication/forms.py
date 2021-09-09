@@ -10,7 +10,7 @@ from application.models import User
 class RegisterForm(FlaskForm):
     email = StringField(
         "Email",
-        validators=[DataRequired(), Length(max=256), Email()],
+        validators=[DataRequired(), Length(max=1000), Email()],
         render_kw={"autofocus": True},
     )
 
@@ -35,7 +35,7 @@ class RegisterForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField(
         "Email",
-        validators=[DataRequired(), Length(max=256), Email()],
+        validators=[DataRequired(), Length(max=1000), Email()],
         render_kw={"autofocus": True},
     )
 
@@ -47,7 +47,7 @@ class LoginForm(FlaskForm):
 class ProfileForm(FlaskForm):
     email = StringField(
         "Email",
-        validators=[DataRequired(), Length(max=256), Email()],
+        validators=[DataRequired(), Length(max=1000), Email()],
         render_kw={"readonly": True},
     )
 
@@ -67,7 +67,7 @@ class ProfileForm(FlaskForm):
 class ResetPasswordForm(FlaskForm):
     email = StringField(
         "Email",
-        validators=[DataRequired(), Length(max=256), Email()],
+        validators=[DataRequired(), Length(max=1000), Email()],
         render_kw={"autofocus": True},
     )
 

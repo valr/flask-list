@@ -26,7 +26,7 @@ class User(database.Model, UserMixin):
         database.Integer, index=True, nullable=False, unique=True, primary_key=True
     )
     email = database.Column(
-        database.String(256), index=True, nullable=False, unique=True
+        database.String(1000), index=True, nullable=False, unique=True
     )
     password_hash = database.Column(database.String(128), nullable=False)
     active = database.Column(database.Boolean(), nullable=False)
@@ -101,7 +101,7 @@ class Category(database.Model):
         database.Integer, index=True, nullable=False, unique=True, primary_key=True
     )
     name = database.Column(
-        database.String(256), index=True, nullable=False, unique=True
+        database.String(1000), index=True, nullable=False, unique=True
     )
     version_id = database.Column(database.Integer, nullable=False)
 
@@ -123,7 +123,7 @@ class Item(database.Model):
         database.Integer, index=True, nullable=False, unique=True, primary_key=True
     )
     name = database.Column(
-        database.String(256), index=True, nullable=False  # not unique
+        database.String(1000), index=True, nullable=False  # not unique
     )
     version_id = database.Column(database.Integer, nullable=False)
 
@@ -154,7 +154,7 @@ class List(database.Model):
         database.Integer, index=True, nullable=False, unique=True, primary_key=True
     )
     name = database.Column(
-        database.String(256), index=True, nullable=False, unique=True
+        database.String(1000), index=True, nullable=False, unique=True
     )
     version_id = database.Column(database.Integer, nullable=False)
 

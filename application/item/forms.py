@@ -8,7 +8,7 @@ from application.models import Item
 class CreateForm(FlaskForm):
     name = StringField(
         "Name",
-        validators=[DataRequired(), Length(max=256)],
+        validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
 
@@ -29,7 +29,7 @@ class CreateForm(FlaskForm):
 class UpdateForm(FlaskForm):
     name = StringField(
         "Name",
-        validators=[DataRequired(), Length(max=256)],
+        validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
 
