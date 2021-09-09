@@ -3,15 +3,17 @@
         {{ category[0].name }}
     </td>
     <td class="align-middle text-center">
-        {% if category[1] is not none %}
-            <a class="btn btn-success category-checked text-white"
-                id="{{ 'category' ~ category[0].category_id }}">
-                {{ render_icon('check-square') }}
+        {% if category[1] is none %}
+            <a class="btn bg-transparent text-dark"
+                data-category-id="{{ category[0].category_id }}"
+                data-version-id="none">
+                {{ render_icon('square') }}
             </a>
         {% else %}
-            <a class="btn bg-transparent category-unchecked text-dark"
-                id="{{ 'category' ~ category[0].category_id }}">
-                {{ render_icon('square') }}
+            <a class="btn btn-success text-white"
+                data-category-id="{{ category[1].category_id }}"
+                data-version-id="{{ category[1].version_id }}">
+                {{ render_icon('check-square') }}
             </a>
         {% endif %}
     </td>

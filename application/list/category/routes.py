@@ -1,10 +1,12 @@
-from flask import jsonify, redirect, render_template, request, url_for
+from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
-from sqlalchemy import and_
+from sqlalchemy import and_, inspect
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
-from application.models import Category, List, list_category
+from application.models import Category, List, ListCategory
 
 
 @blueprint.route("/category/<int:list_id>")
@@ -43,58 +45,36 @@ def category_switch_selection():
         data = request.get_json(False, True, False)
         list_id = int(data.get("list_id"))
         category_id = int(data.get("category_id"))
+        version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
         return jsonify({"status": "missing or invalid data"}), 400
 
-    list_ = List.query.get(list_id)
-    category = Category.query.get(category_id)
-
-    if list_ is None or category is None:
-        return jsonify({"status": "invalid data"}), 400
-
-    list_.categories.append(category)
-    database.session.add(list_)
-    database.session.commit()
-
-    return jsonify({"status": "ok"})
-
-
-@blueprint.route("/category/uncheck", methods=["POST"])
-@login_required
-def category_uncheck():
     try:
-        data = request.get_json(False, True, False)
-        list_id = int(data.get("list_id"))
-        category_id = int(data.get("category_id"))
-    except (AttributeError, TypeError, ValueError):
-        return jsonify({"status": "missing or invalid data"}), 400
+        list_category = ListCategory.query.get((list_id, category_id))
+        if list_category is None:
+            if version_id != "none":
+                raise StaleDataError()
 
-    list_ = List.query.get(list_id)
-    category = Category.query.get(category_id)
+            list_category = ListCategory(list_id=list_id, category_id=category_id)
+            database.session.add(list_category)
+        else:
+            if version_id != list_category.version_id:
+                raise StaleDataError()
 
-    if list_ is None or category is None:
-        return jsonify({"status": "invalid data"}), 400
+            database.session.delete(list_category)
 
-    list_.categories.remove(category)
-    database.session.commit()
-
-    return jsonify({"status": "ok"})
-
-
-@blueprint.route("/category/get")
-@login_required
-def category_get():
-    try:
-        list_id = int(request.args.get("list_id"))
-        category_id = int(request.args.get("category_id"))
-    except (TypeError, ValueError):
-        return jsonify({"status": "missing or invalid data"}), 400
-
-    if (
-        Category.query.filter(Category.lists.any(list_id=list_id))
-        .filter_by(category_id=category_id)
-        .first()
-    ):
-        return jsonify({"status": "checked"})
-    else:
-        return jsonify({"status": "unchecked"})
+        database.session.commit()
+        return jsonify(
+            {
+                "status": "ok",
+                "selected": "true" if inspect(list_category).persistent else "false",
+                "version": list_category.version_id,
+            }
+        )
+    except (IntegrityError, StaleDataError):
+        database.session.rollback()
+        flash(
+            "The category has not been updated due to concurrent modification.",
+            "error",
+        )
+        return jsonify({"status": "cancel", "url": url_for("list.list")})
