@@ -223,7 +223,7 @@ class ListItem(database.Model):
     type_ = database.Column("type", database.Enum(ListItemType), nullable=False)
     selection = database.Column("selection", database.Boolean)
     counter = database.Column("counter", database.Integer)
-    text = database.Column("text", database.String(256))
+    text = database.Column("text", database.String(1000))
     version_id = database.Column(database.String(32), nullable=False)
 
     list_ = database.relationship("List", back_populates="items")
