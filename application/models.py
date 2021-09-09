@@ -90,7 +90,9 @@ class Category(database.Model):
     items = database.relationship("Item", back_populates="category")
 
     # many to many: list <-> category
-    lists = database.relationship("ListCategory", back_populates="category")
+    lists = database.relationship(
+        "ListCategory", back_populates="category", passive_deletes="all"
+    )
 
     __mapper_args__ = {
         "version_id_col": version_id,
