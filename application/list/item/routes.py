@@ -95,7 +95,7 @@ def item_switch_type():
                 raise StaleDataError()
 
             list_item = ListItem(
-                list_id=list_id, item_id=item_id, type_=ListItemType.checked
+                list_id=list_id, item_id=item_id, type_=ListItemType.selection
             )
             database.session.add(list_item)
         else:
