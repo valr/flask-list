@@ -110,7 +110,7 @@ def item_switch_type():
         return jsonify(
             {
                 "status": "ok",
-                "type": str(list_item.type_.name),
+                "type": list_item.type_.name,
                 "version": list_item.version_id,
             }
         )
