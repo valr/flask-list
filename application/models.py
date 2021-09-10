@@ -90,7 +90,12 @@ class Category(database.Model):
     items = database.relationship("Item", back_populates="category")
 
     # many to many: list <-> category
-    lists = database.relationship("ListCategory", back_populates="category")
+    lists = database.relationship(
+        "ListCategory",
+        back_populates="category",
+        cascade="save-update, merge, delete",
+        passive_deletes=True,
+    )
 
     __mapper_args__ = {
         "version_id_col": version_id,
@@ -115,14 +120,17 @@ class Item(database.Model):
     category = database.relationship("Category", back_populates="items")
     category_id = database.Column(
         database.Integer,
-        database.ForeignKey("category.category_id"),
+        database.ForeignKey("category.category_id", ondelete="RESTRICT"),
         index=True,
         nullable=False,
     )
 
     # many to many: list <-> item
     lists = database.relationship(
-        "ListItem", back_populates="item", cascade="all, delete"
+        "ListItem",
+        back_populates="item",
+        cascade="save-update, merge, delete",
+        passive_deletes=True,
     )
 
     __mapper_args__ = {
@@ -148,10 +156,20 @@ class List(database.Model):
     version_id = database.Column(database.String(32), nullable=False)
 
     # many to many: list <-> category
-    categories = database.relationship("ListCategory", back_populates="list_")
+    categories = database.relationship(
+        "ListCategory",
+        back_populates="list_",
+        cascade="save-update, merge, delete",
+        passive_deletes=True,
+    )
 
     # many to many: list <-> item
-    items = database.relationship("ListItem", back_populates="list_")
+    items = database.relationship(
+        "ListItem",
+        back_populates="list_",
+        cascade="save-update, merge, delete",
+        passive_deletes=True,
+    )
 
     __mapper_args__ = {
         "version_id_col": version_id,
@@ -166,14 +184,14 @@ class List(database.Model):
 class ListCategory(database.Model):
     list_id = database.Column(
         database.Integer,
-        database.ForeignKey("list.list_id"),
+        database.ForeignKey("list.list_id", ondelete="CASCADE"),
         index=True,
         nullable=False,
         primary_key=True,
     )
     category_id = database.Column(
         database.Integer,
-        database.ForeignKey("category.category_id"),
+        database.ForeignKey("category.category_id", ondelete="CASCADE"),
         index=True,
         nullable=False,
         primary_key=True,
@@ -209,14 +227,14 @@ class ListItemType(enum.Enum):
 class ListItem(database.Model):
     list_id = database.Column(
         database.Integer,
-        database.ForeignKey("list.list_id"),
+        database.ForeignKey("list.list_id", ondelete="CASCADE"),
         index=True,
         nullable=False,
         primary_key=True,
     )
     item_id = database.Column(
         database.Integer,
-        database.ForeignKey("item.item_id"),
+        database.ForeignKey("item.item_id", ondelete="CASCADE"),
         index=True,
         nullable=False,
         primary_key=True,

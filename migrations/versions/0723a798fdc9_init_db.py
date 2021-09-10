@@ -1,8 +1,8 @@
 """init db
 
-Revision ID: 76fa4966f359
+Revision ID: 0723a798fdc9
 Revises: 
-Create Date: 2021-09-07 21:47:15.360223
+Create Date: 2021-09-10 22:00:34.069057
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '76fa4966f359'
+revision = '0723a798fdc9'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -53,7 +53,7 @@ def upgrade():
     sa.Column('name', sa.String(length=1000), nullable=False),
     sa.Column('version_id', sa.String(length=32), nullable=False),
     sa.Column('category_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ),
+    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ondelete='RESTRICT'),
     sa.PrimaryKeyConstraint('item_id'),
     sa.UniqueConstraint('name', 'category_id'),
     sqlite_autoincrement=True
@@ -65,8 +65,8 @@ def upgrade():
     sa.Column('list_id', sa.Integer(), nullable=False),
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.Column('version_id', sa.String(length=32), nullable=False),
-    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ),
-    sa.ForeignKeyConstraint(['list_id'], ['list.list_id'], ),
+    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['list_id'], ['list.list_id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('list_id', 'category_id'),
     sqlite_autoincrement=True
     )
@@ -80,8 +80,8 @@ def upgrade():
     sa.Column('counter', sa.Integer(), nullable=True),
     sa.Column('text', sa.String(length=1000), nullable=True),
     sa.Column('version_id', sa.String(length=32), nullable=False),
-    sa.ForeignKeyConstraint(['item_id'], ['item.item_id'], ),
-    sa.ForeignKeyConstraint(['list_id'], ['list.list_id'], ),
+    sa.ForeignKeyConstraint(['item_id'], ['item.item_id'], ondelete='CASCADE'),
+    sa.ForeignKeyConstraint(['list_id'], ['list.list_id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('list_id', 'item_id'),
     sqlite_autoincrement=True
     )
