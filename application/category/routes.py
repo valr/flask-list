@@ -100,8 +100,7 @@ def delete(category_id):
             flash("The category has been deleted.")
         except IntegrityError:
             # in case of deletion, sqlalchemy will try setting the foreign key
-            # of related items to null and foreign key of related list_categories
-            # to null, resulting in an integrity error
+            # of related items to null, resulting into an integrity error
             database.session.rollback()
             flash(
                 "The category has not been deleted because it still contains item(s).",
