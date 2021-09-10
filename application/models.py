@@ -18,7 +18,7 @@ from application import database
 # chown -R flask-list:root database
 # chmod 700 database
 # chmod 600 database/application.db
-# echo '.schema' | sqlite3 database/application.db
+# echo '.schema' | sqlite3 database/application.db > database/database.sql
 
 
 class User(database.Model, UserMixin):
