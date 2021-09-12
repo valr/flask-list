@@ -3,10 +3,23 @@
         {{ ic[0].name }}
     </td>
     <td class="align-middle text-center">
-        {# TODO #}
-        <a class="btn btn-success item-checked text-white"
-            id="{{ 'item' ~ ic[0].item_id }}">
-            {{ render_icon('check-square') }}
-        </a>
+        {% if ic[2].type_|string() == "ListItemType.selection" %}
+            <a class="btn btn-success item-checked text-white"
+                id="{{ 'item' ~ ic[0].item_id }}">
+                {{ render_icon('check-square') }}
+            </a>
+        {% elif ic[2].type_|string() == "ListItemType.counter" %}
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <button class="btn bg-white border shadow-none" type="button" id="btn-minus">−</button>
+                </div>
+                <input class="form-control bg-white border shadow-none text-center" type="text">
+                <div class="input-group-append">
+                    <button class="btn bg-white border shadow-none" type="button" id="btn-plus">+</button>
+                </div>
+            </div>
+        {% elif ic[2].type_|string() == "ListItemType.text" %}
+            <input class="form-control bg-white border shadow-none" type="text">
+        {% endif %}
     </td>
 </tr>
