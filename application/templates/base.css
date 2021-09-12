@@ -39,6 +39,11 @@ td[data-href] {
   visibility: visible;
 }
 
+/* https://github.com/twbs/bootstrap/issues/27629 */
+.form-control {
+  height: auto !important;
+}
+
 /*
 .form-group.required .form-control-label:after {
     content: "*";
