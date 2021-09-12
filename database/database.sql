@@ -39,16 +39,6 @@ CREATE TABLE item (
 CREATE INDEX ix_item_category_id ON item (category_id);
 CREATE UNIQUE INDEX ix_item_item_id ON item (item_id);
 CREATE INDEX ix_item_name ON item (name);
-CREATE TABLE list_category (
-	list_id INTEGER NOT NULL, 
-	category_id INTEGER NOT NULL, 
-	version_id VARCHAR(32) NOT NULL, 
-	PRIMARY KEY (list_id, category_id), 
-	FOREIGN KEY(category_id) REFERENCES category (category_id) ON DELETE CASCADE, 
-	FOREIGN KEY(list_id) REFERENCES list (list_id) ON DELETE CASCADE
-);
-CREATE INDEX ix_list_category_category_id ON list_category (category_id);
-CREATE INDEX ix_list_category_list_id ON list_category (list_id);
 CREATE TABLE list_item (
 	list_id INTEGER NOT NULL, 
 	item_id INTEGER NOT NULL, 

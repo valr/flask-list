@@ -6,39 +6,7 @@ from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
-from application.models import (Category, Item, List, ListCategory, ListItem,
-                                ListItemType)
-
-
-def warn_unchecked_categories(list_id):
-    # checked categories in the list
-    checked_categories = database.session.query(Category.category_id).join(
-        ListCategory,
-        and_(
-            ListCategory.category_id == Category.category_id,
-            ListCategory.list_id == list_id,
-        ),
-    )
-
-    # for the checked items in the list, find the unchecked categories
-    unchecked_categories = (
-        database.session.query(Category)
-        .join(Item)
-        .join(
-            ListItem,
-            and_(ListItem.item_id == Item.item_id, ListItem.list_id == list_id),
-        )
-        .filter(Category.category_id.notin_(checked_categories))
-        .order_by(Category.name)
-    )
-
-    # warn about unchecked categories for checked items
-    for category in unchecked_categories:
-        flash(
-            "Some items are not visible. "
-            + f"The category '{category.name}' should be selected.",
-            "warning",
-        )
+from application.models import Category, Item, List, ListItem, ListItemType
 
 
 @blueprint.route("/item/<int:list_id>")
@@ -48,18 +16,9 @@ def item(list_id):
     if list_ is None:
         return redirect(url_for("list.list"))
 
-    warn_unchecked_categories(list_id)
-
     items_categories = (
         database.session.query(Item, Category, ListItem)
         .join(Category)
-        .join(
-            ListCategory,
-            and_(
-                ListCategory.category_id == Category.category_id,
-                ListCategory.list_id == list_id,
-            ),
-        )
         .outerjoin(
             ListItem,
             and_(ListItem.item_id == Item.item_id, ListItem.list_id == list_id),

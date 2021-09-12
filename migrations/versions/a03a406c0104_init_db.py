@@ -1,8 +1,8 @@
 """init db
 
-Revision ID: 0723a798fdc9
+Revision ID: a03a406c0104
 Revises: 
-Create Date: 2021-09-10 22:00:34.069057
+Create Date: 2021-09-12 18:37:50.120743
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0723a798fdc9'
+revision = 'a03a406c0104'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -61,17 +61,6 @@ def upgrade():
     op.create_index(op.f('ix_item_category_id'), 'item', ['category_id'], unique=False)
     op.create_index(op.f('ix_item_item_id'), 'item', ['item_id'], unique=True)
     op.create_index(op.f('ix_item_name'), 'item', ['name'], unique=False)
-    op.create_table('list_category',
-    sa.Column('list_id', sa.Integer(), nullable=False),
-    sa.Column('category_id', sa.Integer(), nullable=False),
-    sa.Column('version_id', sa.String(length=32), nullable=False),
-    sa.ForeignKeyConstraint(['category_id'], ['category.category_id'], ondelete='CASCADE'),
-    sa.ForeignKeyConstraint(['list_id'], ['list.list_id'], ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('list_id', 'category_id'),
-    sqlite_autoincrement=True
-    )
-    op.create_index(op.f('ix_list_category_category_id'), 'list_category', ['category_id'], unique=False)
-    op.create_index(op.f('ix_list_category_list_id'), 'list_category', ['list_id'], unique=False)
     op.create_table('list_item',
     sa.Column('list_id', sa.Integer(), nullable=False),
     sa.Column('item_id', sa.Integer(), nullable=False),
@@ -95,9 +84,6 @@ def downgrade():
     op.drop_index(op.f('ix_list_item_list_id'), table_name='list_item')
     op.drop_index(op.f('ix_list_item_item_id'), table_name='list_item')
     op.drop_table('list_item')
-    op.drop_index(op.f('ix_list_category_list_id'), table_name='list_category')
-    op.drop_index(op.f('ix_list_category_category_id'), table_name='list_category')
-    op.drop_table('list_category')
     op.drop_index(op.f('ix_item_name'), table_name='item')
     op.drop_index(op.f('ix_item_item_id'), table_name='item')
     op.drop_index(op.f('ix_item_category_id'), table_name='item')

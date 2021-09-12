@@ -4,7 +4,7 @@ from sqlalchemy import and_
 
 from application import database
 from application.list import blueprint
-from application.models import Category, Item, List, ListCategory, ListItem
+from application.models import Category, Item, List, ListItem
 
 
 @blueprint.route("/use/<int:list_id>")
@@ -14,18 +14,9 @@ def use(list_id):
     if list_ is None:
         return redirect(url_for("list.list"))
 
-    # TODO: warn_unchecked_categories(list_id)  ???
-
     items_categories = (
         database.session.query(Item, Category, ListItem)
         .join(Category)
-        .join(
-            ListCategory,
-            and_(
-                ListCategory.category_id == Category.category_id,
-                ListCategory.list_id == list_id,
-            ),
-        )
         .join(
             ListItem,
             and_(ListItem.item_id == Item.item_id, ListItem.list_id == list_id),
