@@ -29,7 +29,7 @@ def item(list_id):
 
     return render_template(
         "list/item/item.html.jinja",
-        title="Items in List",
+        title=f"Items in List - {list_.name}",
         list=list_,
         items_categories=items_categories,
         cancel=url_for("list.list"),
