@@ -11,8 +11,8 @@
             </span>
         </a>
     </h4><hr>
-    {% for ic in items_categories %}
     {% set category, item, list_item = 0, 1, 2 %}
+    {% for ci in categories_items %}
         {% if loop.previtem is not defined or
             ( loop.previtem is defined and
               loop.previtem[category].category_id != ci[category].category_id ) %}

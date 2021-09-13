@@ -16,8 +16,9 @@ def item(list_id):
     if list_ is None:
         return redirect(url_for("list.list"))
 
-    items_categories = (
-        database.session.query(Item, Category, ListItem)
+    categories_items = (
+        database.session.query(Category, Item, ListItem)
+        .select_from(Item)
         .join(Category)
         .outerjoin(
             ListItem,
@@ -31,7 +32,7 @@ def item(list_id):
         "list/item/list.html.jinja",
         title=f"Items in List - {list_.name}",
         list=list_,
-        items_categories=items_categories,
+        categories_items=categories_items,
         cancel=url_for("list.list"),
     )
 
