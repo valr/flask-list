@@ -50,7 +50,7 @@
 {% block scripts %}
     {{ super() }}
     <script nonce="{{ csp_nonce() }}">
-        {% include 'list/item/item.js' %}
+        {% include 'list/item/list_item.js' %}
         {% include 'cancel.js' %}
         {% include 'collapse.js' %}
         {% include 'scroll.js' %}
