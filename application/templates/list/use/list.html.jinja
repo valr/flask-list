@@ -12,18 +12,20 @@
         </a>
     </h4><hr>
     {% for ic in items_categories %}
+    {% set category, item, list_item = 0, 1, 2 %}
         {% if loop.previtem is not defined or
-            ( loop.previtem is defined and loop.previtem[1].category_id != ic[1].category_id ) %}
+            ( loop.previtem is defined and
+              loop.previtem[category].category_id != ci[category].category_id ) %}
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-hover table-sm">
                 <thead class="table-primary text-white">
                     <tr>
                         <th class="col-10 align-middle"
                             role="button" data-toggle="collapse"
-                            href="#collapse{{ ic[1].category_id }}"
-                            aria-controls="collapse{{ ic[1].category_id }}"
+                            href="#collapse{{ ci[category].category_id }}"
+                            aria-controls="collapse{{ ci[category].category_id }}"
                             aria-expanded="true">
-                            {{ ic[1].name }}
+                            {{ ci[category].name }}
                             <a class="btn btn-primary btn-sm text-primary disabled">
                                 {{ render_icon('plus-square') }}
                             </a>
@@ -32,11 +34,12 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="collapse show" id="collapse{{ ic[1].category_id }}">
+                <tbody class="collapse show" id="collapse{{ ci[category].category_id }}">
         {% endif %}
         {% include 'list/use/list_item.html.jinja' %}
         {% if loop.nextitem is not defined or
-            ( loop.nextitem is defined and loop.nextitem[1].category_id != ic[1].category_id ) %}
+            ( loop.nextitem is defined and
+              loop.nextitem[category].category_id != ci[category].category_id ) %}
                 </tbody>
             </table>
         </div>

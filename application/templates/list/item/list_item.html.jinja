@@ -1,30 +1,30 @@
 <tr>
     <td class="align-middle">
-        {{ ic[0].name }}
+        {{ ci[item].name }}
     </td>
     <td class="align-middle text-center">
-        {% if ic[2] is none %}
+        {% if ci[list_item] is none %}
             <a class="btn bg-transparent text-dark"
-                data-item-id="{{ ic[0].item_id }}"
+                data-item-id="{{ ci[item].item_id }}"
                 data-version-id="none">
                 {{ render_icon('square') }}
             </a>
-        {% elif ic[2].type_|string() == "ListItemType.selection" %}
+        {% elif ci[list_item].type_|string() == "ListItemType.selection" %}
             <a class="btn btn-success text-white"
-                data-item-id="{{ ic[2].item_id }}"
-                data-version-id="{{ ic[2].version_id }}">
+                data-item-id="{{ ci[list_item].item_id }}"
+                data-version-id="{{ ci[list_item].version_id }}">
                 {{ render_icon('check-square') }}
             </a>
-        {% elif ic[2].type_|string() == "ListItemType.counter" %}
+        {% elif ci[list_item].type_|string() == "ListItemType.counter" %}
             <a class="btn btn-info text-white"
-                data-item-id="{{ ic[2].item_id }}"
-                data-version-id="{{ ic[2].version_id }}">
+                data-item-id="{{ ci[list_item].item_id }}"
+                data-version-id="{{ ci[list_item].version_id }}">
                 {{ render_icon('calculator') }}
             </a>
-        {% elif ic[2].type_|string() == "ListItemType.text" %}
+        {% elif ci[list_item].type_|string() == "ListItemType.text" %}
             <a class="btn btn-secondary text-white"
-                data-item-id="{{ ic[2].item_id }}"
-                data-version-id="{{ ic[2].version_id }}">
+                data-item-id="{{ ci[list_item].item_id }}"
+                data-version-id="{{ ci[list_item].version_id }}">
                 {{ render_icon('card-text') }}
             </a>
         {% endif %}

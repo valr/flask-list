@@ -1,15 +1,15 @@
 <tr>
     <td class="align-middle">
-        {{ ci[1].name }}
+        {{ ci[item].name }}
     </td>
     <td class="align-middle text-center">
         <div class="btn-group" role="group">
             <a class="btn btn-warning rounded text-white mr-2"
-                href="{{ url_for('item.update', item_id=ci[1].item_id) }}">
+                href="{{ url_for('item.update', item_id=ci[item].item_id) }}">
                 {{ render_icon('pencil') }}
             </a>
             <a class="btn btn-danger rounded text-white"
-                href="{{ url_for('item.delete', item_id=ci[1].item_id) }}">
+                href="{{ url_for('item.delete', item_id=ci[item].item_id) }}">
                 {{ render_icon('trash') }}
             </a>
         </div>

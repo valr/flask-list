@@ -1,6 +1,6 @@
 <tr>
     <td class="align-middle">
-        {{ ic[0].name }}
+        {{ ci[item].name }}
     </td>
     <td class="align-middle text-center">
         {% if ic[2].type_|string() == "ListItemType.selection" %}
@@ -18,7 +18,7 @@
                     <button class="btn bg-white border shadow-none" type="button" id="btn-plus">+</button>
                 </div>
             </div>
-        {% elif ic[2].type_|string() == "ListItemType.text" %}
+        {% elif ci[list_item].type_|string() == "ListItemType.text" %}
             <input class="form-control bg-white border shadow-none" type="text">
         {% endif %}
     </td>
