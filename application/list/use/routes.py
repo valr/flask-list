@@ -1,6 +1,8 @@
-from flask import redirect, render_template, url_for
+from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy import and_
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
@@ -33,3 +35,37 @@ def use(list_id):
         categories_items=categories_items,
         cancel=url_for("list.list"),
     )
+
+
+@blueprint.route("/item/switch_selection", methods=["POST"])
+@login_required
+def item_switch_selection():
+    try:
+        data = request.get_json(False, True, False)
+        list_id = int(data.get("list_id"))
+        item_id = int(data.get("item_id"))
+        version_id = data.get("version_id")
+    except (AttributeError, TypeError, ValueError):
+        return jsonify({"status": "missing or invalid data"}), 400
+
+    try:
+        list_item = ListItem.query.get((list_id, item_id))
+        if list_item is None or list_item.version_id != version_id:
+            raise StaleDataError()
+
+        list_item.selection = not list_item.selection
+        database.session.commit()
+        return jsonify(
+            {
+                "status": "ok",
+                "selection": list_item.selection,
+                "version": list_item.version_id,
+            }
+        )
+    except (IntegrityError, StaleDataError):
+        database.session.rollback()
+        flash(
+            "The item has not been updated due to concurrent modification.",
+            "error",
+        )
+        return jsonify({"status": "cancel", "url": url_for("list.list")})
