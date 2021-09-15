@@ -55,7 +55,10 @@ def item_switch_type():
                 raise StaleDataError()
 
             list_item = ListItem(
-                list_id=list_id, item_id=item_id, type_=ListItemType.selection
+                list_id=list_id,
+                item_id=item_id,
+                type_=ListItemType.selection,
+                selection=False,
             )
             database.session.add(list_item)
         else:
@@ -63,7 +66,11 @@ def item_switch_type():
                 raise StaleDataError()
 
             list_item.type_ = list_item.type_.next()
-            if list_item.type_ == ListItemType.none:
+            if list_item.type_ == ListItemType.counter:
+                list_item.selection, list_item.counter = None, 0
+            elif list_item.type_ == ListItemType.text:
+                list_item.counter, list_item.text = None, ""
+            elif list_item.type_ == ListItemType.none:
                 database.session.delete(list_item)
 
         database.session.commit()
