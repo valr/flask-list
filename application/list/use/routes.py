@@ -30,7 +30,7 @@ def use(list_id):
 
     return render_template(
         "list/use/list.html.jinja",
-        title=f"List - {list_.name}",
+        title="List",
         list=list_,
         categories_items=categories_items,
         cancel=url_for("list.list"),
