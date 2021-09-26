@@ -53,6 +53,4 @@ $(document).on('click', '.btn', function () {
         .fail(function (xhr, textStatus, errorThrown) {
             console.log(xhr.responseText);
         });
-
-    return false;
 });
