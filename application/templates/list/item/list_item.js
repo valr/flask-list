@@ -51,6 +51,11 @@ $(document).on('click', '.btn', function () {
             }
         })
         .fail(function (xhr, textStatus, errorThrown) {
-            console.log(xhr.responseText);
+            console.log(
+                'POST failed on list.item_switch_type' +
+                ' (list_id: ' + '{{ list.list_id }}' +
+                ', item_id: ' + $(element).attr('data-item-id') +
+                ', version_id: ' + $(element).attr('data-version-id') +
+                ', responseText: ' + xhr.responseText + ')');
         });
 });
