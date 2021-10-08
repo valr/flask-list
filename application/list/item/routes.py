@@ -33,7 +33,7 @@ def item(list_id):
         title="Items in List",
         list=list_,
         categories_items=categories_items,
-        cancel=url_for("list.list"),
+        cancel_url=url_for("list.list"),
     )
 
 
@@ -87,4 +87,4 @@ def item_switch_type():
             "The item has not been updated due to concurrent modification.",
             "error",
         )
-        return jsonify({"status": "cancel", "url": url_for("list.list")})
+        return jsonify({"status": "cancel", "cancel_url": url_for("list.list")})

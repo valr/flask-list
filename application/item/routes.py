@@ -38,7 +38,7 @@ def create(category_id):
         "item/create.html.jinja",
         title="Create Item",
         form=form,
-        cancel=url_for("item.list"),
+        cancel_url=url_for("item.list"),
     )
 
 
@@ -85,7 +85,7 @@ def update(item_id):
         "item/update.html.jinja",
         title="Update Item",
         form=form,
-        cancel=url_for("item.list"),
+        cancel_url=url_for("item.list"),
     )
 
 
@@ -131,7 +131,7 @@ def delete(item_id):
         "item/delete.html.jinja",
         title="Delete Item",
         form=form,
-        cancel=url_for("item.list"),
+        cancel_url=url_for("item.list"),
     )
 
 

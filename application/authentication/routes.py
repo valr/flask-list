@@ -59,7 +59,7 @@ def register():
         "authentication/register.html.jinja",
         title="Register",
         form=form,
-        cancel=url_for("index"),
+        cancel_url=url_for("index"),
     )
 
 
@@ -171,7 +171,7 @@ def profile():
         "authentication/profile.html.jinja",
         title="Profile",
         form=form,
-        cancel=url_for("index"),
+        cancel_url=url_for("index"),
     )
 
 
@@ -201,7 +201,7 @@ def reset_password():
         "authentication/reset_password.html.jinja",
         title="Reset Password",
         form=form,
-        cancel=url_for("index"),
+        cancel_url=url_for("index"),
     )
 
 
@@ -234,5 +234,5 @@ def reset_password_confirmation(token):
         "authentication/reset_password_confirmation.html.jinja",
         title="Reset Password",
         form=form,
-        cancel=url_for("index"),
+        cancel_url=url_for("index"),
     )

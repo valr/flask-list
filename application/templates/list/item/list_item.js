@@ -47,7 +47,7 @@ $(document).on('click', '.btn', function () {
                     $(element).html(`{{ render_icon("card-text") }}`);
                 }
             } else if (data.status === 'cancel') {
-                window.location.href = data.url;
+                window.location.href = data.cancel_url;
             }
         })
         .fail(function (xhr, textStatus, errorThrown) {

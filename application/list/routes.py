@@ -32,7 +32,7 @@ def create():
         "list/create.html.jinja",
         title="Create List",
         form=form,
-        cancel=url_for("list.list"),
+        cancel_url=url_for("list.list"),
     )
 
 
@@ -73,7 +73,7 @@ def update(list_id):
         "list/update.html.jinja",
         title="Update List",
         form=form,
-        cancel=url_for("list.list"),
+        cancel_url=url_for("list.list"),
     )
 
 
@@ -114,7 +114,7 @@ def delete(list_id):
         "list/delete.html.jinja",
         title="Delete List",
         form=form,
-        cancel=url_for("list.list"),
+        cancel_url=url_for("list.list"),
     )
 
 

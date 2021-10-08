@@ -32,7 +32,7 @@ def create():
         "category/create.html.jinja",
         title="Create Category",
         form=form,
-        cancel=url_for("category.list"),
+        cancel_url=url_for("category.list"),
     )
 
 
@@ -73,7 +73,7 @@ def update(category_id):
         "category/update.html.jinja",
         title="Update Category",
         form=form,
-        cancel=url_for("category.list"),
+        cancel_url=url_for("category.list"),
     )
 
 
@@ -122,7 +122,7 @@ def delete(category_id):
         "category/delete.html.jinja",
         title="Delete Category",
         form=form,
-        cancel=url_for("category.list"),
+        cancel_url=url_for("category.list"),
     )
 
 
