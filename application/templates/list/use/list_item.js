@@ -26,15 +26,17 @@ $(document).on('click', '.btn', function () {
         .done(function (data, textStatus, xhr) {
             if (data.status === 'ok') {
                 if (data.selection === false) {
-                    $(element).removeClass('btn-success text-white');
-                    $(element).addClass('bg-transparent text-dark');
-                    $(element).attr('data-version-id', data.version);
-                    $(element).html(`{{ render_icon("square") }}`);
+                    $(element)
+                        .removeClass('btn-success text-white')
+                        .addClass('bg-transparent text-dark')
+                        .attr('data-version-id', data.version)
+                        .html(`{{ render_icon("square") }}`);
                 } else if (data.selection === true) {
-                    $(element).removeClass('bg-transparent text-dark');
-                    $(element).addClass('btn-success text-white');
-                    $(element).attr('data-version-id', data.version);
-                    $(element).html(`{{ render_icon("check-square") }}`);
+                    $(element)
+                        .removeClass('bg-transparent text-dark')
+                        .addClass('btn-success text-white')
+                        .attr('data-version-id', data.version)
+                        .html(`{{ render_icon("check-square") }}`);
                 }
             } else if (data.status === 'cancel') {
                 window.location.href = data.cancel_url;

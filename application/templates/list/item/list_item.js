@@ -26,25 +26,29 @@ $(document).on('click', '.btn', function () {
         .done(function (data, textStatus, xhr) {
             if (data.status === 'ok') {
                 if (data.type === 'none') {
-                    $(element).removeClass('btn-secondary text-white');
-                    $(element).addClass('bg-transparent text-dark');
-                    $(element).attr('data-version-id', 'none');
-                    $(element).html(`{{ render_icon("square") }}`);
+                    $(element)
+                        .removeClass('btn-secondary text-white')
+                        .addClass('bg-transparent text-dark')
+                        .attr('data-version-id', 'none')
+                        .html(`{{ render_icon("square") }}`);
                 } else if (data.type === 'selection') {
-                    $(element).removeClass('bg-transparent text-dark');
-                    $(element).addClass('btn-success text-white');
-                    $(element).attr('data-version-id', data.version);
-                    $(element).html(`{{ render_icon("check-square") }}`);
+                    $(element)
+                        .removeClass('bg-transparent text-dark')
+                        .addClass('btn-success text-white')
+                        .attr('data-version-id', data.version)
+                        .html(`{{ render_icon("check-square") }}`);
                 } else if (data.type === 'counter') {
-                    $(element).removeClass('btn-success text-white');
-                    $(element).addClass('btn-info text-white');
-                    $(element).attr('data-version-id', data.version);
-                    $(element).html(`{{ render_icon("calculator") }}`);
+                    $(element)
+                        .removeClass('btn-success text-white')
+                        .addClass('btn-info text-white')
+                        .attr('data-version-id', data.version)
+                        .html(`{{ render_icon("calculator") }}`);
                 } else if (data.type === 'text') {
-                    $(element).removeClass('btn-info text-white');
-                    $(element).addClass('btn-secondary text-white');
-                    $(element).attr('data-version-id', data.version);
-                    $(element).html(`{{ render_icon("card-text") }}`);
+                    $(element)
+                        .removeClass('btn-info text-white')
+                        .addClass('btn-secondary text-white')
+                        .attr('data-version-id', data.version)
+                        .html(`{{ render_icon("card-text") }}`);
                 }
             } else if (data.status === 'cancel') {
                 window.location.href = data.cancel_url;
