@@ -28,7 +28,11 @@
                 </div>
             </div>
         {% elif ci[list_item].type_|string() == "ListItemType.text" %}
-            <input class="form-control bg-white border shadow-none" type="text">
+            <input class="form-control bg-white border shadow-none"
+                    data-item-id="{{ ci[list_item].item_id }}"
+                    data-version-id="{{ ci[list_item].version_id }}"
+                    value="{{ ci[list_item].text }}"
+                    type="text">
         {% endif %}
     </td>
 </tr>

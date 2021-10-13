@@ -50,6 +50,58 @@ $(document).on('click', '.btn', function () {
                 ' version_id:' + $(element).attr('data-version-id') +
                 ' responseText:' + xhr.responseText);
         });
+});
 
     return false;
+
+$(document).on('click input', '.form-control', function (event) {
+    element = $(this);
+
+    if (event.type === 'click') {
+        if ($(element).hasClass('text-danger')) {
+            $(element).removeClass('text-danger');
+        } else {
+            return true;
+        }
+    } else {
+        $(element)
+            .addClass('font-weight-bold')
+            .removeClass('text-danger');
+    }
+
+    debounce(
+        $(element).attr('data-item-id'),
+        function (element) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for("list.item_set_text") }}',
+                data: JSON.stringify({
+                    list_id: '{{ list.list_id }}',
+                    item_id: $(element).attr('data-item-id'),
+                    version_id: $(element).attr('data-version-id'),
+                    text: $(element).val()
+                }),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'json'
+            })
+                .done(function (data, textStatus, xhr) {
+                    if (data.status === 'ok') {
+                        $(element)
+                            .removeClass('font-weight-bold')
+                            .attr('data-version-id', data.version);
+                    } else if (data.status === 'cancel') {
+                        window.location.href = data.cancel_url;
+                    }
+                })
+                .fail(function (xhr, textStatus, errorThrown) {
+                    $(element).addClass('text-danger');
+                    console.log(
+                        'POST failed on list.item_set_text.' +
+                        ' list_id:' + '{{ list.list_id }}' +
+                        ' item_id:' + $(element).attr('data-item-id') +
+                        ' version_id:' + $(element).attr('data-version-id') +
+                        ' text:' + $(element).val() +
+                        ' responseText:' + xhr.responseText);
+                });
+        }, 1000, element);
 });
