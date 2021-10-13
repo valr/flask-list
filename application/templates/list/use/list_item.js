@@ -52,7 +52,6 @@ $(document).on('click', '.btn', function () {
         });
 });
 
-    return false;
 
 $(document).on('click input', '.form-control', function (event) {
     element = $(this);
