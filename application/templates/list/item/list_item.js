@@ -9,7 +9,7 @@ $.ajaxSetup({
     }
 });
 
-$(document).on('click', '.btn', function () {
+$(document).on('click', '.item-type', function () {
     element = $(this);
 
     $.ajax({
