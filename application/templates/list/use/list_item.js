@@ -9,7 +9,7 @@ $.ajaxSetup({
     }
 });
 
-$(document).on('click', '.btn', function () {
+$(document).on('click', '.item-selection', function () {
     element = $(this);
 
     $.ajax({
@@ -53,7 +53,7 @@ $(document).on('click', '.btn', function () {
 });
 
 
-$(document).on('click input', '.form-control', function (event) {
+$(document).on('click input', '.item-text', function (event) {
     element = $(this);
 
     if (event.type === 'click') {

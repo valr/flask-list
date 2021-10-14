@@ -5,13 +5,13 @@
     <td class="align-middle text-center">
         {% if ci[list_item].type_|string() == "ListItemType.selection" %}
             {% if ci[list_item].selection is false %}
-                <a class="btn btn-block bg-transparent text-dark"
+                <a class="item-selection btn btn-block bg-transparent text-dark"
                     data-item-id="{{ ci[list_item].item_id }}"
                     data-version-id="{{ ci[list_item].version_id }}">
                     {{ render_icon('square') }}
                 </a>
             {% elif ci[list_item].selection is true %}
-                <a class="btn btn-block btn-success text-white"
+                <a class="item-selection btn btn-block btn-success text-white"
                     data-item-id="{{ ci[list_item].item_id }}"
                     data-version-id="{{ ci[list_item].version_id }}">
                     {{ render_icon('check-square') }}
@@ -28,7 +28,7 @@
                 </div>
             </div>
         {% elif ci[list_item].type_|string() == "ListItemType.text" %}
-            <input class="form-control bg-white border shadow-none"
+            <input class="item-text form-control bg-white border shadow-none"
                     data-item-id="{{ ci[list_item].item_id }}"
                     data-version-id="{{ ci[list_item].version_id }}"
                     value="{{ ci[list_item].text }}"
