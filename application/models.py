@@ -168,7 +168,7 @@ class List(database.Model):
 class ListItemType(enum.Enum):
     none = 0
     selection = 1
-    counter = 2
+    number = 2
     text = 3
 
     def next(self):

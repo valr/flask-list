@@ -15,7 +15,7 @@
                 data-version-id="{{ ci[list_item].version_id }}">
                 {{ render_icon('check-square') }}
             </a>
-        {% elif ci[list_item].type_|string() == "ListItemType.counter" %}
+        {% elif ci[list_item].type_|string() == "ListItemType.number" %}
             <a class="item-type btn btn-info text-white"
                 data-item-id="{{ ci[list_item].item_id }}"
                 data-version-id="{{ ci[list_item].version_id }}">

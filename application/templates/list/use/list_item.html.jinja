@@ -17,7 +17,7 @@
                     {{ render_icon('check-square') }}
                 </a>
             {% endif %}
-        {% elif ci[list_item].type_|string() == "ListItemType.counter" %}
+        {% elif ci[list_item].type_|string() == "ListItemType.number" %}
             <div class="input-group">
                 <div class="input-group-prepend">
                     <button class="btn bg-white border shadow-none" type="button" id="btn-minus">−</button>

@@ -37,7 +37,7 @@ $(document).on('click', '.item-type', function () {
                         .addClass('btn-success text-white')
                         .attr('data-version-id', data.version)
                         .html(`{{ render_icon("check-square") }}`);
-                } else if (data.type === 'counter') {
+                } else if (data.type === 'number') {
                     $(element)
                         .removeClass('btn-success text-white')
                         .addClass('btn-info text-white')

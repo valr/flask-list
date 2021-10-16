@@ -50,7 +50,7 @@ CREATE TABLE list_item (
 	PRIMARY KEY (list_id, item_id), 
 	FOREIGN KEY(item_id) REFERENCES item (item_id) ON DELETE CASCADE, 
 	FOREIGN KEY(list_id) REFERENCES list (list_id) ON DELETE CASCADE, 
-	CONSTRAINT listitemtype CHECK (type IN ('none', 'selection', 'counter', 'text')), 
+	CONSTRAINT listitemtype CHECK (type IN ('none', 'selection', 'number', 'text')), 
 	CHECK (selection IN (0, 1))
 );
 CREATE INDEX ix_list_item_item_id ON list_item (item_id);
