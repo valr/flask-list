@@ -9,6 +9,12 @@
                 data-version-id="none">
                 {{ render_icon('square') }}
             </a>
+        {% elif ci[list_item].type_|string() == "ListItemType.none" %}
+            <a class="item-type btn bg-transparent text-dark"
+                data-item-id="{{ ci[list_item].item_id }}"
+                data-version-id="{{ ci[list_item].version_id }}">
+                {{ render_icon('square') }}
+            </a>
         {% elif ci[list_item].type_|string() == "ListItemType.selection" %}
             <a class="item-type btn btn-success text-white"
                 data-item-id="{{ ci[list_item].item_id }}"

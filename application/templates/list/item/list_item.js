@@ -29,7 +29,7 @@ $(document).on('click', '.item-type', function () {
                     $(element)
                         .removeClass('btn-secondary text-white')
                         .addClass('bg-transparent text-dark')
-                        .attr('data-version-id', 'none')
+                        .attr('data-version-id', data.version)
                         .html(`{{ render_icon("square") }}`);
                 } else if (data.type === 'selection') {
                     $(element)

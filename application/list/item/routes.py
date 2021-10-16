@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
-from sqlalchemy import and_
+from sqlalchemy import and_, inspect
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
@@ -59,6 +61,8 @@ def item_switch_type():
                 item_id=item_id,
                 type_=ListItemType.selection,
                 selection=False,
+                number=Decimal(0),
+                text="",
             )
             database.session.add(list_item)
         else:
@@ -66,11 +70,13 @@ def item_switch_type():
                 raise StaleDataError()
 
             list_item.type_ = list_item.type_.next()
-            if list_item.type_ == ListItemType.counter:
-                list_item.selection, list_item.counter = None, 0
-            elif list_item.type_ == ListItemType.text:
-                list_item.counter, list_item.text = None, ""
-            elif list_item.type_ == ListItemType.none:
+
+            if (
+                list_item.type_ == ListItemType.none
+                and list_item.selection is False
+                and list_item.number == Decimal(0)
+                and list_item.text == ""
+            ):
                 database.session.delete(list_item)
 
         database.session.commit()
@@ -78,7 +84,9 @@ def item_switch_type():
             {
                 "status": "ok",
                 "type": list_item.type_.name,
-                "version": list_item.version_id,
+                "version": list_item.version_id
+                if inspect(list_item).persistent
+                else "none",
             }
         )
     except (IntegrityError, StaleDataError):
