@@ -191,9 +191,9 @@ class ListItem(database.Model):
         primary_key=True,
     )
     type_ = database.Column("type", database.Enum(ListItemType), nullable=False)
-    selection = database.Column("selection", database.Boolean)
-    counter = database.Column("counter", database.Integer)
-    text = database.Column("text", database.String(1000))
+    selection = database.Column("selection", database.Boolean, nullable=False)
+    number = database.Column("number", database.Numeric, nullable=False)
+    text = database.Column("text", database.String(1000), nullable=False)
     version_id = database.Column(database.String(32), nullable=False)
 
     list_ = database.relationship("List", back_populates="items")

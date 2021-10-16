@@ -1,8 +1,8 @@
 """init db
 
-Revision ID: a03a406c0104
+Revision ID: c4eead1f2141
 Revises: 
-Create Date: 2021-09-12 18:37:50.120743
+Create Date: 2021-10-16 21:56:31.423226
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a03a406c0104'
+revision = 'c4eead1f2141'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -64,10 +64,10 @@ def upgrade():
     op.create_table('list_item',
     sa.Column('list_id', sa.Integer(), nullable=False),
     sa.Column('item_id', sa.Integer(), nullable=False),
-    sa.Column('type', sa.Enum('none', 'selection', 'counter', 'text', name='listitemtype'), nullable=False),
-    sa.Column('selection', sa.Boolean(), nullable=True),
-    sa.Column('counter', sa.Integer(), nullable=True),
-    sa.Column('text', sa.String(length=1000), nullable=True),
+    sa.Column('type', sa.Enum('none', 'selection', 'number', 'text', name='listitemtype'), nullable=False),
+    sa.Column('selection', sa.Boolean(), nullable=False),
+    sa.Column('number', sa.Numeric(), nullable=False),
+    sa.Column('text', sa.String(length=1000), nullable=False),
     sa.Column('version_id', sa.String(length=32), nullable=False),
     sa.ForeignKeyConstraint(['item_id'], ['item.item_id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['list_id'], ['list.list_id'], ondelete='CASCADE'),
