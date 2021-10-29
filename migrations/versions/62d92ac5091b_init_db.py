@@ -1,16 +1,17 @@
 """init db
 
-Revision ID: c4eead1f2141
+Revision ID: 62d92ac5091b
 Revises: 
-Create Date: 2021-10-16 21:56:31.423226
+Create Date: 2021-10-29 22:07:07.768967
 
 """
 from alembic import op
 import sqlalchemy as sa
+import application
 
 
 # revision identifiers, used by Alembic.
-revision = 'c4eead1f2141'
+revision = '62d92ac5091b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -66,7 +67,7 @@ def upgrade():
     sa.Column('item_id', sa.Integer(), nullable=False),
     sa.Column('type', sa.Enum('none', 'selection', 'number', 'text', name='listitemtype'), nullable=False),
     sa.Column('selection', sa.Boolean(), nullable=False),
-    sa.Column('number', sa.Numeric(), nullable=False),
+    sa.Column('number', application.models.SqliteNumeric(), nullable=False),
     sa.Column('text', sa.String(length=1000), nullable=False),
     sa.Column('version_id', sa.String(length=32), nullable=False),
     sa.ForeignKeyConstraint(['item_id'], ['item.item_id'], ondelete='CASCADE'),

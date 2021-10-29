@@ -44,7 +44,7 @@ CREATE TABLE list_item (
 	item_id INTEGER NOT NULL, 
 	type VARCHAR(9) NOT NULL, 
 	selection BOOLEAN NOT NULL, 
-	number NUMERIC NOT NULL, 
+	number VARCHAR NOT NULL, 
 	text VARCHAR(1000) NOT NULL, 
 	version_id VARCHAR(32) NOT NULL, 
 	PRIMARY KEY (list_id, item_id), 

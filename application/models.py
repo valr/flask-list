@@ -1,11 +1,13 @@
 import enum
 import uuid
 from datetime import datetime
+from decimal import Decimal
 from time import time
 
 import jwt
 from flask import current_app
 from flask_login import UserMixin
+from sqlalchemy import types
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from application import database
@@ -19,6 +21,16 @@ from application import database
 # chmod 700 database
 # chmod 600 database/application.db
 # echo '.schema' | sqlite3 database/application.db > database/database.sql
+
+
+class SqliteNumeric(types.TypeDecorator):
+    impl = types.String
+
+    def process_bind_param(self, value, dialect):
+        return str(value)
+
+    def process_result_value(self, value, dialect):
+        return Decimal(value)
 
 
 class User(database.Model, UserMixin):
@@ -192,7 +204,8 @@ class ListItem(database.Model):
     )
     type_ = database.Column("type", database.Enum(ListItemType), nullable=False)
     selection = database.Column("selection", database.Boolean, nullable=False)
-    number = database.Column("number", database.Numeric, nullable=False)
+    # number = database.Column("number", database.Numeric, nullable=False)
+    number = database.Column("number", SqliteNumeric, nullable=False)
     text = database.Column("text", database.String(1000), nullable=False)
     version_id = database.Column(database.String(32), nullable=False)
 
