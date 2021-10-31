@@ -24,7 +24,7 @@ from application import database
 
 
 class SqliteNumeric(types.TypeDecorator):
-    impl = types.String
+    impl = types.String(1000)
 
     def process_bind_param(self, value, dialect):
         return str(value)
