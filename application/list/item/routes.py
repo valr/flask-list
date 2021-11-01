@@ -61,7 +61,7 @@ def item_switch_type():
                 item_id=item_id,
                 type_=ListItemType.selection,
                 selection=False,
-                number=Decimal(0),
+                number=Decimal(),
                 text="",
             )
             database.session.add(list_item)
@@ -74,7 +74,7 @@ def item_switch_type():
             if (
                 list_item.type_ == ListItemType.none
                 and list_item.selection is False
-                and list_item.number == Decimal(0)
+                and list_item.number == Decimal()
                 and list_item.text == ""
             ):
                 database.session.delete(list_item)
