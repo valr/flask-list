@@ -24,6 +24,7 @@ def use(list_id):
             ListItem,
             and_(ListItem.item_id == Item.item_id, ListItem.list_id == list_id),
         )
+        .filter(ListItem.type_ != ListItemType.none)
         .order_by(Category.name, Item.name)
         .all()
     )
