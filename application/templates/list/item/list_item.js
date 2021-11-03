@@ -10,7 +10,7 @@ $.ajaxSetup({
 });
 
 $(document).on('click', '.item-type', function () {
-    element = $(this);
+    var element = $(this);
 
     $.ajax({
         type: 'POST',

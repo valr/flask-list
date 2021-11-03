@@ -10,7 +10,7 @@ $.ajaxSetup({
 });
 
 $(document).on('click', '.item-selection', function () {
-    element = $(this);
+    var element = $(this);
 
     $.ajax({
         type: 'POST',
@@ -54,7 +54,7 @@ $(document).on('click', '.item-selection', function () {
 
 
 $(document).on('click input', '.item-text', function (event) {
-    element = $(this);
+    var element = $(this);
 
     if (event.type === 'click') {
         if ($(element).hasClass('text-danger')) {
