@@ -19,13 +19,22 @@
             {% endif %}
         {% elif ci[list_item].type_|string() == "ListItemType.number" %}
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <button class="btn bg-white border shadow-none" type="button" id="btn-minus">−</button>
-                </div>
-                <input class="form-control bg-white border shadow-none text-center" type="text">
-                <div class="input-group-append">
-                    <button class="btn bg-white border shadow-none" type="button" id="btn-plus">+</button>
-                </div>
+            <div class="input-group-prepend">
+            <button class="item-number-minus btn btn-light border shadow-none"
+                    data-item-id="{{ ci[list_item].item_id }}"
+                    type="button">−</button>
+            </div>
+            <input class="item-number form-control bg-white border shadow-none text-center"
+                    data-item-id="{{ ci[list_item].item_id }}"
+                    data-version-id="{{ ci[list_item].version_id }}"
+                    value="{{ ci[list_item].number if ci[list_item].number != 0.0 }}"
+                    maxlength="1000"
+                    type="text">
+            <div class="input-group-append">
+            <button class="item-number-plus btn btn-light border shadow-none"
+                    data-item-id="{{ ci[list_item].item_id }}"
+                    type="button">+</button>
+            </div>
             </div>
         {% elif ci[list_item].type_|string() == "ListItemType.text" %}
             <input class="item-text form-control bg-white border shadow-none"

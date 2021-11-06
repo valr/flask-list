@@ -1,3 +1,5 @@
+from decimal import Decimal, DecimalException
+
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy import and_
@@ -6,7 +8,7 @@ from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
-from application.models import Category, Item, List, ListItem
+from application.models import Category, Item, List, ListItem, ListItemType
 
 
 @blueprint.route("/use/<int:list_id>")
@@ -96,6 +98,42 @@ def item_set_text():
                 "status": "ok",
                 "version": list_item.version_id,
                 # the text is not returned (it's already in the input element)
+            }
+        )
+    except (IntegrityError, StaleDataError):
+        database.session.rollback()
+        flash(
+            "The item has not been updated due to concurrent modification.",
+            "error",
+        )
+        return jsonify({"status": "cancel", "cancel_url": url_for("list.list")})
+
+
+@blueprint.route("/item/set_number", methods=["POST"])
+@login_required
+def item_set_number():
+    try:
+        data = request.get_json(False, True, False)
+        list_id = int(data.get("list_id"))
+        item_id = int(data.get("item_id"))
+        version_id = data.get("version_id")
+        number = Decimal(data.get("number"))
+        to_add = Decimal(data.get("to_add", "0"))
+    except (AttributeError, TypeError, ValueError, DecimalException):
+        return jsonify({"status": "missing or invalid data"}), 400
+
+    try:
+        list_item = ListItem.query.get((list_id, item_id))
+        if list_item is None or list_item.version_id != version_id:
+            raise StaleDataError()
+
+        list_item.number = number + to_add
+        database.session.commit()
+        return jsonify(
+            {
+                "status": "ok",
+                "number": str(list_item.number),
+                "version": list_item.version_id,
             }
         )
     except (IntegrityError, StaleDataError):
