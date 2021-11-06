@@ -71,7 +71,9 @@ def item_switch_selection():
             "The item has not been updated due to concurrent modification.",
             "error",
         )
-        return jsonify({"status": "cancel", "cancel_url": url_for("list.list")})
+        return jsonify(
+            {"status": "cancel", "cancel_url": url_for("list.use", list_id=list_id)}
+        )
 
 
 @blueprint.route("/item/set_text", methods=["POST"])
@@ -106,7 +108,9 @@ def item_set_text():
             "The item has not been updated due to concurrent modification.",
             "error",
         )
-        return jsonify({"status": "cancel", "cancel_url": url_for("list.list")})
+        return jsonify(
+            {"status": "cancel", "cancel_url": url_for("list.use", list_id=list_id)}
+        )
 
 
 @blueprint.route("/item/set_number", methods=["POST"])
@@ -142,4 +146,6 @@ def item_set_number():
             "The item has not been updated due to concurrent modification.",
             "error",
         )
-        return jsonify({"status": "cancel", "cancel_url": url_for("list.list")})
+        return jsonify(
+            {"status": "cancel", "cancel_url": url_for("list.use", list_id=list_id)}
+        )

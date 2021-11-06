@@ -95,4 +95,6 @@ def item_switch_type():
             "The item has not been updated due to concurrent modification.",
             "error",
         )
-        return jsonify({"status": "cancel", "cancel_url": url_for("list.list")})
+        return jsonify(
+            {"status": "cancel", "cancel_url": url_for("list.item", list_id=list_id)}
+        )
