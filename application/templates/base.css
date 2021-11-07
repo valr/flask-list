@@ -50,3 +50,8 @@ td[data-href] {
     color: red;
 }
 */
+
+/*
+ * as documented in https://icons.getbootstrap.com/, the size of icons can be
+ * modified using font-size of the bi class
+ */
