@@ -1,4 +1,5 @@
 from decimal import Decimal
+from traceback import format_exc
 
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
@@ -48,6 +49,7 @@ def item_switch_type():
         item_id = int(data.get("item_id"))
         version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
+        print(format_exc())
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
@@ -90,6 +92,7 @@ def item_switch_type():
             }
         )
     except (IntegrityError, StaleDataError):
+        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",

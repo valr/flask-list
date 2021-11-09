@@ -1,3 +1,5 @@
+from traceback import format_exc
+
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import login_required
 from sqlalchemy.exc import IntegrityError
@@ -20,6 +22,7 @@ def create():
             database.session.commit()
             flash("The category has been created.")
         except IntegrityError:
+            print(format_exc())
             database.session.rollback()
             flash(
                 "The category has not been created due to concurrent modification.",
@@ -58,6 +61,7 @@ def update(category_id):
             database.session.commit()
             flash("The category has been updated.")
         except (IntegrityError, StaleDataError):
+            print(format_exc())
             database.session.rollback()
             flash(
                 "The category has not been updated due to concurrent modification.",
@@ -101,12 +105,14 @@ def delete(category_id):
         except IntegrityError:
             # in case of deletion, the foreign key of related items will be set
             # to null, resulting in an integrity error
+            print(format_exc())
             database.session.rollback()
             flash(
                 "The category has not been deleted because it still contains item(s).",
                 "error",
             )
         except StaleDataError:
+            print(format_exc())
             database.session.rollback()
             flash(
                 "The category has not been deleted due to concurrent modification.",

@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from traceback import format_exc
 
 from flask import (current_app, flash, redirect, render_template, request,
                    url_for)
@@ -28,6 +29,7 @@ def load_user(user_id):
     try:
         return User.query.get(int(user_id))
     except ValueError:
+        print(format_exc())
         return None
 
 
@@ -44,6 +46,7 @@ def register():
             database.session.add(user)
             database.session.commit()
         except IntegrityError:
+            print(format_exc())
             database.session.rollback()
             flash(
                 "The user has not been registered due to concurrent modification.",
@@ -112,6 +115,7 @@ def login():
         try:
             return redirect(url_for(request.args.get("next", "index")))
         except BuildError:
+            print(format_exc())
             return redirect(url_for("index"))
 
     return render_template(
@@ -155,6 +159,7 @@ def profile():
             # database.session.commit()
             # flash('The profile has been saved.')
         except StaleDataError:
+            print(format_exc())
             database.session.rollback()
             flash(
                 "The profile has not been saved due to concurrent modification.",

@@ -1,4 +1,5 @@
 from decimal import Decimal, DecimalException
+from traceback import format_exc
 
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import login_required
@@ -49,6 +50,7 @@ def item_switch_selection():
         item_id = int(data.get("item_id"))
         version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
+        print(format_exc())
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
@@ -66,6 +68,7 @@ def item_switch_selection():
             }
         )
     except (IntegrityError, StaleDataError):
+        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",
@@ -86,6 +89,7 @@ def item_set_text():
         version_id = data.get("version_id")
         text = data.get("text")
     except (AttributeError, TypeError, ValueError):
+        print(format_exc())
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
@@ -103,6 +107,7 @@ def item_set_text():
             }
         )
     except (IntegrityError, StaleDataError):
+        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",
@@ -124,6 +129,7 @@ def item_set_number():
         number = Decimal(data.get("number"))
         to_add = Decimal(data.get("to_add", "0"))
     except (AttributeError, TypeError, ValueError, DecimalException):
+        print(format_exc())
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
@@ -141,6 +147,7 @@ def item_set_number():
             }
         )
     except (IntegrityError, StaleDataError):
+        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",

@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 from time import time
+from traceback import format_exc
 
 import jwt
 from flask import current_app
@@ -84,6 +85,7 @@ class User(database.Model, UserMixin):
             if not user_id:
                 return
         except jwt.InvalidTokenError:
+            print(format_exc())
             return
 
         return User.query.get(user_id)
