@@ -68,7 +68,6 @@ def item_switch_selection():
             }
         )
     except (IntegrityError, StaleDataError):
-        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",
@@ -107,7 +106,6 @@ def item_set_text():
             }
         )
     except (IntegrityError, StaleDataError):
-        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",
@@ -147,7 +145,6 @@ def item_set_number():
             }
         )
     except (IntegrityError, StaleDataError):
-        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",

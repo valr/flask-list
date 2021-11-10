@@ -92,7 +92,6 @@ def item_switch_type():
             }
         )
     except (IntegrityError, StaleDataError):
-        print(format_exc())
         database.session.rollback()
         flash(
             "The item has not been updated due to concurrent modification.",

@@ -46,7 +46,6 @@ def register():
             database.session.add(user)
             database.session.commit()
         except IntegrityError:
-            print(format_exc())
             database.session.rollback()
             flash(
                 "The user has not been registered due to concurrent modification.",
@@ -115,7 +114,6 @@ def login():
         try:
             return redirect(url_for(request.args.get("next", "index")))
         except BuildError:
-            print(format_exc())
             return redirect(url_for("index"))
 
     return render_template(
@@ -159,7 +157,6 @@ def profile():
             # database.session.commit()
             # flash('The profile has been saved.')
         except StaleDataError:
-            print(format_exc())
             database.session.rollback()
             flash(
                 "The profile has not been saved due to concurrent modification.",
