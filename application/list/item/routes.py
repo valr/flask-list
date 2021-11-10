@@ -50,6 +50,7 @@ def item_switch_type():
         version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
         print(format_exc())
+        print(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:

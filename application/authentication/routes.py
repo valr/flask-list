@@ -30,6 +30,7 @@ def load_user(user_id):
         return User.query.get(int(user_id))
     except ValueError:
         print(format_exc())
+        print(f"user_id: {user_id}")
         return None
 
 

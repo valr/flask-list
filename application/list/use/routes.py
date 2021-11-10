@@ -51,6 +51,7 @@ def item_switch_selection():
         version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
         print(format_exc())
+        print(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
@@ -89,6 +90,7 @@ def item_set_text():
         text = data.get("text")
     except (AttributeError, TypeError, ValueError):
         print(format_exc())
+        print(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
@@ -128,6 +130,7 @@ def item_set_number():
         to_add = Decimal(data.get("to_add", "0"))
     except (AttributeError, TypeError, ValueError, DecimalException):
         print(format_exc())
+        print(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     try:
