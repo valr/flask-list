@@ -38,15 +38,15 @@
                         </a>
                     </li>
                     <li class="nav-item py-0">
-                        <a class="nav-link {{'active' if title.endswith('Category') }}"
-                            href="{{ url_for('category.list') }}">
-                            Category
-                        </a>
-                    </li>
-                    <li class="nav-item py-0">
                         <a class="nav-link {{'active' if title.endswith('Item') }}"
                             href="{{ url_for('item.list') }}">
                             Item
+                        </a>
+                    </li>
+                    <li class="nav-item py-0">
+                        <a class="nav-link {{'active' if title.endswith('Category') }}"
+                            href="{{ url_for('category.list') }}">
+                            Category
                         </a>
                     </li>
                 </ul>
