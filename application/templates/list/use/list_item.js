@@ -1,26 +1,17 @@
 
-var csrf_token = "{{ csrf_token() }}";
-
-$.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader('X-CSRFToken', csrf_token);
-        }
-    }
-});
-
 $(document).on('click', '.item-selection', function () {
     var element = $(this);
 
     $.ajax({
         type: 'POST',
         url: '{{ url_for("list.item_switch_selection") }}',
+        headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
+        contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify({
             list_id: '{{ list.list_id }}',
             item_id: $(element).attr('data-item-id'),
             version_id: $(element).attr('data-version-id')
         }),
-        contentType: 'application/json; charset=UTF-8',
         dataType: 'json'
     })
         .done(function (data, textStatus, xhr) {
@@ -83,13 +74,14 @@ $(document).on('click input', '.item-number', function (event) {
             $.ajax({
                 type: 'POST',
                 url: '{{ url_for("list.item_set_number") }}',
+                headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
+                contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify({
                     list_id: '{{ list.list_id }}',
                     item_id: $(element).attr('data-item-id'),
                     version_id: $(element).attr('data-version-id'),
                     number: number
                 }),
-                contentType: 'application/json; charset=UTF-8',
                 dataType: 'json'
             })
                 .done(function (data, textStatus, xhr) {
@@ -130,13 +122,14 @@ $(document).on('click', '.item-number-plus, .item-number-minus', function (event
     $.ajax({
         type: 'POST',
         url: '{{ url_for("list.item_set_number") }}',
+        headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
+        contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify({
             list_id: '{{ list.list_id }}',
             item_id: $(element).attr('data-item-id'),
             version_id: $(element).attr('data-version-id'),
             number: number, to_add: to_add
         }),
-        contentType: 'application/json; charset=UTF-8',
         dataType: 'json'
     })
         .done(function (data, textStatus, xhr) {
@@ -181,13 +174,14 @@ $(document).on('click input', '.item-text', function (event) {
             $.ajax({
                 type: 'POST',
                 url: '{{ url_for("list.item_set_text") }}',
+                headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
+                contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify({
                     list_id: '{{ list.list_id }}',
                     item_id: $(element).attr('data-item-id'),
                     version_id: $(element).attr('data-version-id'),
                     text: $(element).val()
                 }),
-                contentType: 'application/json; charset=UTF-8',
                 dataType: 'json'
             })
                 .done(function (data, textStatus, xhr) {

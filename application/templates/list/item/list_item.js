@@ -1,26 +1,17 @@
 
-var csrf_token = "{{ csrf_token() }}";
-
-$.ajaxSetup({
-    beforeSend: function (xhr, settings) {
-        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader('X-CSRFToken', csrf_token);
-        }
-    }
-});
-
 $(document).on('click', '.item-type', function () {
     var element = $(this);
 
     $.ajax({
         type: 'POST',
         url: '{{ url_for("list.item_switch_type") }}',
+        headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
+        contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify({
             list_id: '{{ list.list_id }}',
             item_id: $(element).attr('data-item-id'),
             version_id: $(element).attr('data-version-id')
         }),
-        contentType: 'application/json; charset=UTF-8',
         dataType: 'json'
     })
         .done(function (data, textStatus, xhr) {
