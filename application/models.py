@@ -15,12 +15,12 @@ from application import database
 # TODO: make a script with the below commands
 # export PYTHONDONTWRITEBYTECODE=1
 # flask db init
-# flask db migrate -m 'init db'
+# flask db migrate -m 'init db' (or any other change after init)
 # flask db upgrade (flask db downgrade)
+# echo '.schema' | sqlite3 database/application.db > database/database.sql
 # chown -R flask-list:root database
 # chmod 700 database
 # chmod 600 database/application.db
-# echo '.schema' | sqlite3 database/application.db > database/database.sql
 
 
 class SqliteNumeric(types.TypeDecorator):
