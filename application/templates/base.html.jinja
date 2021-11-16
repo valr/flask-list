@@ -19,6 +19,7 @@
     </title>
 </head>
 <body>
+    {% if not current_user.is_anonymous %}
     <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light border-bottom py-0">
         <div class="container">
             <button class="navbar-toggler float-right py-1 my-1" type="button"
@@ -51,31 +52,23 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
-                    {% if current_user.is_anonymous %}
-                        <li class="nav-item py-0">
-                            <a class="nav-link {{'active' if title == 'Sign In' }}"
-                                href="{{ url_for('authentication.login') }}">
-                                Login
-                            </a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item py-0">
-                            <a class="nav-link {{'active' if title == 'Profile' }}"
-                                href="{{ url_for('authentication.profile') }}">
-                                Profile
-                            </a>
-                        </li>
-                        <li class="nav-item py-0">
-                            <a class="nav-link"
-                                href="{{ url_for('authentication.logout') }}">
-                                Logout
-                            </a>
-                        </li>
-                    {% endif %}
+                    <li class="nav-item py-0">
+                        <a class="nav-link {{'active' if title == 'Profile' }}"
+                            href="{{ url_for('authentication.profile') }}">
+                            Profile
+                        </a>
+                    </li>
+                    <li class="nav-item py-0">
+                        <a class="nav-link"
+                            href="{{ url_for('authentication.logout') }}">
+                            Logout
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
+    {% endif %}
 
     <main class="container my-3">
         {{ render_messages(container=True, dismissible=True, dismiss_animate=True) }}
