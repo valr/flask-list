@@ -121,6 +121,6 @@ def delete(list_id):
 @blueprint.route("/list")
 @login_required
 def list():
-    lists = List.query.order_by(List.name.asc())
+    lists = List.query.order_by(List.name)
 
     return render_template("list/list.html.jinja", title="List", lists=lists)
