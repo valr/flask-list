@@ -1,5 +1,5 @@
 
-$(document).on('click', '.item-type', function () {
+$('tbody').on('click', '.item-type', function () {
     var element = $(this);
 
     $.ajax({

@@ -1,5 +1,5 @@
 
-$(document).on('click', '.item-selection', function () {
+$('tbody').on('click', '.item-selection', function () {
     var element = $(this);
 
     $.ajax({
@@ -43,7 +43,7 @@ $(document).on('click', '.item-selection', function () {
         });
 });
 
-$(document).on('click input', '.item-number', function (event) {
+$('tbody').on('click input', '.item-number', function (event) {
     var element = $(this);
 
     if (event.type === 'click') {
@@ -106,7 +106,7 @@ $(document).on('click input', '.item-number', function (event) {
         }, 1000, element);
 });
 
-$(document).on('click', '.item-number-plus, .item-number-minus', function (event) {
+$('tbody').on('click', '.item-number-plus, .item-number-minus', function (event) {
     var element_button = $(this);
     var element = $('.item-number[data-item-id=' +
         $(element_button).attr('data-item-id') + ']');
@@ -153,7 +153,7 @@ $(document).on('click', '.item-number-plus, .item-number-minus', function (event
         });
 });
 
-$(document).on('click input', '.item-text', function (event) {
+$('tbody').on('click input', '.item-text', function (event) {
     var element = $(this);
 
     if (event.type === 'click') {
