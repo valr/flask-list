@@ -26,7 +26,7 @@ def create():
                 "error",
             )
 
-        return redirect(url_for("list.list"))
+        return redirect(url_for("list.item", list_id=list_.list_id))
 
     return render_template(
         "list/create.html.jinja",
