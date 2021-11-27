@@ -2,9 +2,11 @@
     <td class="align-middle">
         {{ category.name }}
     </td>
+    {% if current_user.filter_ is none %}
     <td class="align-middle">
         {{ category.filter_ }}
     </td>
+    {% endif %}
     <td class="align-middle text-center">
         <div class="btn-group" role="group">
             <a class="btn btn-warning rounded text-white mr-2"

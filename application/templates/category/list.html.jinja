@@ -9,9 +9,11 @@
                     <th class="col-7 align-middle">
                         Category
                     </th>
+                    {% if current_user.filter_ is none %}
                     <th class="col-4 align-middle">
                         Filter
                     </th>
+                    {% endif %}
                     <th class="col-1 align-middle text-center text-nowrap">
                         Actions
                         <a class="btn btn-primary btn-sm text-white"
