@@ -5,10 +5,12 @@ CREATE TABLE alembic_version (
 CREATE TABLE category (
 	category_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
 	name VARCHAR(1000) NOT NULL, 
+	filter_ VARCHAR(1000) NOT NULL, 
 	version_id VARCHAR(32) NOT NULL
 );
 CREATE TABLE sqlite_sequence(name,seq);
 CREATE UNIQUE INDEX ix_category_category_id ON category (category_id);
+CREATE INDEX ix_category_filter_ ON category (filter_);
 CREATE UNIQUE INDEX ix_category_name ON category (name);
 CREATE TABLE list (
 	list_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
@@ -23,6 +25,7 @@ CREATE TABLE user (
 	password_hash VARCHAR(128) NOT NULL, 
 	active BOOLEAN NOT NULL, 
 	updated_on DATETIME NOT NULL, 
+	filter_ VARCHAR(1000), 
 	version_id VARCHAR(32) NOT NULL, 
 	CHECK (active IN (0, 1))
 );

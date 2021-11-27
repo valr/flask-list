@@ -1,5 +1,8 @@
-from flask import flash, redirect, render_template, request, url_for
-from flask_login import login_required
+from traceback import format_exc
+
+from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask_login import current_user, login_required
+from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
@@ -15,7 +18,7 @@ def create():
     form = CreateForm()
     if form.validate_on_submit():
         try:
-            category = Category(name=form.name.data)
+            category = Category(name=form.name.data, filter_=form.filter_.data)
             database.session.add(category)
             database.session.commit()
             flash("The category has been created.")
@@ -55,6 +58,7 @@ def update(category_id):
 
         try:
             category.name = form.name.data
+            category.filter_ = form.filter_.data
             database.session.commit()
             flash("The category has been updated.")
         except (IntegrityError, StaleDataError):
@@ -68,6 +72,7 @@ def update(category_id):
     elif request.method == "GET":
         form.version_id.data = category.version_id
         form.name.data = category.name
+        form.filter_.data = category.filter_
 
     return render_template(
         "category/update.html.jinja",
@@ -117,6 +122,7 @@ def delete(category_id):
     elif request.method == "GET":
         form.version_id.data = category.version_id
         form.name.data = category.name
+        form.filter_.data = category.filter_
 
     return render_template(
         "category/delete.html.jinja",
@@ -129,8 +135,54 @@ def delete(category_id):
 @blueprint.route("/list")
 @login_required
 def list():
-    categories = Category.query.order_by(Category.name.asc())
+    categories = Category.query.filter(
+        or_(
+            current_user.filter_ == Category.filter_,
+            current_user.filter_ == None,  # noqa: E711
+        )
+    ).order_by(Category.filter_, Category.name)
 
     return render_template(
         "category/list.html.jinja", title="Category", categories=categories
     )
+
+
+@blueprint.route("/get_filters")
+@login_required
+def get_filters():
+    filters = (
+        database.session.query(Category.filter_)
+        .distinct()
+        .order_by(Category.filter_)
+        .all()
+    )
+
+    return render_template("category/filters.html.jinja", filters=filters)
+
+
+@blueprint.route("/set_filter", methods=["POST"])
+@login_required
+def set_filter():
+    try:
+        data = request.get_json(False, True, False)
+        filter_ = data.get("item_id")
+        version_id = data.get("version_id")
+    except (AttributeError, TypeError, ValueError):
+        print(format_exc())
+        print(f"data: {data}")
+        return jsonify({"status": "missing or invalid data"}), 400
+
+    try:
+        if current_user.version_id != version_id:
+            raise StaleDataError()
+
+        current_user.filter_ = filter_ if filter_ != "All" else None
+        database.session.commit()
+        return jsonify({"status": "ok"})
+    except (IntegrityError, StaleDataError):
+        database.session.rollback()
+        flash(
+            "The item has not been updated due to concurrent modification.",
+            "error",
+        )
+        return jsonify({"status": "cancel"})

@@ -48,6 +48,7 @@ class User(database.Model, UserMixin):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
     )
+    filter_ = database.Column(database.String(1000))
     version_id = database.Column(database.String(32), nullable=False)
 
     __mapper_args__ = {
@@ -96,6 +97,7 @@ class Category(database.Model):
     name = database.Column(
         database.String(1000), index=True, nullable=False, unique=True
     )
+    filter_ = database.Column(database.String(1000), index=True, nullable=False)
     version_id = database.Column(database.String(32), nullable=False)
 
     # one to many: category <-> item

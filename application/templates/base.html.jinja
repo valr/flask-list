@@ -33,6 +33,21 @@
             </button>
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="navbar-nav mr-auto">
+                    <li class="dropdown">
+                        <button class="dropdown-toggle btn btn-light btn-sm shadow-none mr-2 my-1"
+                            type="button"
+                            data-toggle="dropdown"
+                            aria-expanded="false"
+                            aria-haspopup="true">
+                            {% if current_user.filter_ %}
+                                {{ current_user.filter_ }}
+                            {% else %}
+                                All
+                            {% endif %}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdown-toggle">
+                        </div>
+                    </li>
                     <li class="nav-item py-0">
                         <a class="nav-link {{'active' if title.endswith('List') }}"
                             href="{{ url_for('list.list') }}">
@@ -78,6 +93,9 @@
 
     {% block scripts %}
     {{ bootstrap.load_js() }}
+    <script nonce="{{ csp_nonce() }}">
+        {% include 'base.js' %}
+    </script>
     {% endblock %}
 
     <noscript>

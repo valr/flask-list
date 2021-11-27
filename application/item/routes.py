@@ -1,5 +1,6 @@
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import login_required
+from flask_login import current_user, login_required
+from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
@@ -141,6 +142,12 @@ def list():
     categories_items = (
         database.session.query(Category, Item)
         .outerjoin(Item)
+        .filter(
+            or_(
+                current_user.filter_ == Category.filter_,
+                current_user.filter_ == None,  # noqa: E711
+            )
+        )
         .order_by(Category.name, Item.name)
         .all()
     )

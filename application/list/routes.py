@@ -1,12 +1,12 @@
 from flask import flash, redirect, render_template, request, url_for
-from flask_login import login_required
+from flask_login import current_user, login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
 from application.list.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import List
+from application.models import Category, Item, List, ListItem
 
 
 @blueprint.route("/create", methods=["GET", "POST"])
@@ -121,6 +121,17 @@ def delete(list_id):
 @blueprint.route("/list")
 @login_required
 def list():
-    lists = List.query.order_by(List.name)
+    if current_user.filter_ is None:
+        lists = List.query.order_by(List.name)
+    else:
+        lists = (
+            database.session.query(List)
+            .join(ListItem)
+            .join(Item)
+            .join(Category)
+            .filter(Category.filter_ == current_user.filter_)
+            .order_by(List.name)
+            .all()
+        )
 
     return render_template("list/list.html.jinja", title="List", lists=lists)

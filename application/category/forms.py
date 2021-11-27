@@ -11,6 +11,10 @@ class CreateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
+    filter_ = StringField(
+        "Filter",
+        validators=[DataRequired(), Length(max=1000)],
+    )
 
     submit = SubmitField("Create")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
@@ -20,12 +24,20 @@ class CreateForm(FlaskForm):
         if category is not None:
             raise ValidationError("The category already exists.")
 
+    def validate_filter_(self, filter_):
+        if filter_.data == "All":
+            raise ValidationError("The filter 'All' is reserved.")
+
 
 class UpdateForm(FlaskForm):
     name = StringField(
         "Name",
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
+    )
+    filter_ = StringField(
+        "Filter",
+        validators=[DataRequired(), Length(max=1000)],
     )
 
     version_id = HiddenField("Version", render_kw={"readonly": True})
@@ -42,9 +54,14 @@ class UpdateForm(FlaskForm):
             if category is not None:
                 raise ValidationError("The category already exists.")
 
+    def validate_filter_(self, filter_):
+        if filter_.data == "All":
+            raise ValidationError("The filter 'All' is reserved.")
+
 
 class DeleteForm(FlaskForm):
     name = StringField("Name", render_kw={"readonly": True})
+    filter_ = StringField("Filter", render_kw={"readonly": True})
     version_id = HiddenField("Version", render_kw={"readonly": True})
     submit = SubmitField("Delete")
     cancel = SubmitField("Cancel", render_kw={"type": "button", "autofocus": True})

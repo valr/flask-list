@@ -2,8 +2,8 @@ from decimal import Decimal
 from traceback import format_exc
 
 from flask import flash, jsonify, redirect, render_template, request, url_for
-from flask_login import login_required
-from sqlalchemy import and_, inspect
+from flask_login import current_user, login_required
+from sqlalchemy import and_, inspect, or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
@@ -26,6 +26,12 @@ def item(list_id):
         .outerjoin(
             ListItem,
             and_(ListItem.item_id == Item.item_id, ListItem.list_id == list_id),
+        )
+        .filter(
+            or_(
+                current_user.filter_ == Category.filter_,
+                current_user.filter_ == None,  # noqa: E711
+            )
         )
         .order_by(Category.name, Item.name)
         .all()

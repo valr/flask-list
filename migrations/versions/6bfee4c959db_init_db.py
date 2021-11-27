@@ -1,8 +1,8 @@
 """init db
 
-Revision ID: 62d92ac5091b
+Revision ID: 6bfee4c959db
 Revises: 
-Create Date: 2021-10-29 22:07:07.768967
+Create Date: 2021-11-16 19:24:12.201899
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import application
 
 
 # revision identifiers, used by Alembic.
-revision = '62d92ac5091b'
+revision = '6bfee4c959db'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,11 +22,13 @@ def upgrade():
     op.create_table('category',
     sa.Column('category_id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=1000), nullable=False),
+    sa.Column('filter_', sa.String(length=1000), nullable=False),
     sa.Column('version_id', sa.String(length=32), nullable=False),
     sa.PrimaryKeyConstraint('category_id'),
     sqlite_autoincrement=True
     )
     op.create_index(op.f('ix_category_category_id'), 'category', ['category_id'], unique=True)
+    op.create_index(op.f('ix_category_filter_'), 'category', ['filter_'], unique=False)
     op.create_index(op.f('ix_category_name'), 'category', ['name'], unique=True)
     op.create_table('list',
     sa.Column('list_id', sa.Integer(), nullable=False),
@@ -43,6 +45,7 @@ def upgrade():
     sa.Column('password_hash', sa.String(length=128), nullable=False),
     sa.Column('active', sa.Boolean(), nullable=False),
     sa.Column('updated_on', sa.DateTime(), nullable=False),
+    sa.Column('filter_', sa.String(length=1000), nullable=True),
     sa.Column('version_id', sa.String(length=32), nullable=False),
     sa.PrimaryKeyConstraint('user_id'),
     sqlite_autoincrement=True
@@ -67,7 +70,7 @@ def upgrade():
     sa.Column('item_id', sa.Integer(), nullable=False),
     sa.Column('type', sa.Enum('none', 'selection', 'number', 'text', name='listitemtype'), nullable=False),
     sa.Column('selection', sa.Boolean(), nullable=False),
-    sa.Column('number', application.models.SqliteNumeric(), nullable=False),
+    sa.Column('number', application.models.SqliteNumeric(length=1000), nullable=False),
     sa.Column('text', sa.String(length=1000), nullable=False),
     sa.Column('version_id', sa.String(length=32), nullable=False),
     sa.ForeignKeyConstraint(['item_id'], ['item.item_id'], ondelete='CASCADE'),
@@ -96,6 +99,7 @@ def downgrade():
     op.drop_index(op.f('ix_list_list_id'), table_name='list')
     op.drop_table('list')
     op.drop_index(op.f('ix_category_name'), table_name='category')
+    op.drop_index(op.f('ix_category_filter_'), table_name='category')
     op.drop_index(op.f('ix_category_category_id'), table_name='category')
     op.drop_table('category')
     # ### end Alembic commands ###
