@@ -24,6 +24,10 @@
                     "https://flask.palletsprojects.com"
                 ],
                 [
+                    "Flask WTF",
+                    "https://flask-wtf.readthedocs.io"
+                ],
+                [
                     "Jinja",
                     "https://jinja.palletsprojects.com"
                 ],
@@ -42,6 +46,10 @@
                 [
                     "SQLAlchemy",
                     "https://docs.sqlalchemy.org"
+                ],
+                [
+                    "WTF",
+                    "https://wtforms.readthedocs.io"
                 ]
             ]
         }
