@@ -1,4 +1,16 @@
 
+$('thead').on('click', '.item-type', function () {
+    var element = $(this);
+
+    $(element)
+        .closest('table')
+        .children('tbody')
+        .find('.item-type')
+        .each(function () {
+            $(this).trigger('click');
+        });
+});
+
 $('tbody').on('click', '.item-type', function () {
     var element = $(this);
 
