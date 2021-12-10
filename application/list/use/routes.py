@@ -85,45 +85,6 @@ def item_switch_selection():
         )
 
 
-@blueprint.route("/item/set_text", methods=["POST"])
-@login_required
-def item_set_text():
-    try:
-        data = request.get_json(False, True, False)
-        list_id = int(data.get("list_id"))
-        item_id = int(data.get("item_id"))
-        version_id = data.get("version_id")
-        text = data.get("text")
-    except (AttributeError, TypeError, ValueError):
-        print(format_exc())
-        print(f"data: {data}")
-        return jsonify({"status": "missing or invalid data"}), 400
-
-    try:
-        list_item = ListItem.query.get((list_id, item_id))
-        if list_item is None or list_item.version_id != version_id:
-            raise StaleDataError()
-
-        list_item.text = text
-        database.session.commit()
-        return jsonify(
-            {
-                "status": "ok",
-                "version": list_item.version_id,
-                # the text is not returned (it's already in the input element)
-            }
-        )
-    except (IntegrityError, StaleDataError):
-        database.session.rollback()
-        flash(
-            "The item has not been updated due to concurrent modification.",
-            "error",
-        )
-        return jsonify(
-            {"status": "cancel", "cancel_url": url_for("list.use", list_id=list_id)}
-        )
-
-
 @blueprint.route("/item/set_number", methods=["POST"])
 @login_required
 def item_set_number():
@@ -151,6 +112,45 @@ def item_set_number():
                 "status": "ok",
                 "number": str(list_item.number),
                 "version": list_item.version_id,
+            }
+        )
+    except (IntegrityError, StaleDataError):
+        database.session.rollback()
+        flash(
+            "The item has not been updated due to concurrent modification.",
+            "error",
+        )
+        return jsonify(
+            {"status": "cancel", "cancel_url": url_for("list.use", list_id=list_id)}
+        )
+
+
+@blueprint.route("/item/set_text", methods=["POST"])
+@login_required
+def item_set_text():
+    try:
+        data = request.get_json(False, True, False)
+        list_id = int(data.get("list_id"))
+        item_id = int(data.get("item_id"))
+        version_id = data.get("version_id")
+        text = data.get("text")
+    except (AttributeError, TypeError, ValueError):
+        print(format_exc())
+        print(f"data: {data}")
+        return jsonify({"status": "missing or invalid data"}), 400
+
+    try:
+        list_item = ListItem.query.get((list_id, item_id))
+        if list_item is None or list_item.version_id != version_id:
+            raise StaleDataError()
+
+        list_item.text = text
+        database.session.commit()
+        return jsonify(
+            {
+                "status": "ok",
+                "version": list_item.version_id,
+                # the text is not returned (it's already in the input element)
             }
         )
     except (IntegrityError, StaleDataError):
