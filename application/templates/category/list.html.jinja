@@ -6,7 +6,11 @@
         <table class="table table-striped table-bordered table-hover table-sm">
             <thead class="table-primary text-white">
                 <tr>
+                    {% if current_user.filter_ is none %}
                     <th class="col-7 align-middle">
+                    {% else %}
+                    <th class="col-11 align-middle">
+                    {% endif %}
                         Category
                     </th>
                     {% if current_user.filter_ is none %}
