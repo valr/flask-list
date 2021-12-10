@@ -25,8 +25,9 @@
             <button class="navbar-toggler float-right py-1 my-1"
                     type="button"
                     data-toggle="collapse"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
+                    data-target="#navbar-collapse"
+                    aria-controls="navbar-collapse"
+                    aria-expanded="false">
                 {{ render_icon('list') }}
             </button>
             <div class="collapse navbar-collapse" id="navbar-collapse">
@@ -35,15 +36,14 @@
                         <button class="dropdown-toggle btn btn-primary btn-sm shadow-none mr-2 my-1"
                             type="button"
                             data-toggle="dropdown"
-                            aria-expanded="false"
-                            aria-haspopup="true">
+                            aria-expanded="false">
                             {% if current_user.filter_ %}
                                 {{ current_user.filter_ }}
                             {% else %}
                                 All
                             {% endif %}
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdown-toggle">
+                        <div class="dropdown-menu">
                         </div>
                     </li>
                     <li class="nav-item py-0">
