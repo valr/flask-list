@@ -1,5 +1,5 @@
 
-$('.dropdown').on('show.bs.dropdown', function () {
+$('.dropdown-filter').on('show.bs.dropdown', function () {
     var element = $(this);
 
     $.ajax({
@@ -17,7 +17,7 @@ $('.dropdown').on('show.bs.dropdown', function () {
         });
 });
 
-$('.dropdown').on('click', '.dropdown-item', function () {
+$('.dropdown-filter').on('click', '.dropdown-item', function () {
     var element = $(this);
 
     $.ajax({
