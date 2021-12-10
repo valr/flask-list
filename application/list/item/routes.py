@@ -46,15 +46,18 @@ def item(list_id):
     )
 
 
-@blueprint.route("/item/switch_type", methods=["POST"])
+@blueprint.route("/item/set_type", methods=["POST"])
 @login_required
-def item_switch_type():
+def item_set_type():
     try:
         data = request.get_json(False, True, False)
         list_id = int(data.get("list_id"))
         item_id = int(data.get("item_id"))
         version_id = data.get("version_id")
-    except (AttributeError, TypeError, ValueError):
+        type_ = data.get("type")
+        if type_ is not None:
+            type_ = ListItemType[type_]
+    except (AttributeError, KeyError, TypeError, ValueError):
         print(format_exc())
         print(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
@@ -68,7 +71,7 @@ def item_switch_type():
             list_item = ListItem(
                 list_id=list_id,
                 item_id=item_id,
-                type_=ListItemType.selection,
+                type_=type_ if type_ is not None else ListItemType.selection,
                 selection=False,
                 number=Decimal(),
                 text="",
@@ -78,15 +81,15 @@ def item_switch_type():
             if version_id != list_item.version_id:
                 raise StaleDataError()
 
-            list_item.type_ = list_item.type_.next()
+            list_item.type_ = type_ if type_ is not None else list_item.type_.next()
 
-            if (
-                list_item.type_ == ListItemType.none
-                and list_item.selection is False
-                and list_item.number == Decimal()
-                and list_item.text == ""
-            ):
-                database.session.delete(list_item)
+        if (
+            list_item.type_ == ListItemType.none
+            and list_item.selection is False
+            and list_item.number == Decimal()
+            and list_item.text == ""
+        ):
+            database.session.delete(list_item)
 
         database.session.commit()
         return jsonify(
