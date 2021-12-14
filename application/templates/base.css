@@ -18,6 +18,11 @@ td[data-href] {
   cursor: pointer;
 }
 
+.alert {
+  margin-top: 1rem !important;
+  margin-bottom: 0rem !important;
+}
+
 .bg-primary {
   background-color: #325d88 !important;
 }
