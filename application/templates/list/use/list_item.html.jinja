@@ -18,7 +18,7 @@
                 </a>
             {% endif %}
         {% elif ci[list_item].type_|string() == "ListItemType.number" %}
-            <div class="input-group">
+            <div class="input-group flex-nowrap">
             <div class="input-group-prepend">
             <button class="item-number-minus btn btn-light border shadow-none"
                     data-item-id="{{ ci[list_item].item_id }}"
