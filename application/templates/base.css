@@ -49,10 +49,10 @@ td[data-href] {
   height: auto !important;
 }
 
-/*
 .form-group.required .form-control-label:after {
-    content: "*";
-    color: red;
+  color: darkred;
+  content: " ⚹";
+}
 
 @media (max-width: 767px) {
   .item-value {
@@ -64,7 +64,6 @@ td[data-href] {
     min-width: 185px;
   }
 }
-*/
 
 /*
  * as documented in https://icons.getbootstrap.com/, the size of icons can be
