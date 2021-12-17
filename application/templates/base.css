@@ -53,6 +53,16 @@ td[data-href] {
 .form-group.required .form-control-label:after {
     content: "*";
     color: red;
+
+@media (max-width: 767px) {
+  .item-value {
+    min-width: 135px;
+  }
+}
+@media (min-width: 768px) {
+  .item-value {
+    min-width: 185px;
+  }
 }
 */
 
