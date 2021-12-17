@@ -2,7 +2,7 @@
     <td class="align-middle">
         {{ ci[item].name }}
     </td>
-    <td class="item-value align-middle text-center">
+    <td class="align-middle text-center item-value">
         {% if ci[list_item].type_|string() == "ListItemType.selection" %}
             {% if ci[list_item].selection is false %}
                 <a class="item-selection btn btn-block bg-transparent text-dark"
