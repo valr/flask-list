@@ -27,7 +27,7 @@
                 </thead>
                 <tbody class="collapse show" id="collapse{{ ci[category].category_id }}">
         {% endif %}
-        {% if ci[item] is not none %} 
+        {% if ci[item] is not none %}
             {% include 'item/list_item.html.jinja' %}
         {%endif %}
         {% if loop.nextitem is not defined or
