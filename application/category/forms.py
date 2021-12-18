@@ -40,7 +40,7 @@ class UpdateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
     )
 
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Update")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
@@ -62,6 +62,6 @@ class UpdateForm(FlaskForm):
 class DeleteForm(FlaskForm):
     name = StringField("Name", render_kw={"readonly": True})
     filter_ = StringField("Filter", render_kw={"readonly": True})
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Delete")
     cancel = SubmitField("Cancel", render_kw={"type": "button", "autofocus": True})

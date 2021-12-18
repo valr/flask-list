@@ -28,7 +28,7 @@ class UpdateForm(FlaskForm):
         render_kw={"autofocus": True},
     )
 
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Update")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
@@ -45,6 +45,6 @@ class UpdateForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     name = StringField("Name", render_kw={"readonly": True})
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Delete")
     cancel = SubmitField("Cancel", render_kw={"type": "button", "autofocus": True})

@@ -35,7 +35,7 @@ class UpdateForm(FlaskForm):
 
     category_id = SelectField("Category", validators=[DataRequired()], coerce=int)
 
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Update")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
@@ -62,6 +62,6 @@ class DeleteForm(FlaskForm):
 
     category_id = SelectField("Category", coerce=int, render_kw={"readonly": True})
 
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Delete")
     cancel = SubmitField("Cancel", render_kw={"type": "button", "autofocus": True})

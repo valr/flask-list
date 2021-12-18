@@ -59,7 +59,7 @@ class ProfileForm(FlaskForm):
         validators=[EqualTo("password", message="Field is not equal to New Password.")],
     )
 
-    version_id = HiddenField("Version", render_kw={"readonly": True})
+    version_id = HiddenField("Version")
     submit = SubmitField("Save")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
