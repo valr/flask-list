@@ -15,7 +15,13 @@ from application.models import Category, Item
 def create(category_id):
     form = CreateForm()
     form.category_id.choices = [
-        (c.category_id, c.name) for c in Category.query.order_by(Category.name)
+        (c.category_id, c.name)
+        for c in Category.query.filter(
+            or_(
+                current_user.filter_ == Category.filter_,
+                current_user.filter_ == None,  # noqa: E711
+            )
+        ).order_by(Category.name)
     ]
 
     if form.validate_on_submit():
@@ -53,7 +59,13 @@ def update(item_id):
 
     form = UpdateForm(item.name, item.category_id)
     form.category_id.choices = [
-        (c.category_id, c.name) for c in Category.query.order_by(Category.name)
+        (c.category_id, c.name)
+        for c in Category.query.filter(
+            or_(
+                current_user.filter_ == Category.filter_,
+                current_user.filter_ == None,  # noqa: E711
+            )
+        ).order_by(Category.name)
     ]
 
     if form.validate_on_submit():
@@ -100,7 +112,13 @@ def delete(item_id):
 
     form = DeleteForm()
     form.category_id.choices = [
-        (c.category_id, c.name) for c in Category.query.order_by(Category.name)
+        (c.category_id, c.name)
+        for c in Category.query.filter(
+            or_(
+                current_user.filter_ == Category.filter_,
+                current_user.filter_ == None,  # noqa: E711
+            )
+        ).order_by(Category.name)
     ]
 
     if form.validate_on_submit():
