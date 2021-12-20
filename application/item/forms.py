@@ -60,7 +60,7 @@ class UpdateForm(FlaskForm):
 class DeleteForm(FlaskForm):
     name = StringField("Name", render_kw={"readonly": True})
 
-    category_id = SelectField("Category", coerce=int, render_kw={"readonly": True})
+    category_name = StringField("Category", render_kw={"readonly": True})
 
     version_id = HiddenField("Version")
     submit = SubmitField("Delete")

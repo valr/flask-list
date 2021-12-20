@@ -111,16 +111,6 @@ def delete(item_id):
         return redirect(url_for("item.list"))
 
     form = DeleteForm()
-    form.category_id.choices = [
-        (c.category_id, c.name)
-        for c in Category.query.filter(
-            or_(
-                current_user.filter_ == Category.filter_,
-                current_user.filter_ == None,  # noqa: E711
-            )
-        ).order_by(Category.name)
-    ]
-
     if form.validate_on_submit():
         if form.version_id.data != item.version_id:
             flash(
@@ -144,7 +134,7 @@ def delete(item_id):
     elif request.method == "GET":
         form.version_id.data = item.version_id
         form.name.data = item.name
-        form.category_id.data = item.category_id
+        form.category_name.data = item.category.name
 
     return render_template(
         "item/delete.html.jinja",
