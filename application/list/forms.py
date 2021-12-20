@@ -11,7 +11,6 @@ class CreateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
-
     submit = SubmitField("Create")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
@@ -27,7 +26,6 @@ class UpdateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
-
     version_id = HiddenField("Version")
     submit = SubmitField("Update")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})

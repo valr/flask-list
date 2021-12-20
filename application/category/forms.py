@@ -15,7 +15,6 @@ class CreateForm(FlaskForm):
         "Filter",
         validators=[DataRequired(), Length(max=1000)],
     )
-
     submit = SubmitField("Create")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
@@ -39,7 +38,6 @@ class UpdateForm(FlaskForm):
         "Filter",
         validators=[DataRequired(), Length(max=1000)],
     )
-
     version_id = HiddenField("Version")
     submit = SubmitField("Update")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})

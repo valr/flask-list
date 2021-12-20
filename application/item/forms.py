@@ -11,9 +11,7 @@ class CreateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
-
     category_id = SelectField("Category", validators=[DataRequired()], coerce=int)
-
     submit = SubmitField("Create")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
@@ -32,9 +30,7 @@ class UpdateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
-
     category_id = SelectField("Category", validators=[DataRequired()], coerce=int)
-
     version_id = HiddenField("Version")
     submit = SubmitField("Update")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
@@ -59,9 +55,7 @@ class UpdateForm(FlaskForm):
 
 class DeleteForm(FlaskForm):
     name = StringField("Name", render_kw={"readonly": True})
-
     category_name = StringField("Category", render_kw={"readonly": True})
-
     version_id = HiddenField("Version")
     submit = SubmitField("Delete")
     cancel = SubmitField("Cancel", render_kw={"type": "button", "autofocus": True})
