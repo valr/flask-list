@@ -17,7 +17,7 @@ $('.dropdown-list').on('click', '.dropdown-item', function () {
                     list_id: '{{ list.list_id }}',
                     item_id: $(element).attr('data-item-id'),
                     version_id: $(element).attr('data-version-id'),
-                    type: $(dropdown_item).attr('dropdown-item-id')
+                    type: $(dropdown_item).attr('data-type')
                 }),
                 dataType: 'json'
             })
@@ -34,7 +34,7 @@ $('.dropdown-list').on('click', '.dropdown-item', function () {
                         ' list_id:' + '{{ list.list_id }}' +
                         ' item_id:' + $(element).attr('data-item-id') +
                         ' version_id:' + $(element).attr('data-version-id') +
-                        ' type:' + $(dropdown_item).attr('dropdown-item-id') +
+                        ' type:' + $(dropdown_item).attr('data-type') +
                         ' responseText:' + xhr.responseText);
                 });
         });
