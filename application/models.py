@@ -30,7 +30,7 @@ class SqliteNumeric(types.TypeDecorator):
         return str(value)
 
     def process_result_value(self, value, dialect):
-        return Decimal(value)
+        return Decimal(value if value is not None else "0")
 
 
 class User(database.Model, UserMixin):
