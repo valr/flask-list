@@ -30,6 +30,9 @@ def create():
             )
 
         return redirect(url_for("category.list"))
+    elif request.method == "GET":
+        if current_user.filter_ is not None:
+            form.filter_.data = current_user.filter_
 
     return render_template(
         "category/create.html.jinja",
