@@ -39,11 +39,6 @@ def create_application(instance_path):
 
     application.config.from_pyfile("flask-list.conf")
 
-    # set session cookie attribute not covered yet by flask-talisman (PR opened)
-    # https://flask.palletsprojects.com/en/1.1.x/security/#set-cookie-options
-    # https://github.com/GoogleCloudPlatform/flask-talisman/pull/51
-    application.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-
     # set remember cookie attributes
     application.config["REMEMBER_COOKIE_SECURE"] = True
     application.config["REMEMBER_COOKIE_HTTPONLY"] = True
