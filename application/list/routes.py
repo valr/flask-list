@@ -1,12 +1,13 @@
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
+from sqlalchemy import func, literal_column, or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.list import blueprint
 from application.list.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category, Item, List, ListItem
+from application.models import Category, Item, List
 
 
 @blueprint.route("/create", methods=["GET", "POST"])
@@ -15,7 +16,11 @@ def create():
     form = CreateForm()
     if form.validate_on_submit():
         try:
-            list_ = List(name=form.name.data)
+            list_ = List(
+                name=form.name.data,
+                created_by=current_user.user_id,
+                private=form.private.data,
+            )
             database.session.add(list_)
             database.session.commit()
             flash("The list has been created.")
@@ -26,13 +31,13 @@ def create():
                 "error",
             )
 
-        return redirect(url_for("list.item", list_id=list_.list_id))
+        return redirect(url_for("list.read"))
 
     return render_template(
         "list/create.html.jinja",
         title="Create List",
         form=form,
-        cancel_url=url_for("list.list"),
+        cancel_url=url_for("list.read"),
     )
 
 
@@ -40,21 +45,18 @@ def create():
 @login_required
 def update(list_id):
     list_ = List.query.get(list_id)
-    if list_ is None:
+    if list_ is None or not current_user.has_access(list_):
         flash("The list has not been found.", "error")
-        return redirect(url_for("list.list"))
+        return redirect(url_for("list.read"))
 
     form = UpdateForm(list_.name)
     if form.validate_on_submit():
-        if form.version_id.data != list_.version_id:
-            flash(
-                "The list has not been updated due to concurrent modification.",
-                "error",
-            )
-            return redirect(url_for("list.list"))
-
         try:
+            if list_.version_id != form.version_id.data:
+                raise StaleDataError()
+
             list_.name = form.name.data
+            list_.private = form.private.data
             database.session.commit()
             flash("The list has been updated.")
         except (IntegrityError, StaleDataError):
@@ -64,16 +66,17 @@ def update(list_id):
                 "error",
             )
 
-        return redirect(url_for("list.list"))
+        return redirect(url_for("list.read"))
     elif request.method == "GET":
-        form.version_id.data = list_.version_id
         form.name.data = list_.name
+        form.private.data = list_.private
+        form.version_id.data = list_.version_id
 
     return render_template(
         "list/update.html.jinja",
         title="Update List",
         form=form,
-        cancel_url=url_for("list.list"),
+        cancel_url=url_for("list.read"),
     )
 
 
@@ -81,21 +84,32 @@ def update(list_id):
 @login_required
 def delete(list_id):
     list_ = List.query.get(list_id)
-    if list_ is None:
+    if list_ is None or not current_user.has_access(list_):
         flash("The list has not been found.", "error")
-        return redirect(url_for("list.list"))
+        return redirect(url_for("list.read"))
 
     form = DeleteForm()
     if form.validate_on_submit():
-        if form.version_id.data != list_.version_id:
-            flash(
-                "The list has not been deleted due to concurrent modification.",
-                "error",
-            )
-            return redirect(url_for("list.list"))
-
         try:
-            database.session.delete(list_)
+            if list_.version_id != form.version_id.data:
+                raise StaleDataError()
+
+            database.session.query(Item).filter(
+                Item.category_id.in_(
+                    database.session.query(Category)
+                    .filter(Category.list_id == list_id)
+                    .with_entities(Category.category_id)
+                )
+            ).delete(synchronize_session=False)
+
+            database.session.query(Category).filter(Category.list_id == list_id).delete(
+                synchronize_session=False
+            )
+
+            database.session.query(List).filter(List.list_id == list_id).delete(
+                synchronize_session=False
+            )
+
             database.session.commit()
             flash("The list has been deleted.")
         except StaleDataError:
@@ -105,33 +119,44 @@ def delete(list_id):
                 "error",
             )
 
-        return redirect(url_for("list.list"))
+        return redirect(url_for("list.read"))
     elif request.method == "GET":
-        form.version_id.data = list_.version_id
         form.name.data = list_.name
+        form.private.data = list_.private
+        form.version_id.data = list_.version_id
+
+    category_count = (
+        database.session.query(func.count(literal_column("*")))
+        .filter(Category.list_id == list_id)
+        .scalar()
+    )
+
+    item_count = (
+        database.session.query(func.count(literal_column("*")))
+        .select_from(Item)
+        .join(Category)
+        .filter(Category.list_id == list_id)
+        .scalar()
+    )
 
     return render_template(
         "list/delete.html.jinja",
         title="Delete List",
         form=form,
-        cancel_url=url_for("list.list"),
+        category_count=category_count,
+        item_count=item_count,
+        cancel_url=url_for("list.read"),
     )
 
 
-@blueprint.route("/list")
+@blueprint.route("/read")
 @login_required
-def list():
-    if current_user.filter_ is None:
-        lists = List.query.order_by(List.name)
-    else:
-        lists = (
-            database.session.query(List)
-            .join(ListItem)
-            .join(Item)
-            .join(Category)
-            .filter(Category.filter_ == current_user.filter_)
-            .order_by(List.name)
-            .all()
+def read():
+    lists = List.query.filter(
+        or_(
+            List.private == False,  # noqa: E712
+            List.created_by == current_user.user_id,
         )
+    ).order_by(List.name)
 
-    return render_template("list/list.html.jinja", title="List", lists=lists)
+    return render_template("list/read.html.jinja", title="List", lists=lists)

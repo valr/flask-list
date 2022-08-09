@@ -6,24 +6,21 @@
         <table class="table table-striped table-bordered table-hover table-sm mt-3 mb-0">
             <thead class="table-primary text-white">
                 <tr>
-                    <th class="col-10 align-middle">
-                        List
-                    </th>
-                    <th class="col-1 align-middle text-center">
-                        Items
-                    </th>
-                    <th class="col-1 align-middle text-center text-nowrap">
-                        Actions
-                        <a class="btn btn-primary btn-sm text-white"
+                    <th class="col-11 align-middle">
+                        <a class="btn btn-primary btn-sm rounded text-white"
                             href="{{ url_for('list.create') }}">
                             {{ render_icon('plus-square') }}
                         </a>
+                        List
+                    </th>
+                    <th class="col-1 align-middle text-center text-nowrap">
+                        Actions
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {% for list in lists %}
-                    {% include 'list/list_item.html.jinja' %}
+                    {% include 'list/read_row.html.jinja' %}
                 {% endfor %}
             </tbody>
         </table>

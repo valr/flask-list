@@ -4,11 +4,10 @@ $('tbody').on('click', '.item-selection', function () {
 
     $.ajax({
         type: 'POST',
-        url: '{{ url_for("list.item_switch_selection") }}',
+        url: '{{ url_for("item.switch_selection") }}',
         headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify({
-            list_id: '{{ list.list_id }}',
             item_id: $(element).attr('data-item-id'),
             version_id: $(element).attr('data-version-id')
         }),
@@ -35,8 +34,7 @@ $('tbody').on('click', '.item-selection', function () {
         })
         .fail(function (xhr, textStatus, errorThrown) {
             console.log(
-                'POST failed on list.item_switch_selection.' +
-                ' list_id:' + '{{ list.list_id }}' +
+                'POST failed on item.switch_selection.' +
                 ' item_id:' + $(element).attr('data-item-id') +
                 ' version_id:' + $(element).attr('data-version-id') +
                 ' responseText:' + xhr.responseText);
@@ -73,11 +71,10 @@ $('tbody').on('click input', '.item-number', function (event) {
         function (element) {
             $.ajax({
                 type: 'POST',
-                url: '{{ url_for("list.item_set_number") }}',
+                url: '{{ url_for("item.set_number") }}',
                 headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify({
-                    list_id: '{{ list.list_id }}',
                     item_id: $(element).attr('data-item-id'),
                     version_id: $(element).attr('data-version-id'),
                     number: number
@@ -96,8 +93,7 @@ $('tbody').on('click input', '.item-number', function (event) {
                 .fail(function (xhr, textStatus, errorThrown) {
                     $(element).addClass('text-danger');
                     console.log(
-                        'POST failed on list.item_set_number.' +
-                        ' list_id:' + '{{ list.list_id }}' +
+                        'POST failed on item.set_number.' +
                         ' item_id:' + $(element).attr('data-item-id') +
                         ' version_id:' + $(element).attr('data-version-id') +
                         ' number:' + number +
@@ -121,14 +117,14 @@ $('tbody').on('click', '.item-number-plus, .item-number-minus', function (event)
 
     $.ajax({
         type: 'POST',
-        url: '{{ url_for("list.item_set_number") }}',
+        url: '{{ url_for("item.set_number") }}',
         headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify({
-            list_id: '{{ list.list_id }}',
             item_id: $(element).attr('data-item-id'),
             version_id: $(element).attr('data-version-id'),
-            number: number, to_add: to_add
+            number: number,
+            to_add: to_add
         }),
         dataType: 'json'
     })
@@ -143,8 +139,7 @@ $('tbody').on('click', '.item-number-plus, .item-number-minus', function (event)
         })
         .fail(function (xhr, textStatus, errorThrown) {
             console.log(
-                'POST failed on list.item_set_number.' +
-                ' list_id:' + '{{ list.list_id }}' +
+                'POST failed on item.set_number.' +
                 ' item_id:' + $(element).attr('data-item-id') +
                 ' version_id:' + $(element).attr('data-version-id') +
                 ' number:' + number +
@@ -173,11 +168,10 @@ $('tbody').on('click input', '.item-text', function (event) {
         function (element) {
             $.ajax({
                 type: 'POST',
-                url: '{{ url_for("list.item_set_text") }}',
+                url: '{{ url_for("item.set_text") }}',
                 headers: { 'X-CSRFToken': '{{ csrf_token() }}' },
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify({
-                    list_id: '{{ list.list_id }}',
                     item_id: $(element).attr('data-item-id'),
                     version_id: $(element).attr('data-version-id'),
                     text: $(element).val()
@@ -196,8 +190,7 @@ $('tbody').on('click input', '.item-text', function (event) {
                 .fail(function (xhr, textStatus, errorThrown) {
                     $(element).addClass('text-danger');
                     console.log(
-                        'POST failed on list.item_set_text.' +
-                        ' list_id:' + '{{ list.list_id }}' +
+                        'POST failed on item.set_text.' +
                         ' item_id:' + $(element).attr('data-item-id') +
                         ' version_id:' + $(element).attr('data-version-id') +
                         ' text:' + $(element).val() +

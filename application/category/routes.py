@@ -1,24 +1,27 @@
-from traceback import format_exc
-
-from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from sqlalchemy import or_
+from sqlalchemy import func, literal_column
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
 from application import database
 from application.category import blueprint
 from application.category.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category
+from application.models import Category, Item, List
 
 
-@blueprint.route("/create", methods=["GET", "POST"])
+@blueprint.route("/create/<int:list_id>", methods=["GET", "POST"])
 @login_required
-def create():
-    form = CreateForm()
+def create(list_id):
+    list_ = List.query.get(list_id)
+    if list_ is None or not current_user.has_access(list_):
+        flash("The list has not been found.", "error")
+        return redirect(url_for("list.read"))
+
+    form = CreateForm(list_id)
     if form.validate_on_submit():
         try:
-            category = Category(name=form.name.data, filter_=form.filter_.data)
+            category = Category(name=form.name.data, list_id=list_id)
             database.session.add(category)
             database.session.commit()
             flash("The category has been created.")
@@ -29,16 +32,13 @@ def create():
                 "error",
             )
 
-        return redirect(url_for("category.list"))
-    elif request.method == "GET":
-        if current_user.filter_ is not None:
-            form.filter_.data = current_user.filter_
+        return redirect(url_for("list.detail", list_id=list_id))
 
     return render_template(
         "category/create.html.jinja",
         title="Create Category",
         form=form,
-        cancel_url=url_for("category.list"),
+        cancel_url=url_for("list.detail", list_id=list_id),
     )
 
 
@@ -46,22 +46,18 @@ def create():
 @login_required
 def update(category_id):
     category = Category.query.get(category_id)
-    if category is None:
+    if category is None or not current_user.has_access(category.list_):
         flash("The category has not been found.", "error")
-        return redirect(url_for("category.list"))
+        return redirect(url_for("list.read"))
+    list_id = category.list_id
 
-    form = UpdateForm(category.name)
+    form = UpdateForm(category.list_id, category.name)
     if form.validate_on_submit():
-        if form.version_id.data != category.version_id:
-            flash(
-                "The category has not been updated due to concurrent modification.",
-                "error",
-            )
-            return redirect(url_for("category.list"))
-
         try:
+            if category.version_id != form.version_id.data:
+                raise StaleDataError()
+
             category.name = form.name.data
-            category.filter_ = form.filter_.data
             database.session.commit()
             flash("The category has been updated.")
         except (IntegrityError, StaleDataError):
@@ -71,17 +67,16 @@ def update(category_id):
                 "error",
             )
 
-        return redirect(url_for("category.list"))
+        return redirect(url_for("list.detail", list_id=list_id))
     elif request.method == "GET":
-        form.version_id.data = category.version_id
         form.name.data = category.name
-        form.filter_.data = category.filter_
+        form.version_id.data = category.version_id
 
     return render_template(
         "category/update.html.jinja",
         title="Update Category",
         form=form,
-        cancel_url=url_for("category.list"),
+        cancel_url=url_for("list.detail", list_id=list_id),
     )
 
 
@@ -89,31 +84,27 @@ def update(category_id):
 @login_required
 def delete(category_id):
     category = Category.query.get(category_id)
-    if category is None:
+    if category is None or not current_user.has_access(category.list_):
         flash("The category has not been found.", "error")
-        return redirect(url_for("category.list"))
+        return redirect(url_for("list.read"))
+    list_id = category.list_id
 
     form = DeleteForm()
     if form.validate_on_submit():
-        if form.version_id.data != category.version_id:
-            flash(
-                "The category has not been deleted due to concurrent modification.",
-                "error",
-            )
-            return redirect(url_for("category.list"))
-
         try:
-            database.session.delete(category)
+            if category.version_id != form.version_id.data:
+                raise StaleDataError()
+
+            database.session.query(Item).filter(Item.category_id == category_id).delete(
+                synchronize_session=False
+            )
+
+            database.session.query(Category).filter(
+                Category.category_id == category_id
+            ).delete(synchronize_session=False)
+
             database.session.commit()
             flash("The category has been deleted.")
-        except IntegrityError:
-            # in case of deletion, the foreign key of related items will be set
-            # to null, resulting in an integrity error
-            database.session.rollback()
-            flash(
-                "The category has not been deleted because it still contains item(s).",
-                "error",
-            )
         except StaleDataError:
             database.session.rollback()
             flash(
@@ -121,71 +112,21 @@ def delete(category_id):
                 "error",
             )
 
-        return redirect(url_for("category.list"))
+        return redirect(url_for("list.detail", list_id=list_id))
     elif request.method == "GET":
-        form.version_id.data = category.version_id
         form.name.data = category.name
-        form.filter_.data = category.filter_
+        form.version_id.data = category.version_id
+
+    item_count = (
+        database.session.query(func.count(literal_column("*")))
+        .filter(Item.category_id == category_id)
+        .scalar()
+    )
 
     return render_template(
         "category/delete.html.jinja",
         title="Delete Category",
         form=form,
-        cancel_url=url_for("category.list"),
+        item_count=item_count,
+        cancel_url=url_for("list.detail", list_id=list_id),
     )
-
-
-@blueprint.route("/list")
-@login_required
-def list():
-    categories = Category.query.filter(
-        or_(
-            current_user.filter_ == Category.filter_,
-            current_user.filter_ == None,  # noqa: E711
-        )
-    ).order_by(Category.filter_, Category.name)
-
-    return render_template(
-        "category/list.html.jinja", title="Category", categories=categories
-    )
-
-
-@blueprint.route("/get_filters")
-@login_required
-def get_filters():
-    filters = (
-        database.session.query(Category.filter_)
-        .distinct()
-        .order_by(Category.filter_)
-        .all()
-    )
-
-    return render_template("category/filters.html.jinja", filters=filters)
-
-
-@blueprint.route("/set_filter", methods=["POST"])
-@login_required
-def set_filter():
-    try:
-        data = request.get_json(False, True, False)
-        filter_ = data.get("item_id")
-        version_id = data.get("version_id")
-    except (AttributeError, TypeError, ValueError):
-        print(format_exc())
-        print(f"data: {data}")
-        return jsonify({"status": "missing or invalid data"}), 400
-
-    try:
-        if current_user.version_id != version_id:
-            raise StaleDataError()
-
-        current_user.filter_ = filter_ if filter_ != "All" else None
-        database.session.commit()
-        return jsonify({"status": "ok"})
-    except (IntegrityError, StaleDataError):
-        database.session.rollback()
-        flash(
-            "The item has not been updated due to concurrent modification.",
-            "error",
-        )
-        return jsonify({"status": "cancel"})

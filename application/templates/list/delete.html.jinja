@@ -7,6 +7,17 @@
             Delete List
         </h5>
         <div class="card-body">
+            {% if category_count > 0 %}
+            <div class="card-title text-danger font-italic">
+                WARNING: The list still contains
+                {% if item_count > 0 %}
+                    {{ item_count }}
+                    {% if item_count == 1 %} item {% else %} items {% endif %} in
+                {% endif %}
+                {{ category_count }}
+                {% if category_count == 1 %} category {% else %} categories {% endif %}
+            </div>
+            {% endif %}
             <div class="row">
                 <div class="col-md-4">
                     {{ render_form(form, button_map={

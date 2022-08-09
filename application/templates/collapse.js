@@ -37,3 +37,8 @@ $('.collapse').not('.navbar-collapse').on('shown.bs.collapse', function () {
         .nextAll(':has(table):first').children('table:first')
         .removeClass('mt-0').addClass('mt-3');
 });
+
+$('.btn-no-collapse').on('click', function (e) {
+    // don't collapse the table when clicking on the button inside the header
+    e.stopPropagation();
+});

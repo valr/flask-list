@@ -13,11 +13,11 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from application import database
 
 # TODO: make a script with the below commands
-# export PYTHONDONTWRITEBYTECODE=1
 # flask db init
+# add 'import application' in migrations/script.py.mako
 # flask db migrate -m 'init db' (or any other change after init)
 # flask db upgrade (flask db downgrade)
-# echo '.schema' | sqlite3 database/application.db > database/database.sql
+# echo '.schema' | sqlite3 database/application.db >| database/database.sql
 # chown -R flask-list:root database
 # chmod 700 database
 # chmod 600 database/application.db
@@ -35,10 +35,10 @@ class SqliteNumeric(types.TypeDecorator):
 
 class User(database.Model, UserMixin):
     user_id = database.Column(
-        database.Integer, index=True, nullable=False, unique=True, primary_key=True
+        database.Integer, nullable=False, unique=True, index=True, primary_key=True
     )
     email = database.Column(
-        database.String(1000), index=True, nullable=False, unique=True
+        database.String(1000), nullable=False, unique=True, index=True
     )
     password_hash = database.Column(database.String(128), nullable=False)
     active = database.Column(database.Boolean(), nullable=False)
@@ -48,7 +48,6 @@ class User(database.Model, UserMixin):
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
     )
-    filter_ = database.Column(database.String(1000))
     version_id = database.Column(database.String(32), nullable=False)
 
     __mapper_args__ = {
@@ -89,85 +88,27 @@ class User(database.Model, UserMixin):
 
         return User.query.get(user_id)
 
-
-class Category(database.Model):
-    category_id = database.Column(
-        database.Integer, index=True, nullable=False, unique=True, primary_key=True
-    )
-    name = database.Column(
-        database.String(1000), index=True, nullable=False, unique=True
-    )
-    filter_ = database.Column(database.String(1000), index=True, nullable=False)
-    version_id = database.Column(database.String(32), nullable=False)
-
-    # one to many: category <-> item
-    items = database.relationship("Item", back_populates="category")
-
-    __mapper_args__ = {
-        "version_id_col": version_id,
-        "version_id_generator": lambda version: uuid.uuid4().hex,
-    }
-    __table_args__ = {"sqlite_autoincrement": True}
-
-    def __repr__(self):
-        return f"<Category id: {self.category_id} name: {self.name}>"
-
-
-class Item(database.Model):
-    item_id = database.Column(
-        database.Integer, index=True, nullable=False, unique=True, primary_key=True
-    )
-    name = database.Column(
-        database.String(1000), index=True, nullable=False  # not unique
-    )
-    version_id = database.Column(database.String(32), nullable=False)
-
-    # one to many: category <-> item
-    category = database.relationship("Category", back_populates="items")
-    category_id = database.Column(
-        database.Integer,
-        database.ForeignKey("category.category_id", ondelete="RESTRICT"),
-        index=True,
-        nullable=False,
-    )
-
-    # many to many: list <-> item
-    lists = database.relationship(
-        "ListItem",
-        back_populates="item",
-        cascade="save-update, merge, delete",
-        passive_deletes=True,
-    )
-
-    __mapper_args__ = {
-        "version_id_col": version_id,
-        "version_id_generator": lambda version: uuid.uuid4().hex,
-    }
-    __table_args__ = (
-        database.UniqueConstraint("name", "category_id"),
-        {"sqlite_autoincrement": True},
-    )
-
-    def __repr__(self):
-        return f"<Item id: {self.item_id} name: {self.name}>"
+    def has_access(self, object_):
+        return (
+            (object_.private is False or object_.created_by == self.user_id)
+            if isinstance(object_, List)
+            else False
+        )
 
 
 class List(database.Model):
     list_id = database.Column(
-        database.Integer, index=True, nullable=False, unique=True, primary_key=True
+        database.Integer, nullable=False, unique=True, index=True, primary_key=True
     )
     name = database.Column(
-        database.String(1000), index=True, nullable=False, unique=True
+        database.String(1000), nullable=False, unique=True, index=True
     )
+    created_by = database.Column(database.Integer, nullable=False)
+    private = database.Column(database.Boolean(), nullable=False)
     version_id = database.Column(database.String(32), nullable=False)
 
-    # many to many: list <-> item
-    items = database.relationship(
-        "ListItem",
-        back_populates="list_",
-        cascade="save-update, merge, delete",
-        passive_deletes=True,
-    )
+    # one to many: list <-> categories
+    categories = database.relationship("Category", back_populates="list_")
 
     __mapper_args__ = {
         "version_id_col": version_id,
@@ -179,49 +120,79 @@ class List(database.Model):
         return f"<List id: {self.list_id} name: {self.name}>"
 
 
-class ListItemType(enum.Enum):
-    none = 0
-    selection = 1
-    number = 2
-    text = 3
-
-    def next(self):
-        return ListItemType((self.value + 1) % 4)
-
-
-class ListItem(database.Model):
-    list_id = database.Column(
-        database.Integer,
-        database.ForeignKey("list.list_id", ondelete="CASCADE"),
-        index=True,
-        nullable=False,
-        primary_key=True,
+class Category(database.Model):
+    category_id = database.Column(
+        database.Integer, nullable=False, unique=True, index=True, primary_key=True
     )
-    item_id = database.Column(
-        database.Integer,
-        database.ForeignKey("item.item_id", ondelete="CASCADE"),
-        index=True,
-        nullable=False,
-        primary_key=True,
+    name = database.Column(
+        database.String(1000), nullable=False, index=True  # unique per list
     )
-    type_ = database.Column("type", database.Enum(ListItemType), nullable=False)
-    selection = database.Column("selection", database.Boolean, nullable=False)
-    # number = database.Column("number", database.Numeric, nullable=False)
-    number = database.Column("number", SqliteNumeric, nullable=False)
-    text = database.Column("text", database.String(1000), nullable=False)
     version_id = database.Column(database.String(32), nullable=False)
 
-    list_ = database.relationship("List", back_populates="items")
-    item = database.relationship("Item", back_populates="lists")
+    # one to many: list <-> categories
+    list_ = database.relationship("List", back_populates="categories")
+    list_id = database.Column(
+        database.Integer,
+        database.ForeignKey("list.list_id"),
+        nullable=False,
+        index=True,
+    )
+
+    # one to many: category <-> items
+    items = database.relationship(
+        "Item", back_populates="category", cascade="all, delete-orphan"
+    )
 
     __mapper_args__ = {
         "version_id_col": version_id,
         "version_id_generator": lambda version: uuid.uuid4().hex,
     }
     __table_args__ = (
-        database.PrimaryKeyConstraint("list_id", "item_id"),
+        database.UniqueConstraint("list_id", "name"),
         {"sqlite_autoincrement": True},
     )
 
     def __repr__(self):
-        return f"<ListItem list: {self.list_id} item: {self.item_id}>"
+        return f"<Category id: {self.category_id} name: {self.name}>"
+
+
+class ItemType(enum.Enum):
+    selection = 0
+    number = 1
+    text = 2
+
+
+class Item(database.Model):
+    item_id = database.Column(
+        database.Integer, nullable=False, unique=True, index=True, primary_key=True
+    )
+    name = database.Column(
+        database.String(1000), nullable=False, index=True  # unique per category
+    )
+    type_ = database.Column("type", database.Enum(ItemType), nullable=False)
+    selection = database.Column(database.Boolean, nullable=False)
+    # number = database.Column(database.Numeric, nullable=False)
+    number = database.Column(SqliteNumeric, nullable=False)
+    text = database.Column(database.String(1000), nullable=False)
+    version_id = database.Column(database.String(32), nullable=False)
+
+    # one to many: category <-> items
+    category = database.relationship("Category", back_populates="items")
+    category_id = database.Column(
+        database.Integer,
+        database.ForeignKey("category.category_id"),
+        nullable=False,
+        index=True,
+    )
+
+    __mapper_args__ = {
+        "version_id_col": version_id,
+        "version_id_generator": lambda version: uuid.uuid4().hex,
+    }
+    __table_args__ = (
+        database.UniqueConstraint("category_id", "name"),
+        {"sqlite_autoincrement": True},
+    )
+
+    def __repr__(self):
+        return f"<Item id: {self.item_id} name: {self.name}>"

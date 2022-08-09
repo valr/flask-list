@@ -1,0 +1,78 @@
+{% extends 'base.html.jinja' %}
+{% from 'bootstrap/utils.html' import render_icon %}
+
+{% block content %}
+    <h4 class="text-center mt-3 mb-0">
+        <a class="btn btn-sm rounded text-primary mb-1"
+            href="{{ url_for('category.create', list_id=list.list_id) }}">
+            {{ render_icon('plus-square') }}
+        </a>
+        <a class="text-dark text-decoration-none"
+            href="{{ url_for('list.read') }}">
+            {{ list.name }}
+        </a>
+    </h4>
+    {% set c_ix, i_ix = 0, 1 %}
+    {% for ci in categories_items %}
+        {% if loop.previtem is not defined or
+            ( loop.previtem is defined and
+              loop.previtem[c_ix].category_id != ci[c_ix].category_id ) %}
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover table-sm mt-3 mb-0">
+                <thead class="table-primary text-white">
+                    <tr>
+                        <th class="col-7 col-md-9 align-middle"
+                            data-target="#collapse{{ ci[c_ix].category_id }}"
+                            data-toggle="collapse"
+                            role="button">
+                            <a class="btn btn-primary btn-sm btn-no-collapse rounded text-white"
+                               href="{{ url_for('item.create', category_id=ci[c_ix].category_id) }}">
+                                {{ render_icon('plus-square') }}
+                            </a>
+                            {{ ci[c_ix].name }}
+                        </th>
+                        <th class="col-4 col-md-2 align-middle"
+                            data-target="#collapse{{ ci[c_ix].category_id }}"
+                            data-toggle="collapse"
+                            role="button">
+                        </th>
+                        <th class="col-1 align-middle text-center text-nowrap">
+                            <div class="btn-group" role="group">
+                                <a class="btn btn-warning rounded text-white mr-2"
+                                    href="{{ url_for('category.update', category_id=ci[c_ix].category_id) }}">
+                                    {{ render_icon('pencil') }}
+                                </a>
+                                <a class="btn btn-danger rounded text-white"
+                                    href="{{ url_for('category.delete', category_id=ci[c_ix].category_id) }}">
+                                    {{ render_icon('trash') }}
+                                </a>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="collapse show" id="collapse{{ ci[c_ix].category_id }}">
+        {% endif %}
+        {% if ci[i_ix] is not none %}
+            {% include 'list/detail/read_row.html.jinja' %}
+        {% endif %}
+        {% if loop.nextitem is not defined or
+            ( loop.nextitem is defined and
+              loop.nextitem[c_ix].category_id != ci[c_ix].category_id ) %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script nonce="{{ csp_nonce() }}">
+        {% include 'list/detail/read_row.js' %}
+        {% include 'cancel.js' %}
+        {% include 'collapse.js' %}
+        {% include 'scroll.js' %}
+        {% include 'debounce.js' %}
+    </script>
+{% endblock %}

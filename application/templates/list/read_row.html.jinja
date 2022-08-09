@@ -1,15 +1,16 @@
 <tr>
-    <td class="align-middle">
-        {{ ci[item].name }}
+    <td class="align-middle"
+        data-href="{{ url_for('list.detail', list_id=list.list_id) }}">
+        {{ list.name }}
     </td>
-    <td class="align-middle text-center">
+    <td class="align-middle text-center text-nowrap">
         <div class="btn-group" role="group">
             <a class="btn btn-warning rounded text-white mr-2"
-                href="{{ url_for('item.update', item_id=ci[item].item_id) }}">
+                href="{{ url_for('list.update', list_id=list.list_id) }}">
                 {{ render_icon('pencil') }}
             </a>
             <a class="btn btn-danger rounded text-white"
-                href="{{ url_for('item.delete', item_id=ci[item].item_id) }}">
+                href="{{ url_for('list.delete', list_id=list.list_id) }}">
                 {{ render_icon('trash') }}
             </a>
         </div>

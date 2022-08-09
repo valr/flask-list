@@ -166,8 +166,8 @@ def profile():
 
         return redirect(url_for("index"))
     elif request.method == "GET":
-        form.version_id.data = current_user.version_id
         form.email.data = current_user.email
+        form.version_id.data = current_user.version_id
         # form.yyy.data = current_user.xxx
 
     return render_template(

@@ -1,0 +1,60 @@
+<tr>
+    <td class="align-middle">
+        {{ ci[i_ix].name }}
+    </td>
+    <td class="align-middle text-center item-value">
+        {% if ci[i_ix].type_|string() == "ItemType.selection" %}
+            {% if ci[i_ix].selection is false %}
+                <a class="item-selection btn btn-block bg-transparent text-dark"
+                    data-item-id="{{ ci[i_ix].item_id }}"
+                    data-version-id="{{ ci[i_ix].version_id }}">
+                    {{ render_icon('square') }}
+                </a>
+            {% elif ci[i_ix].selection is true %}
+                <a class="item-selection btn btn-block btn-success text-white"
+                    data-item-id="{{ ci[i_ix].item_id }}"
+                    data-version-id="{{ ci[i_ix].version_id }}">
+                    {{ render_icon('check-square') }}
+                </a>
+            {% endif %}
+        {% elif ci[i_ix].type_|string() == "ItemType.number" %}
+            <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+            <button class="item-number-minus btn btn-light border shadow-none"
+                    data-item-id="{{ ci[i_ix].item_id }}"
+                    type="button">−</button>
+            </div>
+            <input class="item-number form-control bg-white border shadow-none text-center"
+                    data-item-id="{{ ci[i_ix].item_id }}"
+                    data-version-id="{{ ci[i_ix].version_id }}"
+                    value="{{ ci[i_ix].number if ci[i_ix].number != 0.0 }}"
+                    maxlength="1000"
+                    type="text">
+            <div class="input-group-append">
+            <button class="item-number-plus btn btn-light border shadow-none"
+                    data-item-id="{{ ci[i_ix].item_id }}"
+                    type="button">+</button>
+            </div>
+            </div>
+        {% elif ci[i_ix].type_|string() == "ItemType.text" %}
+            <input class="item-text form-control bg-white border shadow-none"
+                    data-item-id="{{ ci[i_ix].item_id }}"
+                    data-version-id="{{ ci[i_ix].version_id }}"
+                    value="{{ ci[i_ix].text }}"
+                    maxlength="1000"
+                    type="text">
+        {% endif %}
+    </td>
+    <td class="align-middle text-center text-nowrap">
+        <div class="btn-group" role="group">
+            <a class="btn btn-warning rounded text-white mr-2"
+                href="{{ url_for('item.update', item_id=ci[i_ix].item_id) }}">
+                {{ render_icon('pencil') }}
+            </a>
+            <a class="btn btn-danger rounded text-white"
+                href="{{ url_for('item.delete', item_id=ci[i_ix].item_id) }}">
+                {{ render_icon('trash') }}
+            </a>
+        </div>
+    </td>
+</tr>

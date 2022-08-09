@@ -29,40 +29,17 @@
                 {{ render_icon('list') }}
             </button>
             <div class="collapse navbar-collapse" id="navbar-collapse">
+                {#
                 <ul class="navbar-nav mr-auto">
-                    <li class="dropdown dropdown-filter">
-                        <button class="dropdown-toggle btn btn-primary btn-sm shadow-none mr-2 my-1"
-                            data-toggle="dropdown"
-                            type="button">
-                            {% if current_user.filter_ %}
-                                {{ current_user.filter_ }}
-                            {% else %}
-                                All
-                            {% endif %}
-                        </button>
-                        <div class="dropdown-menu">
-                        </div>
-                    </li>
                     <li class="nav-item py-0">
                         <a class="nav-link {{'active' if title.endswith('List') }}"
-                            href="{{ url_for('list.list') }}">
+                            href="{{ url_for('list.read') }}">
                             List
                         </a>
                     </li>
-                    <li class="nav-item py-0">
-                        <a class="nav-link {{'active' if title.endswith('Item') }}"
-                            href="{{ url_for('item.list') }}">
-                            Item
-                        </a>
-                    </li>
-                    <li class="nav-item py-0">
-                        <a class="nav-link {{'active' if title.endswith('Category') }}"
-                            href="{{ url_for('category.list') }}">
-                            Category
-                        </a>
-                    </li>
                 </ul>
-                <ul class="navbar-nav">
+                #}
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item py-0">
                         <a class="nav-link {{'active' if title == 'Profile' }}"
                             href="{{ url_for('authentication.profile') }}">
@@ -88,9 +65,11 @@
 
     {% block scripts %}
     {{ bootstrap.load_js() }}
+    {#
     <script nonce="{{ csp_nonce() }}">
         {% include 'base.js' %}
     </script>
+    #}
     {% endblock %}
 
     <noscript>
