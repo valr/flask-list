@@ -29,8 +29,8 @@ def load_user(user_id):
     try:
         return User.query.get(int(user_id))
     except ValueError:
-        print(format_exc())
-        print(f"user_id: {user_id}")
+        current_app.logger.error(format_exc())
+        current_app.logger.error(f"user_id: {user_id}")
         return None
 
 
@@ -91,7 +91,7 @@ def register_cleaning():
         User.active == False, User.updated_on < expired_on  # noqa: E712
     ).delete()
     database.session.commit()
-    print("The inactive users have been cleaned.")
+    current_app.logger.info("inactive users have been cleaned")
 
 
 @blueprint.route("/login", methods=["GET", "POST"])

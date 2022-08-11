@@ -1,7 +1,8 @@
 from decimal import Decimal, DecimalException
 from traceback import format_exc
 
-from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask import (current_app, flash, jsonify, redirect, render_template,
+                   request, url_for)
 from flask_login import current_user, login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
@@ -160,8 +161,8 @@ def switch_selection():
         item_id = int(data.get("item_id"))
         version_id = data.get("version_id")
     except (AttributeError, TypeError, ValueError):
-        print(format_exc())
-        print(f"data: {data}")
+        current_app.logger.error(format_exc())
+        current_app.logger.error(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     item = Item.query.get(item_id)
@@ -204,8 +205,8 @@ def set_number():
         number = Decimal(data.get("number"))
         to_add = Decimal(data.get("to_add", "0"))
     except (AttributeError, TypeError, ValueError, DecimalException):
-        print(format_exc())
-        print(f"data: {data}")
+        current_app.logger.error(format_exc())
+        current_app.logger.error(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     item = Item.query.get(item_id)
@@ -247,8 +248,8 @@ def set_text():
         version_id = data.get("version_id")
         text = data.get("text")
     except (AttributeError, TypeError, ValueError):
-        print(format_exc())
-        print(f"data: {data}")
+        current_app.logger.error(format_exc())
+        current_app.logger.error(f"data: {data}")
         return jsonify({"status": "missing or invalid data"}), 400
 
     item = Item.query.get(item_id)
