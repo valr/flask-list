@@ -7,6 +7,7 @@ from flask_paranoid import Paranoid
 from flask_sqlalchemy import SQLAlchemy
 from flask_talisman import Talisman
 from flask_wtf.csrf import CSRFProtect
+from jinja2 import select_autoescape
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 
@@ -46,6 +47,9 @@ def create_application(instance_path):
 
     application.jinja_env.trim_blocks = True
     application.jinja_env.lstrip_blocks = True
+    application.jinja_env.autoescape = select_autoescape(
+        ["html", "htm", "xml", "jinja"]  # adding jinja to default
+    )
 
     database.init_app(application)
     migrate.init_app(application, database)
