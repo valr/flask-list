@@ -1,0 +1,13 @@
+bootstrap-flask
+email-validator
+flask
+flask-caching
+flask-login
+flask-mail
+flask-migrate
+flask-paranoid
+flask-sqlalchemy
+flask-talisman
+flask-wtf
+pyjwt
+pylibmc
