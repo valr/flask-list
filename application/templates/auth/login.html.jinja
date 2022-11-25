@@ -17,14 +17,14 @@
             {% if registration_allowed == True %}
             <div class="mb-2">
                     New User?
-                    <a href="{{ url_for('authentication.register') }}">
+                    <a href="{{ url_for('auth.register') }}">
                         Click to Register
                     </a>
             </div>
             {% endif %}
             <div>
                 Forgot Your Password?
-                <a href="{{ url_for('authentication.reset_password') }}">
+                <a href="{{ url_for('auth.reset_password') }}">
                     Click to Reset It
                 </a>
             </div>

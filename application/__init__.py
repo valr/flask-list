@@ -58,7 +58,7 @@ def create_application(instance_path):
     login.init_app(application)
     login.session_protection = None  # using paranoid
     paranoid.init_app(application)
-    paranoid.redirect_view = "authentication.login"
+    paranoid.redirect_view = "auth.login"
     talisman.init_app(
         application,
         strict_transport_security=False,  # setup in webserver
@@ -74,12 +74,9 @@ def create_application(instance_path):
     bootstrap.init_app(application)
     mail.init_app(application)
 
-    from application.authentication import \
-        blueprint as authentication_blueprint
+    from application.auth import blueprint as auth_blueprint
 
-    application.register_blueprint(
-        authentication_blueprint, url_prefix="/authentication"
-    )
+    application.register_blueprint(auth_blueprint, url_prefix="/auth")
 
     from application.category import blueprint as category_blueprint
 

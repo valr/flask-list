@@ -28,11 +28,9 @@ def send_register_email(user):
         "Confirm Your Registration",
         sender=current_app.config["MAIL_FROM"],
         recipients=[user.email],
-        text_body=render_template(
-            "authentication/email/register.txt", user=user, token=token
-        ),
+        text_body=render_template("auth/email/register.txt", user=user, token=token),
         html_body=render_template(
-            "authentication/email/register.html.jinja", user=user, token=token
+            "auth/email/register.html.jinja", user=user, token=token
         ),
     )
 
@@ -45,9 +43,9 @@ def send_reset_password_email(user):
         sender=current_app.config["MAIL_FROM"],
         recipients=[user.email],
         text_body=render_template(
-            "authentication/email/reset_password.txt", user=user, token=token
+            "auth/email/reset_password.txt", user=user, token=token
         ),
         html_body=render_template(
-            "authentication/email/reset_password.html.jinja", user=user, token=token
+            "auth/email/reset_password.html.jinja", user=user, token=token
         ),
     )

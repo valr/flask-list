@@ -1,4 +1,4 @@
 To confirm your registration click on the following link:
-{{ url_for('authentication.register_confirmation', token=token, _external=True) }}
+{{ url_for('auth.register_confirmation', token=token, _external=True) }}
 
 If you have not requested registration simply ignore this message.

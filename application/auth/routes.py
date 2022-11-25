@@ -9,19 +9,18 @@ from sqlalchemy.orm.exc import StaleDataError
 from werkzeug.routing import BuildError
 
 from application import database, login
-from application.authentication import blueprint
-from application.authentication.emails import (send_register_email,
-                                               send_reset_password_email)
-from application.authentication.forms import (LoginForm, ProfileForm,
-                                              RegisterForm,
-                                              ResetPasswordConfirmationForm,
-                                              ResetPasswordForm)
+from application.auth import blueprint
+from application.auth.emails import (send_register_email,
+                                     send_reset_password_email)
+from application.auth.forms import (LoginForm, ProfileForm, RegisterForm,
+                                    ResetPasswordConfirmationForm,
+                                    ResetPasswordForm)
 from application.models import User
 
 
 @login.unauthorized_handler
 def unauthorized_user():
-    return redirect(url_for("authentication.login", next=request.endpoint))
+    return redirect(url_for("auth.login", next=request.endpoint))
 
 
 @login.user_loader
@@ -56,10 +55,10 @@ def register():
             send_register_email(user)
             flash("An email has been sent to confirm your registration.")
 
-        return redirect(url_for("authentication.login"))
+        return redirect(url_for("auth.login"))
 
     return render_template(
-        "authentication/register.html.jinja",
+        "auth/register.html.jinja",
         title="Register",
         form=form,
         cancel_url=url_for("index"),
@@ -82,10 +81,10 @@ def register_confirmation(token):
     current_app.logger.info(f"successful registration of id: {user_id}")
 
     flash("The registration is successful!")
-    return redirect(url_for("authentication.login"))
+    return redirect(url_for("auth.login"))
 
 
-# cli command: flask authentication cleaning
+# cli command: flask auth cleaning
 @blueprint.cli.command("cleaning")
 def register_cleaning():
     expired_on = datetime.utcnow() - timedelta(hours=1)
@@ -107,11 +106,11 @@ def login():
         if user is None or not user.verify_password(form.password.data):
             current_app.logger.error(f"failed login of email: {form.email.data}")
             flash("The email or password is invalid.", "error")
-            return redirect(url_for("authentication.login"))
+            return redirect(url_for("auth.login"))
 
         if not user.active:
             flash("The user is inactive.", "warning")
-            return redirect(url_for("authentication.login"))
+            return redirect(url_for("auth.login"))
 
         login_user(user, remember=form.remember_me.data)
         current_app.logger.info(f"successful login of id: {user.user_id}")
@@ -122,7 +121,7 @@ def login():
             return redirect(url_for("index"))
 
     return render_template(
-        "authentication/login.html.jinja",
+        "auth/login.html.jinja",
         title="Sign In",
         form=form,
         registration_allowed=current_app.config["REGISTRATION_ALLOWED"],
@@ -175,7 +174,7 @@ def profile():
         # form.yyy.data = current_user.xxx
 
     return render_template(
-        "authentication/profile.html.jinja",
+        "auth/profile.html.jinja",
         title="Profile",
         form=form,
         cancel_url=url_for("index"),
@@ -204,10 +203,10 @@ def reset_password():
 
         # always display the message even if no email has been sent
         flash("An email has been sent to reset your password.")
-        return redirect(url_for("authentication.login"))
+        return redirect(url_for("auth.login"))
 
     return render_template(
-        "authentication/reset_password.html.jinja",
+        "auth/reset_password.html.jinja",
         title="Reset Password",
         form=form,
         cancel_url=url_for("index"),
@@ -239,10 +238,10 @@ def reset_password_confirmation(token):
             current_app.logger.info(f"successful reset password of id: {user_id}")
             flash("Your password has been reset.")
 
-        return redirect(url_for("authentication.login"))
+        return redirect(url_for("auth.login"))
 
     return render_template(
-        "authentication/reset_password_confirmation.html.jinja",
+        "auth/reset_password_confirmation.html.jinja",
         title="Reset Password",
         form=form,
         cancel_url=url_for("index"),
