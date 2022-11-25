@@ -61,7 +61,7 @@ def create_application(instance_path):
     paranoid.redirect_view = "auth.login"
     talisman.init_app(
         application,
-        strict_transport_security=False,  # setup in webserver
+        strict_transport_security=False,  # setup in web server
         content_security_policy={
             "font-src": ["'self'", "*.gstatic.com"],
             "style-src": ["'self'", "*.gstatic.com", "fonts.googleapis.com"],
