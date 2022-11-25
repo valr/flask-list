@@ -75,19 +75,15 @@ def create_application(instance_path):
     mail.init_app(application)
 
     from application.auth import blueprint as auth_blueprint
-
     application.register_blueprint(auth_blueprint, url_prefix="/auth")
 
     from application.category import blueprint as category_blueprint
-
     application.register_blueprint(category_blueprint, url_prefix="/category")
 
     from application.item import blueprint as item_blueprint
-
     application.register_blueprint(item_blueprint, url_prefix="/item")
 
     from application.list import blueprint as list_blueprint
-
     application.register_blueprint(list_blueprint, url_prefix="/list")
 
     return application
