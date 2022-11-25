@@ -1,0 +1,86 @@
+# use default or current directory for temporary directories/files
+# set tempdir := "."
+
+# list the recipes
+default:
+  @just --justfile {{justfile()}} --list --list-heading '' --unsorted
+
+# initialise the virtual environment
+init-venv:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ -d .venv ] && { echo "error: the virtual environment .venv already exists"; false; }
+  python -m venv .venv
+  source .venv/bin/activate
+  pip install --upgrade pip setuptools wheel
+  pip install --upgrade pip-tools
+
+# install the requirements for a production environment
+install-requirements-production:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
+  source .venv/bin/activate
+  pip-sync requirements.txt
+
+# install the requirements for a development environment
+install-requirements-development:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
+  source .venv/bin/activate
+  pip-sync requirements.txt dev-requirements.txt
+
+# compile the requirements for production and development environments
+compile-requirements:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
+  source .venv/bin/activate
+  pip-compile --quiet requirements.in
+  pip-compile --quiet dev-requirements.in
+
+# upgrade the requirements for production and development environments
+upgrade-requirements:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
+  source .venv/bin/activate
+  pip-compile --quiet --upgrade requirements.in
+  pip-compile --quiet --upgrade dev-requirements.in
+
+# initialise the database
+init-db:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ -e database/application.db ] && { echo "error: the database file already exists"; false; }
+  [ -d migrations ] && { echo "error: the migrations directory already exists"; false; }
+  source .venv/bin/activate
+  flask db init
+  sed -i -e '/^import sqlalchemy as sa/a import application' migrations/script.py.mako
+  flask db migrate -m 'init db'
+  flask db upgrade
+  echo '.schema' | sqlite3 database/application.db >| database/database.sql
+
+# run the flask application in the development server
+run-application:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
+  source .venv/bin/activate
+  flask --debug run
+
+# clean the inactive users from the database
+clean-inactive-users:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  source .venv/bin/activate
+  flask auth cleaning
+
+# run a local memcached server
+run-memcached-server:
+  memcached -p 11211 -m 64 -c 1024 -l 127.0.0.1,::1 -o modern,drop_privileges
+
+# run a local mail server
+run-mail-server:
+  python -m smtpd -n -c DebuggingServer localhost:8025
