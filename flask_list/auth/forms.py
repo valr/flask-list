@@ -1,10 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import (BooleanField, HiddenField, PasswordField, StringField,
-                     SubmitField)
-from wtforms.validators import (DataRequired, Email, EqualTo, Length,
-                                ValidationError)
+from wtforms import BooleanField, HiddenField, PasswordField, StringField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 
-from application.models import User
+from flask_list.models import User
 
 
 class RegisterForm(FlaskForm):

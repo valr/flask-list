@@ -7,7 +7,7 @@ Create Date: ${create_date}
 """
 from alembic import op
 import sqlalchemy as sa
-import application
+import flask_list
 ${imports if imports else ""}
 
 # revision identifiers, used by Alembic.

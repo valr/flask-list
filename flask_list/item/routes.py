@@ -1,16 +1,23 @@
 from decimal import Decimal, DecimalException
 from traceback import format_exc
 
-from flask import (current_app, flash, jsonify, redirect, render_template,
-                   request, url_for)
+from flask import (
+    current_app,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
 from flask_login import current_user, login_required
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
-from application import database
-from application.item import blueprint
-from application.item.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category, Item, ItemType
+from flask_list import database
+from flask_list.item import blueprint
+from flask_list.item.forms import CreateForm, DeleteForm, UpdateForm
+from flask_list.models import Category, Item, ItemType
 
 
 @blueprint.route("/create/<int:category_id>", methods=["GET", "POST"])

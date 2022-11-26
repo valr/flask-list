@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import BooleanField, HiddenField, StringField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 
-from application.models import List
+from flask_list.models import List
 
 
 class CreateForm(FlaskForm):

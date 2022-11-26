@@ -1,9 +1,9 @@
 from flask import flash, redirect, render_template, url_for
 from flask_login import current_user, login_required
 
-from application import database
-from application.list import blueprint
-from application.models import Category, Item, List
+from flask_list import database
+from flask_list.list import blueprint
+from flask_list.models import Category, Item, List
 
 
 @blueprint.route("/detail/<int:list_id>")

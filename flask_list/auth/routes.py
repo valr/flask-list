@@ -1,21 +1,23 @@
 from datetime import datetime, timedelta
 from traceback import format_exc
 
-from flask import (current_app, flash, redirect, render_template, request,
-                   url_for)
+from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 from werkzeug.routing import BuildError
 
-from application import database, login
-from application.auth import blueprint
-from application.auth.emails import (send_register_email,
-                                     send_reset_password_email)
-from application.auth.forms import (LoginForm, ProfileForm, RegisterForm,
-                                    ResetPasswordConfirmationForm,
-                                    ResetPasswordForm)
-from application.models import User
+from flask_list import database, login
+from flask_list.auth import blueprint
+from flask_list.auth.emails import send_register_email, send_reset_password_email
+from flask_list.auth.forms import (
+    LoginForm,
+    ProfileForm,
+    RegisterForm,
+    ResetPasswordConfirmationForm,
+    ResetPasswordForm,
+)
+from flask_list.models import User
 
 
 @login.unauthorized_handler

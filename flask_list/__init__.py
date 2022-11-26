@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap4
+from flask_caching import Cache
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -20,6 +21,7 @@ paranoid = Paranoid()
 talisman = Talisman()
 
 bootstrap = Bootstrap4()
+cache = Cache()
 mail = Mail()
 
 
@@ -30,7 +32,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.close()
 
 
-def create_application(instance_path):
+def create_application(instance_path, config_file='flask-list.conf'):
     if instance_path:
         application = Flask(
             __name__, instance_relative_config=True, instance_path=instance_path
@@ -38,7 +40,7 @@ def create_application(instance_path):
     else:
         application = Flask(__name__, instance_relative_config=True)
 
-    application.config.from_pyfile("flask-list.conf")
+    application.config.from_pyfile(config_file)
 
     # set remember cookie attributes
     application.config["REMEMBER_COOKIE_SECURE"] = True
@@ -72,21 +74,22 @@ def create_application(instance_path):
     )
 
     bootstrap.init_app(application)
+    cache.init_app(application)
     mail.init_app(application)
 
-    from application.auth import blueprint as auth_blueprint
+    from flask_list.auth import blueprint as auth_blueprint
     application.register_blueprint(auth_blueprint, url_prefix="/auth")
 
-    from application.category import blueprint as category_blueprint
+    from flask_list.category import blueprint as category_blueprint
     application.register_blueprint(category_blueprint, url_prefix="/category")
 
-    from application.item import blueprint as item_blueprint
+    from flask_list.item import blueprint as item_blueprint
     application.register_blueprint(item_blueprint, url_prefix="/item")
 
-    from application.list import blueprint as list_blueprint
+    from flask_list.list import blueprint as list_blueprint
     application.register_blueprint(list_blueprint, url_prefix="/list")
 
     return application
 
 
-from application import models  # noqa: E402, F401
+from flask_list import models  # noqa: E402, F401

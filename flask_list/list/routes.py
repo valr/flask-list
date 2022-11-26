@@ -4,10 +4,10 @@ from sqlalchemy import func, literal_column, or_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 
-from application import database
-from application.list import blueprint
-from application.list.forms import CreateForm, DeleteForm, UpdateForm
-from application.models import Category, Item, List
+from flask_list import database
+from flask_list.list import blueprint
+from flask_list.list.forms import CreateForm, DeleteForm, UpdateForm
+from flask_list.models import Category, Item, List
 
 
 @blueprint.route("/create", methods=["GET", "POST"])

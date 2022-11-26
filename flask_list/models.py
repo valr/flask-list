@@ -10,17 +10,7 @@ from flask_login import UserMixin
 from sqlalchemy import types
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from application import database
-
-# TODO: make a script with the below commands
-# flask db init
-# add 'import application' in migrations/script.py.mako
-# flask db migrate -m 'init db' (or any other change after init)
-# flask db upgrade (flask db downgrade)
-# echo '.schema' | sqlite3 database/application.db >| database/database.sql
-# chown -R flask-list:root database
-# chmod 700 database
-# chmod 600 database/application.db
+from flask_list import database
 
 
 class SqliteNumeric(types.TypeDecorator):
