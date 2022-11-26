@@ -60,7 +60,13 @@ init-db:
   sed -i -e '/^import sqlalchemy as sa/a import application' migrations/script.py.mako
   flask db migrate -m 'init db'
   flask db upgrade
-  echo '.schema' | sqlite3 database/application.db >| database/database.sql
+
+# clean the inactive users from the database
+clean-inactive-users:
+  #!/usr/bin/env bash
+  set -euo pipefail
+  source .venv/bin/activate
+  flask auth cleaning
 
 # run the flask application in the development server
 run-application:
@@ -69,13 +75,6 @@ run-application:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
   source .venv/bin/activate
   flask --debug run
-
-# clean the inactive users from the database
-clean-inactive-users:
-  #!/usr/bin/env bash
-  set -euo pipefail
-  source .venv/bin/activate
-  flask auth cleaning
 
 # run a local memcached server
 run-memcached-server:
