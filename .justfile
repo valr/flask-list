@@ -53,11 +53,11 @@ upgrade-requirements:
 init-db:
   #!/usr/bin/env bash
   set -euo pipefail
-  [ -e database/application.db ] && { echo "error: the database file already exists"; false; }
+  [ -e database/flask-list.db ] && { echo "error: the database file already exists"; false; }
   [ -d migrations ] && { echo "error: the migrations directory already exists"; false; }
   source .venv/bin/activate
   flask db init
-  sed -i -e '/^import sqlalchemy as sa/a import application' migrations/script.py.mako
+  sed -i -e '/^import sqlalchemy as sa/a import flask_list' migrations/script.py.mako
   flask db migrate -m 'init db'
   flask db upgrade
 
