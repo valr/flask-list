@@ -60,6 +60,10 @@ init-db:
   sed -i -e '/^import sqlalchemy as sa/a import flask_list' migrations/script.py.mako
   flask db migrate -m 'init db'
   flask db upgrade
+  echo '.schema' | sqlite3 database/flask-list.db >| database/flask-list.sql
+  # chown -R flask-list:root database
+  # chmod 700 database
+  # chmod 600 database/flask-list.db
 
 # clean the inactive users from the database
 clean-inactive-users:
