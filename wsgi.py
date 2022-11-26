@@ -9,7 +9,6 @@ application = create_application(os.environ.get("INSTANCE_PATH"))
 
 
 @application.route("/")
-@application.route("/index")
 def index():
     return redirect(url_for("list.read"))
 
