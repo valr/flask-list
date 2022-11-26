@@ -20,7 +20,7 @@ def favicon():
 
 
 @application.errorhandler(404)
-def not_found(error):
+def page_not_found(error):
     return render_template("error/404.html.jinja"), 404
 
 
