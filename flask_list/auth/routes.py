@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from traceback import format_exc
 
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
@@ -78,9 +77,7 @@ def register_confirmation(token):
         return redirect(url_for("index"))
 
     user.active = True
-    user_id = user.user_id
     database.session.commit()
-    current_app.logger.info(f"successful registration of id: {user_id}")
 
     flash("The registration is successful!")
     return redirect(url_for("auth.login"))
@@ -94,7 +91,6 @@ def register_cleaning():
         User.active == False, User.updated_on < expired_on  # noqa: E712
     ).delete()
     database.session.commit()
-    current_app.logger.info("inactive users have been cleaned")
 
 
 @blueprint.route("/login", methods=["GET", "POST"])
@@ -106,7 +102,6 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.verify_password(form.password.data):
-            current_app.logger.error(f"failed login of email: {form.email.data}")
             flash("The email or password is invalid.", "error")
             return redirect(url_for("auth.login"))
 
@@ -115,7 +110,6 @@ def login():
             return redirect(url_for("auth.login"))
 
         login_user(user, remember=form.remember_me.data)
-        current_app.logger.info(f"successful login of id: {user.user_id}")
 
         try:
             return redirect(url_for(request.args.get("next", "index")))
@@ -188,7 +182,6 @@ def profile():
 def logout():
     user_id = current_user.user_id
     logout_user()
-    current_app.logger.info(f"successful logout of id: {user_id}")
     return redirect(url_for("index"))
 
 
@@ -235,9 +228,7 @@ def reset_password_confirmation(token):
             and form.password.data == form.password_conf.data
         ):
             user.set_password(form.password.data)
-            user_id = user.user_id
             database.session.commit()
-            current_app.logger.info(f"successful reset password of id: {user_id}")
             flash("Your password has been reset.")
 
         return redirect(url_for("auth.login"))
