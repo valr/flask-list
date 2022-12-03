@@ -75,6 +75,7 @@ def create_application(instance_path, config_file="flask-list.conf"):
 
     bootstrap.init_app(application)
     cache.init_app(application)
+    cache.cache._client.behaviors.update({"tcp_nodelay": True, "tcp_keepalive": True})
     mail.init_app(application)
 
     from flask_list.auth import blueprint as auth_blueprint

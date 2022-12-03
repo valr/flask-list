@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import StaleDataError
 from werkzeug.routing import BuildError
 
-from flask_list import database, login
+from flask_list import cache, database, login
 from flask_list.auth import blueprint
 from flask_list.auth.emails import send_register_email, send_reset_password_email
 from flask_list.auth.forms import (
@@ -26,12 +26,13 @@ def unauthorized_user():
 
 @login.user_loader
 def load_user(user_id):
-    try:
-        return User.query.get(int(user_id))
-    except ValueError:
-        current_app.logger.error(format_exc())
-        current_app.logger.error(f"user_id: {user_id}")
-        return None
+    key = f"user_{user_id}"
+    user = cache.get(key)
+    if user is None:
+        user = User.query.get(int(user_id))
+        cache.set(key, user)
+
+    return user
 
 
 @blueprint.route("/register", methods=["GET", "POST"])
@@ -180,7 +181,7 @@ def profile():
 @blueprint.route("/logout")
 @login_required
 def logout():
-    user_id = current_user.user_id
+    cache.delete(f"user_{current_user.user_id}")
     logout_user()
     return redirect(url_for("index"))
 
