@@ -1,4 +1,3 @@
-
 var debounce = (function () {
     var timer = {};
     return function (id, callback, delay, arg) {

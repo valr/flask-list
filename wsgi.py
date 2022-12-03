@@ -31,6 +31,7 @@ def internal_server_error(error):
 
 # flask shell
 
+
 @application.shell_context_processor
 def make_shell_context():
     return {

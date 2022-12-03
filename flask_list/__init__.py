@@ -32,7 +32,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
     cursor.close()
 
 
-def create_application(instance_path, config_file='flask-list.conf'):
+def create_application(instance_path, config_file="flask-list.conf"):
     if instance_path:
         application = Flask(
             __name__, instance_relative_config=True, instance_path=instance_path
@@ -78,15 +78,19 @@ def create_application(instance_path, config_file='flask-list.conf'):
     mail.init_app(application)
 
     from flask_list.auth import blueprint as auth_blueprint
+
     application.register_blueprint(auth_blueprint, url_prefix="/auth")
 
     from flask_list.category import blueprint as category_blueprint
+
     application.register_blueprint(category_blueprint, url_prefix="/category")
 
     from flask_list.item import blueprint as item_blueprint
+
     application.register_blueprint(item_blueprint, url_prefix="/item")
 
     from flask_list.list import blueprint as list_blueprint
+
     application.register_blueprint(list_blueprint, url_prefix="/list")
 
     return application

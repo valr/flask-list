@@ -1,70 +1,70 @@
 body {
-  /* https://getbootstrap.com/docs/4.0/components/navbar/#placement */
-  padding-top: 40px;
+    /* https://getbootstrap.com/docs/4.0/components/navbar/#placement */
+    padding-top: 40px;
 }
 
 a {
-  background-color: transparent;
-  color: #325d88;
-  text-decoration: none;
+    background-color: transparent;
+    color: #325d88;
+    text-decoration: none;
 }
 
 a:hover {
-  color: #325d88;
-  text-decoration: underline;
+    color: #325d88;
+    text-decoration: underline;
 }
 
 td[data-href] {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .alert {
-  margin-bottom: 0;
-  margin-top: 1rem;
+    margin-bottom: 0;
+    margin-top: 1rem;
 }
 
 .bg-primary {
-  background-color: #325d88 !important;
+    background-color: #325d88 !important;
 }
 
 .table-primary th,
 .table-primary thead th {
-  background-color: #325d88 !important;
+    background-color: #325d88 !important;
 }
 
 .collapsing {
-  -webkit-transition: none;
-  transition: none;
-  visibility: hidden;
+    -webkit-transition: none;
+    transition: none;
+    visibility: hidden;
 }
 
 .collapse.show {
-  -webkit-transition: none;
-  transition: none;
-  visibility: visible;
+    -webkit-transition: none;
+    transition: none;
+    visibility: visible;
 }
 
 /* https://github.com/twbs/bootstrap/issues/27629 */
 .form-control {
-  height: auto !important;
+    height: auto !important;
 }
 
 .form-group.required .form-control-label:after,
-.form-group label[for=type_]:after {
-  color: darkred;
-  content: " ⚹";
+.form-group label[for="type_"]:after {
+    color: darkred;
+    content: " ⚹";
 }
 
 @media (max-width: 767px) {
-  .item-value {
-    min-width: 135px;
-  }
+    .item-value {
+        min-width: 135px;
+    }
 }
 
 @media (min-width: 768px) {
-  .item-value {
-    min-width: 185px;
-  }
+    .item-value {
+        min-width: 185px;
+    }
 }
 
 /*
