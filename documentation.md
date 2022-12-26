@@ -5,12 +5,12 @@
 
 - [Bootstrap-Flask](https://bootstrap-flask.readthedocs.io)  
 - [Flask](https://flask.palletsprojects.com)  
-- [Flask-Caching](https://flask-caching.readthedocs.io/en/latest/)  
-- [Flask-Login](https://flask-login.readthedocs.io/en/latest/)  
+- [Flask-Caching](https://flask-caching.readthedocs.io)  
+- [Flask-Login](https://flask-login.readthedocs.io)  
 - [Flask-Mail](https://pythonhosted.org/Flask-Mail/)  
-- [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/)  
-- [Flask-Paranoid](https://flask-paranoid.readthedocs.io/en/latest/)  
-- [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/)  
+- [Flask-Migrate](https://flask-migrate.readthedocs.io)  
+- [Flask-Paranoid](https://flask-paranoid.readthedocs.io)  
+- [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com)  
 - [Flask-Talisman](https://github.com/GoogleCloudPlatform/flask-talisman)  
 - [Flask-WTF](https://flask-wtf.readthedocs.io)  
 - [Jinja](https://jinja.palletsprojects.com)  
@@ -20,13 +20,17 @@
 
 - [Bootstrap](https://getbootstrap.com/docs/4.6)  
 
-### pylibmc
+### email-validator
 
-- [pylibmc](https://sendapatch.se/projects/pylibmc/)  
+- [email validator](https://github.com/JoshData/python-email-validator)  
 
 ### PyJWT
 
-- [PyJWT](https://pyjwt.readthedocs.io/en/stable/)  
+- [PyJWT](https://pyjwt.readthedocs.io)  
+
+### pylibmc
+
+- [pylibmc](https://sendapatch.se/projects/pylibmc/)  
 
 ### SQLAlchemy
 
