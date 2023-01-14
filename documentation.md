@@ -1,6 +1,21 @@
 
 # Documentation
 
+### Bootstrap
+
+- [Bootstrap](https://getbootstrap.com/docs/5.2)  
+
+### Content Security Policy
+
+- [CSP](https://content-security-policy.com)
+- [CSP Google](https://csp.withgoogle.com/docs/index.html)
+- [CSP Mozilla](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)
+- [CSP Evaluator](https://csp-evaluator.withgoogle.com)
+
+### email-validator
+
+- [email validator](https://github.com/JoshData/python-email-validator)  
+
 ### Flask
 
 - [Bootstrap-Flask](https://bootstrap-flask.readthedocs.io)  
@@ -15,14 +30,6 @@
 - [Flask-WTF](https://flask-wtf.readthedocs.io)  
 - [Jinja](https://jinja.palletsprojects.com)  
 - [Werkzeug](https://werkzeug.palletsprojects.com)  
-
-### Bootstrap
-
-- [Bootstrap](https://getbootstrap.com/docs/4.6)  
-
-### email-validator
-
-- [email validator](https://github.com/JoshData/python-email-validator)  
 
 ### PyJWT
 
