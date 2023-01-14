@@ -63,12 +63,14 @@ def create_application(instance_path, config_file="flask-list.conf"):
     paranoid.redirect_view = "auth.login"
     talisman.init_app(
         application,
-        strict_transport_security=False,  # setup in web server
         content_security_policy={
-            "font-src": ["'self'", "*.gstatic.com"],
-            "style-src": ["'self'", "*.gstatic.com", "fonts.googleapis.com"],
-            "script-src": "'self'",
+            "base-uri": "'none'",
+            "object-src": "'none'",
             "default-src": "'self'",
+            "img-src": ["'self'", "data:"],
+            "script-src": ["'unsafe-inline'", "'strict-dynamic'", "https:", "http:"],
+            "style-src": ["'self'", "fonts.googleapis.com"],
+            "font-src": ["'self'", "fonts.gstatic.com"],
         },
         content_security_policy_nonce_in=["script-src", "style-src"],
     )
