@@ -42,7 +42,7 @@ class LoginForm(FlaskForm):
 class ProfileForm(FlaskForm):
     email = StringField(
         "Email",
-        validators=[DataRequired(), Length(max=1000), Email()],
+        validators=[Length(max=1000), Email()],
         render_kw={"readonly": True},
     )
     password_curr = PasswordField("Current Password", render_kw={"autofocus": True})
