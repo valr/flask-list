@@ -23,10 +23,6 @@ td[data-href] {
     margin-top: 1rem;
 }
 
-.bg-primary {
-    background-color: #325d88 !important;
-}
-
 .table-primary th,
 .table-primary thead th {
     background-color: #325d88 !important;
