@@ -1,36 +1,39 @@
-{% extends 'base.html.jinja' %}
-{% from 'bootstrap4/form.html' import render_form %}
-
+{% extends "base.html.jinja" %}
+{% from "bootstrap5/form.html" import render_form %}
 {% block content %}
     <div class="card mt-3 mb-0">
-        <h5 class="card-header bg-danger text-white">
-            Delete List
-        </h5>
+        <h5 class="card-header bg-danger text-white">Delete List</h5>
         <div class="card-body">
             {% if category_count > 0 %}
-            <div class="card-title text-danger font-italic">
-                WARNING: The list still contains
-                {% if item_count > 0 %}
-                    {{ item_count }}
-                    {% if item_count == 1 %} item {% else %} items {% endif %} in
-                {% endif %}
-                {{ category_count }}
-                {% if category_count == 1 %} category {% else %} categories {% endif %}
-            </div>
+                <div class="card-title text-danger font-italic">
+                    WARNING: The list still contains
+                    {% if item_count > 0 %}
+                        {{ item_count }}
+                        {% if item_count == 1 %}
+                            item
+                        {% else %}
+                            items
+                        {% endif %}
+                        in
+                    {% endif %}
+                    {{ category_count }}
+                    {% if category_count == 1 %}
+                        category
+                    {% else %}
+                        categories
+                    {% endif %}
+                </div>
             {% endif %}
             <div class="row">
                 <div class="col-md-4">
                     {{ render_form(form, button_map={
-                        'submit': 'danger', 'cancel': 'light'}) }}
+                    "submit": "danger", "cancel": "light"}) }}
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
-
+{% endblock content %}
 {% block scripts %}
     {{ super() }}
-    <script nonce="{{ csp_nonce() }}">
-        {% include 'cancel.js' %}
-    </script>
-{% endblock %}
+    <script nonce="{{ csp_nonce() }}">{% include "cancel.js" %}</script>
+{% endblock scripts %}

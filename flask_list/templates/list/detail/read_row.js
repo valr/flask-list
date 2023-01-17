@@ -54,7 +54,7 @@ $("tbody").on("click input", ".item-number", function (event) {
             return true;
         }
     } else {
-        $(element).addClass("font-weight-bold").removeClass("text-danger");
+        $(element).addClass("fw-bold").removeClass("text-danger");
     }
 
     var regex = /^\s*((\+|-)?((\d+(\.\d+)?)|(\.\d+)))?\s*$/;
@@ -85,7 +85,7 @@ $("tbody").on("click input", ".item-number", function (event) {
                 .done(function (data, textStatus, xhr) {
                     if (data.status === "ok") {
                         $(element)
-                            .removeClass("font-weight-bold")
+                            .removeClass("fw-bold")
                             .attr("data-version-id", data.version);
                     } else if (data.status === "cancel") {
                         window.location.href = data.cancel_url;
@@ -117,7 +117,7 @@ $("tbody").on("click", ".item-number-plus, .item-number-minus", function (event)
         ".item-number[data-item-id=" + $(element_button).attr("data-item-id") + "]"
     );
 
-    if ($(element).hasClass("font-weight-bold") || $(element).hasClass("text-danger")) {
+    if ($(element).hasClass("fw-bold") || $(element).hasClass("text-danger")) {
         return true;
     }
 
@@ -173,7 +173,7 @@ $("tbody").on("click input", ".item-text", function (event) {
             return true;
         }
     } else {
-        $(element).addClass("font-weight-bold").removeClass("text-danger");
+        $(element).addClass("fw-bold").removeClass("text-danger");
     }
 
     debounce(
@@ -194,7 +194,7 @@ $("tbody").on("click input", ".item-text", function (event) {
                 .done(function (data, textStatus, xhr) {
                     if (data.status === "ok") {
                         $(element)
-                            .removeClass("font-weight-bold")
+                            .removeClass("fw-bold")
                             .attr("data-version-id", data.version);
                     } else if (data.status === "cancel") {
                         window.location.href = data.cancel_url;

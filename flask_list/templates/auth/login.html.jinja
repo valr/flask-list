@@ -1,33 +1,24 @@
-{% extends 'base.html.jinja' %}
-{% from 'bootstrap4/form.html' import render_form %}
-
+{% extends "base.html.jinja" %}
+{% from "bootstrap5/form.html" import render_form %}
 {% block content %}
     <div class="card mt-3 mb-0">
-        <h5 class="card-header">
-            Sign In
-        </h5>
+        <h5 class="card-header">Sign In</h5>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">
-                    {{ render_form(form, button_map={'submit': 'primary'}) }}
-                </div>
+                <div class="col-md-4">{{ render_form(form, button_map={"submit": "primary"}) }}</div>
             </div>
         </div>
         <div class="card-footer text-muted">
             {% if registration_allowed == True %}
-            <div class="mb-2">
+                <div class="mb-2">
                     New User?
-                    <a href="{{ url_for('auth.register') }}">
-                        Click to Register
-                    </a>
-            </div>
+                    <a href="{{ url_for('auth.register') }}">Click to Register</a>
+                </div>
             {% endif %}
             <div>
                 Forgot Your Password?
-                <a href="{{ url_for('auth.reset_password') }}">
-                    Click to Reset It
-                </a>
+                <a href="{{ url_for('auth.reset_password') }}">Click to Reset It</a>
             </div>
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

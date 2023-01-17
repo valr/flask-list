@@ -1,79 +1,66 @@
-{% from 'bootstrap4/nav.html' import render_nav_item %}
-{% from 'bootstrap4/utils.html' import render_icon, render_messages %}
-
+{% from "bootstrap5/nav.html" import render_nav_item %}
+{% from "bootstrap5/utils.html" import render_icon, render_messages %}
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    {% block styles %}
-    {{ bootstrap.load_css() }}
-    <style nonce="{{ csp_nonce() }}">
-        {% include 'base.css' %}
-    </style>
-    {% endblock %}
-
-    <title>
-        {{ title }}
-    </title>
-</head>
-<body>
-    {% if not current_user.is_anonymous %}
-    <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light border-bottom py-0">
-        <div class="container">
-            <button class="navbar-toggler float-right py-1 my-1"
-                    data-target="#navbar-collapse"
-                    data-toggle="collapse"
-                    type="button">
-                {{ render_icon('list') }}
-            </button>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                {#
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item py-0">
-                        <a class="nav-link {{'active' if title.endswith('List') }}"
-                            href="{{ url_for('list.read') }}">
-                            List
-                        </a>
-                    </li>
-                </ul>
-                #}
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item py-0">
-                        <a class="nav-link {{'active' if title == 'Profile' }}"
-                            href="{{ url_for('auth.profile') }}">
-                            Profile
-                        </a>
-                    </li>
-                    <li class="nav-item py-0">
-                        <a class="nav-link"
-                            href="{{ url_for('auth.logout') }}">
-                            Logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    {% endif %}
-
-    <main class="container mb-3">
-        {{ render_messages(dismissible=True, dismiss_animate=True) }}
-        {% block content %}{% endblock %}
-    </main>
-
-    {% block scripts %}
-    {{ bootstrap.load_js() }}
-    {#
-    <script nonce="{{ csp_nonce() }}">
-        {% include 'base.js' %}
-    </script>
-    #}
-    {% endblock %}
-
-    <noscript>
-        This website requires JavaScript.
-    </noscript>
-</body>
+    <head>
+        {% block head %}
+            <meta charset="utf-8" />
+            <meta name="description"
+                  content="flask-list is a simple Flask application to manage lists of categories of items"/>
+            <meta name="keywords"
+                  content="Flask, list, category, categories, item, items"/>
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+            {% block styles %}
+                {{ bootstrap.load_css() }}
+                <style nonce="{{ csp_nonce() }}">{% include "base.css" %}</style>
+            {% endblock styles %}
+            <title>{{ title }}</title>
+        {% endblock head %}
+    </head>
+    <body>
+        {% if not current_user.is_anonymous %}
+            <nav class="navbar navbar-expand-md bg-light fixed-top border-bottom py-0">
+                <div class="container-fluid">
+                    <button class="navbar-toggler float-end py-1 my-1"
+                            data-bs-target="#navbar-collapse"
+                            data-bs-toggle="collapse"
+                            type="button">
+                        {{ render_icon("list") }}
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                        {#
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item py-0">
+                                <a class="nav-link {{ 'active' if title.endswith('List') }}" href="{{ url_for('list.read') }}">List</a>
+                            </li>
+                        </ul>
+                        #}
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item py-0">
+                                <a class="nav-link {{ 'active' if title == 'Profile' }}"
+                                   href="{{ url_for('auth.profile') }}">Profile</a>
+                            </li>
+                            <li class="nav-item py-0">
+                                <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        {% endif %}
+        <main class="container mb-3">
+            {{ render_messages(dismissible=True, dismiss_animate=True) }}
+            {% block content %}
+            {% endblock content %}
+        </main>
+        {% block scripts %}
+            {{ bootstrap.load_js(nonce=csp_nonce()) }}
+            <script nonce="{{ csp_nonce() }}" src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
+            </script>
+        {% endblock scripts %}
+        <noscript>
+            This website requires JavaScript.
+        </noscript>
+    </body>
 </html>

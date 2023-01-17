@@ -1,25 +1,19 @@
-{% extends 'base.html.jinja' %}
-{% from 'bootstrap4/form.html' import render_form %}
-
+{% extends "base.html.jinja" %}
+{% from "bootstrap5/form.html" import render_form %}
 {% block content %}
     <div class="card mt-3 mb-0">
-        <h5 class="card-header">
-            Register
-        </h5>
+        <h5 class="card-header">Register</h5>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
                     {{ render_form(form, button_map={
-                        'submit': 'primary', 'cancel': 'light'}) }}
+                    "submit": "primary", "cancel": "light"}) }}
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
-
+{% endblock content %}
 {% block scripts %}
     {{ super() }}
-    <script nonce="{{ csp_nonce() }}">
-        {% include 'cancel.js' %}
-    </script>
-{% endblock %}
+    <script nonce="{{ csp_nonce() }}">{% include "cancel.js" %}</script>
+{% endblock scripts %}
