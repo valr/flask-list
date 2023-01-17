@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_bootstrap import Bootstrap4
+from flask_bootstrap import Bootstrap5
 from flask_caching import Cache
 from flask_login import LoginManager
 from flask_mail import Mail
@@ -20,7 +20,7 @@ login = LoginManager()
 paranoid = Paranoid()
 talisman = Talisman()
 
-bootstrap = Bootstrap4()
+bootstrap = Bootstrap5()
 cache = Cache()
 mail = Mail()
 

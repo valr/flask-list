@@ -1,5 +1,5 @@
 body {
-    /* https://getbootstrap.com/docs/4.0/components/navbar/#placement */
+    /* https://getbootstrap.com/docs/5.2/components/navbar/#placement */
     padding-top: 40px;
 }
 
@@ -49,8 +49,7 @@ td[data-href] {
     height: auto !important;
 }
 
-.form-group.required .form-control-label:after,
-.form-group label[for="type_"]:after {
+.required label:after {
     color: darkred;
     content: " ⚹";
 }
