@@ -10,6 +10,7 @@
            href="{{ url_for('list.read') }}">{{ list.name }}</a>
     </h4>
     {% set c_ix, i_ix = 0, 1 %}
+    {% set ns = namespace(loop_index = 0) %}
     {% for ci in categories_items %}
         {% if loop.previtem is not defined or
             ( loop.previtem is defined and
@@ -44,9 +45,11 @@
                             </th>
                         </tr>
                     </thead>
+                    {% set ns.loop_index = 0 %}
                     <tbody class="collapse show" id="collapse{{ ci[c_ix].category_id }}">
                     {% endif %}
                     {% if ci[i_ix] is not none %}
+                        {% set ns.loop_index = ns.loop_index + 1 %}
                         {% include "list/detail/read_row.html.jinja" %}
                     {% endif %}
                     {% if loop.nextitem is not defined or
