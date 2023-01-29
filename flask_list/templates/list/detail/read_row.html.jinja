@@ -1,6 +1,6 @@
 <tr>
     <td class="align-middle text-center text-nowrap">{{ loop.index }}</td>
-    <td class="align-middle">{{ ci[i_ix].name }}</td>
+    <td class="align-middle text-truncate" data-bs-toggle="tooltip">{{ ci[i_ix].name }}</td>
     <td class="align-middle text-center item-value">
         {% if ci[i_ix].type_|string() == "ItemType.selection" %}
             {% if ci[i_ix].selection is false %}

@@ -46,9 +46,18 @@ body {
     background-color: #325d88 !important;
 }
 
+th[data-bs-toggle="tooltip"],
+td[data-bs-toggle="tooltip"] {
+    max-width: 0;
+}
 
 td[data-href] {
     cursor: pointer;
+}
+
+.tooltip-info {
+    --bs-tooltip-bg: var(--bs-info);
+    --bs-tooltip-opacity: 1;
 }
 
 @media (max-width: 767px) {

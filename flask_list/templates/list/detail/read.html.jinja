@@ -24,12 +24,7 @@
                                     {{ render_icon("plus-square") }}
                                 </a>
                             </th>
-                            <th class="col-10 align-middle"
-                                data-bs-target="#collapse{{ ci[c_ix].category_id }}"
-                                data-bs-toggle="collapse"
-                                role="button">
-                                {{ ci[c_ix].name }}
-                            </th>
+                            <th class="col-10 align-middle text-truncate" data-bs-toggle="tooltip">{{ ci[c_ix].name }}</th>
                             <th class="col-2 align-middle text-center item-value"
                                 data-bs-target="#collapse{{ ci[c_ix].category_id }}"
                                 data-bs-toggle="collapse"
@@ -69,7 +64,8 @@
         {% include "list/detail/read_row.js" %}
         {% include "cancel.js" %}
         {% include "collapse.js" %}
-        {% include "scroll.js" %}
         {% include "debounce.js" %}
+        {% include "scroll.js" %}
+        {% include "tooltip.js" %}
     </script>
 {% endblock scripts %}
