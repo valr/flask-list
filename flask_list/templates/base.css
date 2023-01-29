@@ -1,8 +1,3 @@
-body {
-    /* https://getbootstrap.com/docs/5.2/components/navbar/#placement */
-    padding-top: 40px;
-}
-
 a {
     background-color: transparent;
     color: #325d88;
@@ -14,30 +9,26 @@ a:hover {
     text-decoration: underline;
 }
 
-td[data-href] {
-    cursor: pointer;
-}
-
 .alert {
     margin-bottom: 0;
     margin-top: 1rem;
 }
 
-.table-primary th,
-.table-primary thead th {
-    background-color: #325d88 !important;
-}
-
-.collapsing {
-    -webkit-transition: none;
-    transition: none;
-    visibility: hidden;
+body {
+    /* https://getbootstrap.com/docs/5.2/components/navbar/#placement */
+    padding-top: 40px;
 }
 
 .collapse.show {
     -webkit-transition: none;
     transition: none;
     visibility: visible;
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    visibility: hidden;
 }
 
 /* https://github.com/twbs/bootstrap/issues/27629 */
@@ -50,15 +41,25 @@ td[data-href] {
     content: " ⚹";
 }
 
+.table-primary th,
+.table-primary thead th {
+    background-color: #325d88 !important;
+}
+
+
+td[data-href] {
+    cursor: pointer;
+}
+
 @media (max-width: 767px) {
     .item-value {
-        min-width: 125px;
+        min-width: 120px;
     }
 }
 
 @media (min-width: 768px) {
     .item-value {
-        min-width: 185px;
+        min-width: 180px;
     }
 }
 
