@@ -37,7 +37,7 @@ def load_user(user_id):
 
 @blueprint.route("/register", methods=["GET", "POST"])
 def register():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated or not current_app.config["REGISTRATION_ALLOWED"]:
         return redirect(url_for("index"))
 
     form = RegisterForm()
