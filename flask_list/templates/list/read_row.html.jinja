@@ -1,7 +1,12 @@
 <tr>
     <td class="align-middle text-center text-nowrap">{{ loop.index }}</td>
     <td class="align-middle"
-        data-href="{{ url_for('list.detail', list_id=list.list_id) }}">{{ list.name }}</td>
+        data-href="{{ url_for('list.detail', list_id=list.list_id) }}">
+        {{ list.name }}
+        {% if list.private == True %}
+            <span class="text-secondary float-end me-2">{{ render_icon("shield-lock") }}</span>
+        {% endif %}
+    </td>
     <td class="align-middle text-center text-nowrap">
         <div class="btn-group" role="group">
             <a class="btn btn-warning rounded text-white me-2"
