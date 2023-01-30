@@ -11,7 +11,7 @@ class CreateForm(FlaskForm):
         validators=[DataRequired(), Length(max=1000)],
         render_kw={"autofocus": True},
     )
-    private = BooleanField("Private", default=False)
+    private = BooleanField("Private", default=True)
     submit = SubmitField("Create")
     cancel = SubmitField("Cancel", render_kw={"type": "button"})
 
