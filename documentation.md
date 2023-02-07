@@ -3,7 +3,8 @@
 
 ### Bootstrap
 
-- [Bootstrap](https://getbootstrap.com/docs/5.2)  
+- [Bootstrap](https://getbootstrap.com/docs/5.2)
+- [Bootstrap Icons](https://icons.getbootstrap.com/)  
 
 ### Content Security Policy
 
