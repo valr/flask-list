@@ -1,22 +1,26 @@
+:root {
+    /* https://getbootstrap.com/docs/5.2/customize/css-variables/ */
+    --bs-body-font-size: 0.875rem;
+    --bs-link-color: var(--bs-primary);
+    --bs-link-hover-color: var(--bs-primary);
+}
+
+body {
+    /* https://getbootstrap.com/docs/5.2/components/navbar/#placement */
+    padding-top: 40px;
+}
+
 a {
-    background-color: transparent;
-    color: #325d88;
     text-decoration: none;
 }
 
 a:hover {
-    color: #325d88;
     text-decoration: underline;
 }
 
 .alert {
     margin-bottom: 0;
     margin-top: 1rem;
-}
-
-body {
-    /* https://getbootstrap.com/docs/5.2/components/navbar/#placement */
-    padding-top: 40px;
 }
 
 .collapse.show {
@@ -31,19 +35,18 @@ body {
     visibility: hidden;
 }
 
-/* https://github.com/twbs/bootstrap/issues/27629 */
-.form-control {
-    height: auto !important;
+.navbar {
+    --bs-navbar-toggler-focus-width: 0;
 }
 
 .required label:after {
-    color: darkred;
+    color: var(--bs-red);
     content: " ⚹";
 }
 
 .table-primary th,
 .table-primary thead th {
-    background-color: #325d88 !important;
+    background-color: var(--bs-primary);
 }
 
 th[data-bs-toggle="tooltip"],
@@ -71,8 +74,3 @@ td[data-href] {
         min-width: 180px;
     }
 }
-
-/*
- * as documented in https://icons.getbootstrap.com/, the size of icons can be
- * modified using font-size of the bi class
- */
