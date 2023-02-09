@@ -39,17 +39,22 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Sign In")
 
 
-class ProfileForm(FlaskForm):
+class ChangePasswordForm(FlaskForm):
     email = StringField(
         "Email",
         validators=[Length(max=1000), Email()],
         render_kw={"readonly": True},
     )
-    password_curr = PasswordField("Current Password", render_kw={"autofocus": True})
-    password = PasswordField("New Password")
+    password_curr = PasswordField(
+        "Current Password", validators=[DataRequired()], render_kw={"autofocus": True}
+    )
+    password = PasswordField("New Password", validators=[DataRequired()])
     password_conf = PasswordField(
         "Confirm New Password",
-        validators=[EqualTo("password", message="Field is not equal to New Password.")],
+        validators=[
+            DataRequired(),
+            EqualTo("password", message="Field is not equal to New Password."),
+        ],
     )
     version_id = HiddenField("Version")
     submit = SubmitField("Save")

@@ -10,8 +10,8 @@ from flask_list import cache, database, login
 from flask_list.auth import blueprint
 from flask_list.auth.emails import send_register_email, send_reset_password_email
 from flask_list.auth.forms import (
+    ChangePasswordForm,
     LoginForm,
-    ProfileForm,
     RegisterForm,
     ResetPasswordConfirmationForm,
     ResetPasswordForm,
@@ -125,14 +125,22 @@ def login():
     )
 
 
-@blueprint.route("/profile", methods=["GET", "POST"])
+@blueprint.route("/logout")
 @login_required
-def profile():
-    form = ProfileForm()
+def logout():
+    cache.delete(f"user_{current_user.user_id}")
+    logout_user()
+    return redirect(url_for("index"))
+
+
+@blueprint.route("/change_password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
     if form.validate_on_submit():
         if form.version_id.data != current_user.version_id:
             flash(
-                "The profile has not been saved due to concurrent modification.",
+                "The password has not been saved due to concurrent modification.",
                 "error",
             )
             return redirect(url_for("index"))
@@ -153,14 +161,10 @@ def profile():
                     flash("The password has been changed.")
                 else:
                     flash("The current password is invalid.", "error")
-
-            # current_user.xxx = form.yyy.data
-            # database.session.commit()
-            # flash('The profile has been saved.')
         except StaleDataError:
             database.session.rollback()
             flash(
-                "The profile has not been saved due to concurrent modification.",
+                "The password has not been saved due to concurrent modification.",
                 "error",
             )
 
@@ -168,22 +172,13 @@ def profile():
     elif request.method == "GET":
         form.email.data = current_user.email
         form.version_id.data = current_user.version_id
-        # form.yyy.data = current_user.xxx
 
     return render_template(
-        "auth/profile.html.jinja",
-        title="Profile",
+        "auth/change_password.html.jinja",
+        title="Change Password",
         form=form,
         cancel_url=url_for("index"),
     )
-
-
-@blueprint.route("/logout")
-@login_required
-def logout():
-    cache.delete(f"user_{current_user.user_id}")
-    logout_user()
-    return redirect(url_for("index"))
 
 
 @blueprint.route("/reset_password", methods=["GET", "POST"])
