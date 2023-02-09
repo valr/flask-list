@@ -36,7 +36,9 @@ a:hover {
 }
 
 .navbar {
+    --bs-navbar-toggler-border-color: var(--bs-light);
     --bs-navbar-toggler-focus-width: 0;
+    --bs-navbar-toggler-font-size: 1rem;
 }
 
 .required label:after {
