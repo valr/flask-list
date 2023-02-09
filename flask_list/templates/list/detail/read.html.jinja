@@ -1,14 +1,14 @@
 {% extends "base.html.jinja" %}
 {% from "bootstrap5/utils.html" import render_icon %}
 {% block content %}
-    <h4 class="text-center mt-3 mb-0">
+    <h5 class="text-center mt-3 mb-0">
         <a class="btn btn-sm rounded text-primary mb-1"
            href="{{ url_for('category.create', list_id=list.list_id) }}">
             {{ render_icon("plus-square") }}
         </a>
         <a class="text-dark text-decoration-none"
            href="{{ url_for('list.read') }}">{{ list.name }}</a>
-    </h4>
+    </h5>
     {% set c_ix, i_ix = 0, 1 %}
     {% set ns = namespace(loop_index = 0) %}
     {% for ci in categories_items %}
