@@ -58,7 +58,7 @@ class User(database.Model, UserMixin):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def get_token(self, subject, expires_in=600):
+    def get_token(self, subject, expires_in=3600):
         claims = {"sub": subject, "id": self.user_id, "exp": time() + expires_in}
         key = current_app.config["SECRET_KEY"]
 
