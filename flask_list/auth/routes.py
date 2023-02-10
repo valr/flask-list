@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm.exc import StaleDataError
 from werkzeug.routing import BuildError
 
 from flask_list import cache, database, login
@@ -145,28 +144,23 @@ def change_password():
             )
             return redirect(url_for("index"))
 
-        try:
-            # check if all password fields are filled-in
-            # check if the new password and confirmed new password are the same
-            if (
-                form.password_curr.data
-                and form.password.data
-                and form.password_conf.data
-                and form.password.data == form.password_conf.data
-            ):
-                # check if the current password is valid
-                if current_user.verify_password(form.password_curr.data):
-                    current_user.set_password(form.password.data)
-                    database.session.commit()
-                    flash("The password has been changed.")
-                else:
-                    flash("The current password is invalid.", "error")
-        except StaleDataError:
-            database.session.rollback()
-            flash(
-                "The password has not been saved due to concurrent modification.",
-                "error",
-            )
+        # check if all password fields are filled-in
+        # check if the new password and confirmed new password are the same
+        if (
+            form.password_curr.data
+            and form.password.data
+            and form.password_conf.data
+            and form.password.data == form.password_conf.data
+        ):
+            # check if the current password is valid
+            if current_user.verify_password(form.password_curr.data):
+                user = User.query.get(current_user.user_id)
+                user.set_password(form.password.data)
+                database.session.commit()
+                cache.delete(f"user_{current_user.user_id}")
+                flash("The password has been changed.")
+            else:
+                flash("The current password is invalid.", "error")
 
         return redirect(url_for("index"))
     elif request.method == "GET":
