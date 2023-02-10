@@ -41,6 +41,21 @@ a:hover {
     --bs-navbar-toggler-font-size: 1rem;
 }
 
+.navbar-nav {
+    --bs-nav-link-color: var(--bs-secondary);
+    --bs-nav-link-hover-color: var(--bs-dark);
+}
+
+.navbar-toggler:hover {
+    background-color: var(--bs-gray-300);
+}
+
+a.nav-link,
+a.dropdown-item {
+    text-decoration: none;
+    text-transform: capitalize !important;
+}
+
 .required label:after {
     color: var(--bs-red);
     content: " ⚹";

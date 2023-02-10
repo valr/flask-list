@@ -31,40 +31,39 @@
                     <div class="navbar-collapse collapse" id="navbar-collapse">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-capitalize"
+                                <a class="nav-link dropdown-toggle"
                                    data-bs-toggle="dropdown"
                                    aria-expanded="false"
                                    href="#"
                                    role="button">List</a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <a class="dropdown-item text-capitalize" href="#">Toggle Actions</a>
+                                        <a class="dropdown-item text-dark" href="#">Toggle Actions</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-capitalize" href="#">Reset All Values</a>
+                                        <a class="dropdown-item text-dark" href="#">Reset All Values</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-capitalize"
+                                <a class="nav-link dropdown-toggle"
                                    data-bs-toggle="dropdown"
                                    aria-expanded="false"
                                    href="#"
                                    role="button">Profile</a>
                                 <ul class="dropdown-menu dropdown-menu-end mb-2">
                                     <li>
-                                        <a class="dropdown-item text-capitalize"
+                                        <a class="dropdown-item text-dark"
                                            href="{{ url_for('auth.change_password') }}">Change Password</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-capitalize" href="#">Invite User</a>
+                                        <a class="dropdown-item text-dark" href="#">Invite User</a>
                                     </li>
                                     <li>
                                         <hr class="dropdown-divider" />
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-capitalize"
-                                           href="{{ url_for('auth.logout') }}">Logout</a>
+                                        <a class="dropdown-item text-dark" href="{{ url_for('auth.logout') }}">Logout</a>
                                     </li>
                                 </ul>
                             </li>
