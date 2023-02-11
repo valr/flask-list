@@ -4,13 +4,13 @@
     <td class="align-middle text-center item-value">
         {% if ci[i_ix].type_|string() == "ItemType.selection" %}
             {% if ci[i_ix].selection is false %}
-                <a class="item-selection btn d-block bg-transparent text-dark"
+                <a class="item-selection btn bg-transparent text-dark"
                    data-item-id="{{ ci[i_ix].item_id }}"
                    data-version-id="{{ ci[i_ix].version_id }}">
                     {{ render_icon("square") }}
                 </a>
             {% elif ci[i_ix].selection is true %}
-                <a class="item-selection btn d-block btn-success text-white"
+                <a class="item-selection btn btn-success text-white"
                    data-item-id="{{ ci[i_ix].item_id }}"
                    data-version-id="{{ ci[i_ix].version_id }}">
                     {{ render_icon("check-square") }}
