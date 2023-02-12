@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     $('[data-bs-toggle="tooltip"]').tooltip({
         customClass: "tooltip-info",
         trigger: "click hover",
