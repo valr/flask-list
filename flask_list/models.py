@@ -1,8 +1,8 @@
 import enum
-import uuid
 from datetime import datetime
 from decimal import Decimal
 from time import time
+from uuid import uuid4
 
 import jwt
 from flask import current_app
@@ -42,7 +42,7 @@ class User(database.Model, UserMixin):
 
     __mapper_args__ = {
         "version_id_col": version_id,
-        "version_id_generator": lambda version: uuid.uuid4().hex,
+        "version_id_generator": lambda version: uuid4().hex,
     }
     __table_args__ = {"sqlite_autoincrement": True}
 
@@ -102,7 +102,7 @@ class List(database.Model):
 
     __mapper_args__ = {
         "version_id_col": version_id,
-        "version_id_generator": lambda version: uuid.uuid4().hex,
+        "version_id_generator": lambda version: uuid4().hex,
     }
     __table_args__ = {"sqlite_autoincrement": True}
 
@@ -135,7 +135,7 @@ class Category(database.Model):
 
     __mapper_args__ = {
         "version_id_col": version_id,
-        "version_id_generator": lambda version: uuid.uuid4().hex,
+        "version_id_generator": lambda version: uuid4().hex,
     }
     __table_args__ = (
         database.UniqueConstraint("list_id", "name"),
@@ -177,7 +177,7 @@ class Item(database.Model):
 
     __mapper_args__ = {
         "version_id_col": version_id,
-        "version_id_generator": lambda version: uuid.uuid4().hex,
+        "version_id_generator": lambda version: uuid4().hex,
     }
     __table_args__ = (
         database.UniqueConstraint("category_id", "name"),
