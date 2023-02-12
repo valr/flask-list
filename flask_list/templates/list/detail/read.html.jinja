@@ -65,6 +65,7 @@
     {{ super() }}
     <script nonce="{{ csp_nonce() }}">
         {% include "list/detail/read_row.js" %}
+        {% include "alert.js" %}
         {% include "cancel.js" %}
         {% include "collapse.js" %}
         {% include "debounce.js" %}
