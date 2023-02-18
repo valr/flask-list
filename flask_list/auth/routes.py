@@ -123,7 +123,7 @@ def invite():
 
     return render_template(
         "auth/invite.html.jinja",
-        title="Invite",
+        title="Invite User",
         form=form,
         cancel_url=url_for("index"),
     )
