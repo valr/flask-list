@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from uuid import uuid4
 
 from flask import current_app, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
@@ -7,9 +8,14 @@ from werkzeug.routing import BuildError
 
 from flask_list import cache, database, login
 from flask_list.auth import blueprint
-from flask_list.auth.emails import send_register_email, send_reset_password_email
+from flask_list.auth.emails import (
+    send_invite_email,
+    send_register_email,
+    send_reset_password_email,
+)
 from flask_list.auth.forms import (
     ChangePasswordForm,
+    InviteForm,
     LoginForm,
     RegisterForm,
     ResetPasswordConfirmationForm,
@@ -32,6 +38,16 @@ def load_user(user_id):
         cache.set(key, user)
 
     return user
+
+
+# cli command: flask auth cleaning
+@blueprint.cli.command("cleaning")
+def register_cleaning():
+    expired_on = datetime.utcnow() - timedelta(hours=1)
+    User.query.filter(
+        User.active == False, User.updated_on < expired_on  # noqa: E712
+    ).delete()
+    database.session.commit()
 
 
 @blueprint.route("/register", methods=["GET", "POST"])
@@ -83,14 +99,34 @@ def register_confirmation(token):
     return redirect(url_for("auth.login"))
 
 
-# cli command: flask auth cleaning
-@blueprint.cli.command("cleaning")
-def register_cleaning():
-    expired_on = datetime.utcnow() - timedelta(hours=1)
-    User.query.filter(
-        User.active == False, User.updated_on < expired_on  # noqa: E712
-    ).delete()
-    database.session.commit()
+@blueprint.route("/invite", methods=["GET", "POST"])
+@login_required
+def invite():
+    form = InviteForm()
+    if form.validate_on_submit():
+        try:
+            user = User(email=form.email.data, active=True)
+            user.set_password(uuid4().hex)
+            database.session.add(user)
+            database.session.commit()
+        except IntegrityError:
+            database.session.rollback()
+            flash(
+                "The user has not been invited due to concurrent modification.",
+                "error",
+            )
+        else:
+            send_invite_email(user)
+            flash("An email has been sent to invite the user.")
+
+        return redirect(url_for("index"))
+
+    return render_template(
+        "auth/invite.html.jinja",
+        title="Invite",
+        form=form,
+        cancel_url=url_for("index"),
+    )
 
 
 @blueprint.route("/login", methods=["GET", "POST"])

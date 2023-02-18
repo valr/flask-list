@@ -35,6 +35,16 @@ def send_register_email(user):
     )
 
 
+def send_invite_email(user):
+    send_email(
+        "Invitation",
+        sender=current_app.config["MAIL_FROM"],
+        recipients=[user.email],
+        text_body=render_template("auth/email/invite.txt", user=user),
+        html_body=render_template("auth/email/invite.html.jinja", user=user),
+    )
+
+
 def send_reset_password_email(user):
     token = user.get_token("reset_password")
 

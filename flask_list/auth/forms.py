@@ -28,6 +28,21 @@ class RegisterForm(FlaskForm):
             raise ValidationError("The email address is already registered.")
 
 
+class InviteForm(FlaskForm):
+    email = StringField(
+        "Email",
+        validators=[DataRequired(), Length(max=1000), Email()],
+        render_kw={"autofocus": True},
+    )
+    submit = SubmitField("Invite")
+    cancel = SubmitField("Cancel", render_kw={"type": "button"})
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError("The email address is already registered.")
+
+
 class LoginForm(FlaskForm):
     email = StringField(
         "Email",
