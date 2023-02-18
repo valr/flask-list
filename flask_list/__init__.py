@@ -47,10 +47,12 @@ def create_application(instance_path, config_file="flask-list.conf"):
     application.config["REMEMBER_COOKIE_HTTPONLY"] = True
     application.config["REMEMBER_COOKIE_SAMESITE"] = "Lax"
 
-    application.jinja_env.trim_blocks = True
+    application.jinja_env.keep_trailing_newline = True
     application.jinja_env.lstrip_blocks = True
+    application.jinja_env.trim_blocks = True
     application.jinja_env.autoescape = select_autoescape(
-        ["html", "htm", "xml", "jinja"]  # adding jinja to default
+        enabled_extensions=("html", "htm", "xml", "jinja"),  # adding jinja to default
+        default_for_string=True,
     )
 
     database.init_app(application)
