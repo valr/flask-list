@@ -2,7 +2,7 @@ $(function () {
     debounce(
         "dismiss alert",
         function () {
-            $(".alert").alert("close");
+            $(".alert-dismissible.alert-primary").alert("close");
         },
         3000,
         null
