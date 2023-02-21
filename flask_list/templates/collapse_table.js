@@ -7,7 +7,7 @@ $(function () {
             if (
                 window.sessionStorage.getItem(
                     $(element).attr("id") + "@" + window.location.pathname
-                ) !== null
+                )
             ) {
                 $(element).collapse();
                 $(element)

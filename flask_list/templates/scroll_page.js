@@ -1,6 +1,6 @@
 $(function () {
     var scrollY = window.sessionStorage.getItem("scrollY@" + window.location.pathname);
-    if (scrollY !== null) {
+    if (scrollY) {
         window.scrollTo(0, scrollY);
     }
 });
