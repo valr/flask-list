@@ -27,10 +27,10 @@
 {% block scripts %}
     {{ super() }}
     <script nonce="{{ csp_nonce() }}">
-        {% include "alert.js" %}
+        {% include "click_cell.js" %}
         {% include "debounce.js" %}
-        {% include "scroll.js" %}
-        {% include "td_cell.js" %}
-        {% include "tooltip.js" %}
+        {% include "dismiss_alert.js" %}
+        {% include "scroll_page.js" %}
+        {% include "show_tooltip.js" %}
     </script>
 {% endblock scripts %}

@@ -65,11 +65,11 @@
     {{ super() }}
     <script nonce="{{ csp_nonce() }}">
         {% include "list/detail/read_row.js" %}
-        {% include "alert.js" %}
-        {% include "cancel.js" %}
-        {% include "collapse.js" %}
+        {% include "cancel_action.js" %}
+        {% include "collapse_table.js" %}
         {% include "debounce.js" %}
-        {% include "scroll.js" %}
-        {% include "tooltip.js" %}
+        {% include "dismiss_alert.js" %}
+        {% include "scroll_page.js" %}
+        {% include "show_tooltip.js" %}
     </script>
 {% endblock scripts %}
