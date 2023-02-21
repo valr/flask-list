@@ -35,5 +35,5 @@
 {% endblock content %}
 {% block scripts %}
     {{ super() }}
-    <script nonce="{{ csp_nonce() }}">{% include "cancel.js" %}</script>
+    <script nonce="{{ csp_nonce() }}">{% include "cancel_action.js" %}</script>
 {% endblock scripts %}
