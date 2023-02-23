@@ -83,7 +83,7 @@ td[data-href] {
 
 @media (max-width: 767px) {
     .item-value {
-        min-width: 140px;
+        min-width: 120px;
     }
 }
 
