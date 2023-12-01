@@ -1,5 +1,5 @@
 # use default or current directory for temporary directories/files
-# set tempdir := "."
+set tempdir := "."
 
 # list the recipes
 default:
