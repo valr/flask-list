@@ -1,16 +1,16 @@
 {% from "bootstrap5/nav.html" import render_nav_item %}
 {% from "bootstrap5/utils.html" import render_icon, render_messages %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         {% block head %}
             <meta charset="utf-8" />
             <meta name="description"
-                  content="flask-list is a simple Flask application to manage lists of categories of items"/>
+                  content="flask-list is a simple Flask application to manage lists of categories of items" />
             <meta name="keywords"
-                  content="Flask, list, category, categories, item, items"/>
+                  content="Flask, list, category, categories, item, items" />
             <meta name="viewport"
-                  content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+                  content="width=device-width, initial-scale=1, shrink-to-fit=no" />
             {% block styles %}
                 {{ bootstrap.load_css() }}
                 <style nonce="{{ csp_nonce() }}">{% include "base.css" %}</style>
@@ -84,7 +84,7 @@
             {% endblock content %}
         </main>
         {% block scripts %}
-            {{ bootstrap.load_js(nonce=csp_nonce()) }}
+            {{ bootstrap.load_js(nonce=csp_nonce() ) }}
             <script nonce="{{ csp_nonce() }}" src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous">
             </script>
         {% endblock scripts %}

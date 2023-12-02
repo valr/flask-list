@@ -2,10 +2,14 @@
 {% from "bootstrap5/form.html" import render_form %}
 {% block content %}
     <div class="card mt-3 mb-0">
-        <h5 class="card-header">Sign In</h5>
+        <h5 class="card-header">
+            Sign In
+        </h5>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4">{{ render_form(form, button_map={"submit": "primary"}) }}</div>
+                <div class="col-md-4">
+                    {{ render_form(form, button_map={"submit": "primary"}) }}
+                </div>
             </div>
         </div>
         <div class="card-footer text-muted">
