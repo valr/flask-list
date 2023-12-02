@@ -1,12 +1,12 @@
 :root {
-    /* https://getbootstrap.com/docs/5.2/customize/css-variables/ */
+    /* https://getbootstrap.com/docs/5.3/customize/css-variables/ */
     --bs-body-font-size: 0.875rem;
     --bs-link-color: var(--bs-primary);
     --bs-link-hover-color: var(--bs-primary);
 }
 
 body {
-    /* https://getbootstrap.com/docs/5.2/components/navbar/#placement */
+    /* https://getbootstrap.com/docs/5.3/components/navbar/#placement */
     padding-top: 40px;
 }
 
@@ -63,6 +63,7 @@ a.dropdown-item {
 
 .table-primary th,
 .table-primary thead th {
+    color: var(--bs-white);
     background-color: var(--bs-primary);
 }
 
