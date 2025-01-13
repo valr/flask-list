@@ -18,6 +18,7 @@ init-pyenv:
 
   # --enable-shared sets the right rpath
   env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.12.7
+  pyenv global 3.12.7
 
 # initialise the virtual environment
 init-venv:
@@ -28,11 +29,10 @@ init-venv:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   python -m venv .venv
-  source .venv/bin/activate
 
+  source .venv/bin/activate
   pip install --upgrade pip setuptools wheel
   pip install --upgrade pip-tools
 
@@ -45,10 +45,8 @@ install-requirements-production:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
-
   pip-sync requirements.txt
 
 # install the requirements for a development environment
@@ -60,10 +58,8 @@ install-requirements-development:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
-
   pip-sync requirements.txt dev-requirements.txt
 
 # compile the requirements for production and development environments
@@ -75,7 +71,6 @@ compile-requirements:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
 
@@ -91,7 +86,6 @@ upgrade-requirements:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
 
@@ -110,7 +104,6 @@ init-db:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
 
@@ -132,7 +125,6 @@ clean-inactive-users:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
 
@@ -147,7 +139,6 @@ run-application:
 
   export PYENV_ROOT="$PWD/.pyenv"
   eval "$(pyenv init - bash)"
-  pyenv shell 3.12.7
 
   source .venv/bin/activate
 
