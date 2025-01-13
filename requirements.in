@@ -11,3 +11,4 @@ flask-talisman
 flask-wtf
 pyjwt
 pylibmc
+uwsgi
