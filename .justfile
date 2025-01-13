@@ -19,6 +19,7 @@ init-pyenv:
   # --enable-shared sets the right rpath
   env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.12.7
   pyenv global 3.12.7
+  pyenv rehash
 
 # initialise the virtual environment
 init-venv:
@@ -35,6 +36,7 @@ init-venv:
   source .venv/bin/activate
   pip install --upgrade pip setuptools wheel
   pip install --upgrade pip-tools
+  pyenv rehash
 
 # install the requirements for a production environment
 install-requirements-production:
@@ -48,6 +50,7 @@ install-requirements-production:
 
   source .venv/bin/activate
   pip-sync requirements.txt
+  pyenv rehash
 
 # install the requirements for a development environment
 install-requirements-development:
@@ -61,6 +64,7 @@ install-requirements-development:
 
   source .venv/bin/activate
   pip-sync requirements.txt dev-requirements.txt
+  pyenv rehash
 
 # compile the requirements for production and development environments
 compile-requirements:
