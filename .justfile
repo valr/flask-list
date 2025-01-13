@@ -17,7 +17,8 @@ init-pyenv:
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
 
-  pyenv install 3.12.7
+  # --enable-shared sets the right rpath
+  env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.12.7
 
 # initialise the virtual environment
 init-venv:
