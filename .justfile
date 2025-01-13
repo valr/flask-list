@@ -14,7 +14,6 @@ init-pyenv:
   mkdir .pyenv
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
 
   # --enable-shared sets the right rpath
@@ -28,7 +27,6 @@ init-venv:
   [ -d .venv ] && { echo "error: the virtual environment .venv already exists"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -46,7 +44,6 @@ install-requirements-production:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -62,7 +59,6 @@ install-requirements-development:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -78,7 +74,6 @@ compile-requirements:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -95,7 +90,6 @@ upgrade-requirements:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -115,7 +109,6 @@ init-db:
   [ -d migrations ] && { echo "error: the migrations directory already exists"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -138,7 +131,6 @@ clean-inactive-users:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
@@ -154,7 +146,6 @@ run-application:
   [ ! -d .venv ] && { echo "error: the virtual environment .venv doesn't exist"; false; }
 
   export PYENV_ROOT="$PWD/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init - bash)"
   pyenv shell 3.12.7
 
