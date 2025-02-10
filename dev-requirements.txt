@@ -30,8 +30,10 @@ jsbeautifier==1.14.11
     #   djlint
 json5==0.9.14
     # via djlint
-packaging==23.2
-    # via pytest
+packaging==24.2
+    # via
+    #   -c requirements.txt
+    #   pytest
 pathspec==0.11.2
     # via djlint
 pluggy==1.3.0

@@ -51,6 +51,8 @@ flask-wtf==1.2.1
     # via -r requirements.in
 greenlet==3.0.1
     # via sqlalchemy
+gunicorn==23.0.0
+    # via -r requirements.in
 idna==3.6
     # via email-validator
 itsdangerous==2.1.2
@@ -67,6 +69,8 @@ markupsafe==2.1.3
     #   mako
     #   werkzeug
     #   wtforms
+packaging==24.2
+    # via gunicorn
 pyjwt==2.8.0
     # via -r requirements.in
 pylibmc==1.6.3
@@ -79,8 +83,6 @@ typing-extensions==4.8.0
     # via
     #   alembic
     #   sqlalchemy
-uwsgi==2.0.28
-    # via -r requirements.in
 werkzeug==3.0.1
     # via
     #   flask
